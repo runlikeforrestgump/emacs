@@ -16,7 +16,7 @@ I'm using [dwm](http://dwm.suckless.org) on [Gentoo GNU/Linux](http://www.gentoo
 
 # Most Important Things to Know First
 
-The most important things to know first are knowing how to quit, cancel, undo, close, and get help, and before you can know that, you need to know how to invoke commands in Emacs.
+The most important things to know first are knowing how to quit, cancel, undo, close, switch and close buffers, and get help, and before you can know that, you need to know how to invoke commands in Emacs.
 
 To invoke a command in Emacs:
 
@@ -45,7 +45,7 @@ S = Shift<br>
 &lt;UP&gt; = up arrow<br>
 &lt;DOWN&gt; = down arrow
 
-Ctrl, Alt, and Shift are modifiers. <code>&lt;ESC&gt; is a character, not a modifier.
+Ctrl, Alt, and Shift are modifiers. <code>&lt;ESC&gt;</code> is a character, not a modifier.
 
 <code>C-&lt;character&gt;</code> means hold the Ctrl key and then press &lt;character&gt;.
 
@@ -65,6 +65,12 @@ Wherever you see Alt (i.e., M), you can use &lt;ESC&gt; instead. In that case, p
 
 
 ## Invoking Commands by Name
+
+It's very easy to invoke a command by name. Just type <code>M-x</code>, followed by the command name, followed by <code>&lt;RET&gt;</code>.
+
+For commands that you don't use often, it's probably easier to remember the command by name rather than by key.
+
+Not all commands are bound to keys.
 
 
 ## Useful Commands to Memorise
