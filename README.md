@@ -18,6 +18,56 @@ I'm using [dwm](http://dwm.suckless.org) on [Gentoo GNU/Linux](http://www.gentoo
 
 The most important things to know first are knowing how to quit, cancel, undo, close, and get help, and before you can know that, you need to know how to invoke commands in Emacs.
 
+To invoke a command in Emacs:
+1. You can use a key sequence (aka keyboard shortcut, key binding, or key for short).
+2. Or you can call the command by name.
+
+## Invoking Commands by Key Sequence
+
+Keys are not commands. Keys are bound to commands. Commands are Emacs Lisp (Elisp) functions.
+
+Simple (printable) characters and control (non-printable) characters, as well as certain non-keyboard inputs such as mouse clicks, are collectively referred to as input events. Some Emacs commands are invoked by just one input event; other commands take two or more input events to invoke. A key sequence is a sequence of one or more input events that is meaningful as a unit. If a key sequence invokes a command, it's called a complete key. If a key sequence isn't long enough to invoke a command, it's called a prefix key. Every key sequence is either a complete key or a prefix key. Prefix keys are combined to form a complete key.
+
+A character is self-inserting if typing that character inserts that character in the buffer. Ordinary printing and whitespace characters are normally self-inserting, except when they're redefined by a major mode. Note that typing a self-inserting character actually invokes an Emacs command called <code>self-insert-command</code>.
+
+A character is electric if in addition to being self-inserting, it also does something else.
+
+C = Control = Ctrl = Ctl<br>
+M = Meta = Alt<br>
+S = Shift<br>
+&lt;RET&gt; = Enter or Return<br>
+&lt;SPC&gt; = Space<br>
+&lt;DEL&gt; = Backspace<br>
+&lt;DELETE&gt; = Delete<br>
+&lt;LEFT&gt; = left arrow<br>
+&lt;RIGHT&gt; = right arrow<br>
+&lt;UP&gt; = up arrow<br>
+&lt;DOWN&gt; = down arrow
+
+Ctrl, Alt, and Shift are modifiers. <code>&lt;ESC&gt; is a character, not a modifier.
+
+<code>C-&lt;character&gt;</code> means hold the Ctrl key and then press &lt;character&gt;.
+
+<code>C-&lt;character1&gt; C-&lt;character2&gt;</code> means hold the Ctrl key and then press &lt;character1&gt; and then &lt;character2&gt; (<code>C-&lt;character1&gt;&lt;character2&gt;</code>); or hold the Ctrl key, press &lt;character1&gt;, release both keys, and then hold the Ctrl key and press &lt;character2&gt;.
+
+<code>C-&lt;character1&gt; &lt;character2&gt;</code> means hold the Ctrl key, press &lt;character1&gt;, release both keys, and then press &lt;character2&gt;.
+
+<code>M-&lt;character&gt;</code> means hold the Alt key and then press &lt;character&gt;.
+
+<code>M-&lt;character1&gt; M-&lt;character2&gt;</code> means hold the Alt key and then press &lt;character1&gt; and then &lt;character2&gt; (<code>M-&lt;character1&gt;&lt;character2&gt;</code>); or hold the Alt key, press &lt;character1&gt;, release both keys, and then hold the Alt key and press &lt;character2&gt;.
+
+<code>M-&lt;character1&gt; &lt;character2&gt;</code> means hold the Alt key, press &lt;character1&gt;, release both keys, and then press &lt;character2&gt;.
+
+If <code>C-</code> and <code>M-</code> are both used, it doesn't matter which modifier you hold first: <code>C-M-&lt;character&gt;</code> is the same thing as <code>M-C-&lt;character&gt;</code>.
+
+Wherever you see Alt (i.e., M), you can use &lt;ESC&gt; instead. In that case, press &lt;ESC&gt;, but don't hold it.
+
+
+## Invoking Commands by Name
+
+
+## Useful Commands to Memorise
+
 <dl>
   <dt><dfn>
 C-x C-x<br>
@@ -32,9 +82,9 @@ C-g<br>
 
 <p><code>C-g</code> and <code>&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;</code> are similar, but not exactly.</p>
 
-<p><code>C-g</code> doesn't execute a command (instead, it sets a variable that Emacs frequently checks, and then acts accordingly), so it can be used to stop commands. If <code>C-g</code> executed a command, then Emacs wouldn't notice it until the previous command finished. The downside to <code>C-g</code> is that it doesn't cancel a key sequence because it's interpreted as part of the key sequence.</p>
+<p><code>C-g</code> doesn't invoke a command (instead, it sets a variable that Emacs frequently checks), so it can be used to stop commands. If <code>C-g</code> invoked a command, then Emacs wouldn't execute it until the previous command finished executing. The downside to <code>C-g</code> is that it doesn't cancel a key sequence because it's interpreted as part of the key sequence.</p>
 
-<p><code>&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;</code> can't stop commands because it invokes a command (which wouldn't be executed until the previous command finished). The good thing is that <code>&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;</code> works in most other situations. The annoying thing is that you have to type <code>&lt;ESC&gt;</code> exactly 3 times.</p>
+<p><code>&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;</code> can't stop commands because it invokes a command, which wouldn't be executed until the previous command finished executing. The good thing is that <code>&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;</code> works in most other situations. The annoying thing is that you have to type <code>&lt;ESC&gt;</code> exactly 3 times.</p>
   </dd>
 
   <dt><dfn>
@@ -50,9 +100,13 @@ M-x undo-only</dfn></dt>
 
 <p>If you keep invoking the undo command, then you'll keep undoing earlier and earlier changes. To quote the Emacs manual "Any command other than an undo command breaks the sequence of undo commands. Starting from that moment, the entire sequence of undo commands that you have just performed are themselves placed into the undo record, as a single set of changes. Therefore, to re-apply changes you have undone, type <code>C-f</code> or any other command that harmlessly breaks the sequence of undiong; then type <code>C-/</code> to undo the undo command[, thus performing a redo]. If you want to resume undoing, without redoing previous undo commands, use <code>M-x undo-only</code>. This is like <code>undo</code>, but will not redo changes you have just undone."</p>
 
-<p>Note that you can select a region and undo only the changes within that region. This is called a "selective undo".</p>
+<p>Note that you can select a region and undo only the changes within that region. That is called a "selective undo".</p>
   </dd>
 
   <dt><dfn>M-x revert-buffer</dfn></dt>
-  <dd>Undo all changes in the current buffer. Rather than doing this, you could also just quit Emacs without saving your changes.</dd>
+  <dd>
+<p>Undo all changes in the current buffer.</p>
+
+<p>Rather than doing this, you could also just quit Emacs without saving your changes.</p>
+  </dd>
 </dl>
