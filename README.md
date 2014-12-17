@@ -19,6 +19,7 @@ I'm using [dwm](http://dwm.suckless.org) on [Gentoo GNU/Linux](http://www.gentoo
 The most important things to know first are knowing how to quit, cancel, undo, close, and get help, and before you can know that, you need to know how to invoke commands in Emacs.
 
 To invoke a command in Emacs:
+
 1. You can use a key sequence (aka keyboard shortcut, key binding, or key for short).
 2. Or you can call the command by name.
 
