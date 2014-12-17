@@ -70,7 +70,7 @@ It's very easy to invoke a command by name. Just type <code>M-x</code>, followed
 
 For commands that you don't use often, it's probably easier to remember the command by name rather than by key.
 
-Not all commands are bound to keys.
+Not all commands are bound to keys, so it's essential to know how to invoke a command by name.
 
 
 ## Useful Commands to Memorise
