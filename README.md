@@ -289,7 +289,7 @@ Each frame consists of several distinct regions:
 * Between the menu bar and the echo area is where one or more **window**s are displayed.
 * Each window displays the contents of a **buffer**. A buffer typically contains the contents of a file, but buffers aren't limited to just that use case. Each buffer has a name.
 * You can limit what text you see in the buffer, making the rest of the text in the buffer temporarily inaccessible and invisible (however, it's still there and you can still save it). This is called **narrowing**. You can think of it as zooming in on something, so that you can focus your attention without distraction (or for easily applying changes to that portion of text). The opposite of narrowing is called **widening**. When narrowed, the text that is still accessible is called the **accessible portion**; the bounds of the narrowed region are called its **restriction**.
-* Each window has a **scrollbar**.
+* Each window has a **scrollbar**. The echo area and minibuffer also have a scrollbar.
 * At the very bottom of each window is a **mode line**, which provides information about the window's buffer.
 * **Fringes** are the narrow strips that appear on the left and right of a window. They are used for displaying symbols that provide information about the buffer text. Fringes are not the same thing as borders.
 * A **margin** is the space between the usable part of a window (including the fringe) and the window edge.
@@ -321,3 +321,28 @@ Each frame consists of several distinct regions:
 * **Faces** refer to styles of displaying text or even the cursor. Faces have attributes such as font, height, weight, slant, and colour.
 * A **fontset** is a named collection of fonts. A font typically defines shapes for a single alphabet or script; therefore, displaying the entire range of scripts that Emacs supports requires a collection of many fonts, hence the use for fontsets.
 * The **speedbar** is a special tall frame for conveniently navigating in or operating on another frame. When the speedbar exists, it's always associated with a specific frame, called its **attached frame**; all speedbar operations act on that frame.
+
+My attempt at an ASCII art Emacs frame:
+
+```
++-----------------------------------------------+
+| menu bar                                      |
++-----------------------------------------------+
+| tool bar                                      |
++-----------------------------------------------+
+|s|f|                                         |f|
+|c|r|                                         |r|
+|r|i|                                         |i|
+|o|n|                                         |n|
+|l|g|             window / buffer             |g|
+|l|e|                                         |e|
+| | |                                         | |
+|b| |                                         | |
+|a| |                                         | |
+|r| |                                         | |
++-----------------------------------------------+
+| mode line                                     |
++-----------------------------------------------+
+| | echo area / minibuffer                      |
++-----------------------------------------------+
+```
