@@ -322,27 +322,34 @@ Each frame consists of several distinct regions:
 * A **fontset** is a named collection of fonts. A font typically defines shapes for a single alphabet or script; therefore, displaying the entire range of scripts that Emacs supports requires a collection of many fonts, hence the use for fontsets.
 * The **speedbar** is a special tall frame for conveniently navigating in or operating on another frame. When the speedbar exists, it's always associated with a specific frame, called its **attached frame**; all speedbar operations act on that frame.
 
-My attempt at an ASCII art Emacs frame:
+My attempt at an ASCII art Emacs frame (looks kind of like a polaroid):
 
 ```
-+-----------------------------------------------+
-| menu bar                                      |
-+-----------------------------------------------+
-| tool bar                                      |
-+-----------------------------------------------+
-|s|f|                                         |f|
-|c|r|                                         |r|
-|r|i|                                         |i|
-|o|n|                                         |n|
-|l|g|             window / buffer             |g|
-|l|e|                                         |e|
-| | |                                         | |
-|b| |                                         | |
-|a| |                                         | |
-|r| |                                         | |
-+-----------------------------------------------+
-| mode line                                     |
-+-----------------------------------------------+
-| | echo area / minibuffer                      |
-+-----------------------------------------------+
++-----------------------------------------------------+
+| menu bar                                            |
++-----------------------------------------------------+
+| tool bar                                            |
++-----------------------------------------------------+
+| |f|                                               |f|
+| |r|                                               |r|
+| |i|                                               |i|
+| |n|                                               |n|
+| |g|                                               |g|
+| |e|                                               |e|
+| | |                                               | |
+|s| |                                               | |
+|c| |                window / buffer                | |
+|r| |                                               | |
+|o| |                                               | |
+|l| |                                               | |
+|l| |                                               | |
+| | |                                               | |
+|b| |                                               | |
+|a| |                                               | |
+|r| |                                               | |
++-----------------------------------------------------+
+| mode line                                           |
++-----------------------------------------------------+
+| | echo area / minibuffer                            |
++-----------------------------------------------------+
 ```
