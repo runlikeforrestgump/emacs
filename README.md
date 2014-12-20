@@ -9,6 +9,8 @@ The problem with a lot of Emacs guides out there is that they seem to be copy-an
 
 # History
 
+Richard Stallman joined the MIT Artificial Intelligence Lab in 1971 (when he was about 18 years old).
+
 The GNU Project was created on 27 September 1983 by Richard Stallman (when he was 30 years old) as a project for developing free software (free as in freedom). The main project was the GNU operating system.
 
 GNU Emacs was first released on 20 March 1985 by Richard Stallman (when he was 32 years old). This was the first program released by the GNU Project.
@@ -24,6 +26,8 @@ Note that GNU Emacs wasn't the first Emacs, but the first Emacs was also written
 The original EMACS was written in 1976 by Richard Stallman (when he was about 23 years old) and Guy L. Steele, Jr. as a set of **E**ditor **MAC**ro**S** for the TECO (Tape Editor and Corrector) editor for the Incompatible Timesharing System (ITS) operating system on the PDP line of computers in use at MIT at the time.
 
 GNU Emacs is written in C and Emacs Lisp (Elisp). LISP 1 was the first implementation of Lisp. LISP 1.5 was the first widely used Lisp implementation. MACLISP appeared in the 1960s; it was developed for MIT's ProjectMAC and was a direct descendent of LISP 1.5. Scheme (influenced by LISP 1.5 and MACLISP) appeared in 1975 and Common Lisp appeared in 1984. "Richard Stallman chose Lisp as the extension language for his rewrite of Emacs because of its powerful features, including the ability to treat functions as data. Unlike Common Lisp, Scheme existed at the time Stallman was rewriting Gosling Emacs into GNU Emacs, but he chose not to use it because of its comparatively poor performance on workstations, and he wanted to develop a dialect which he thought would be more easily optimized." "In terms of features, Elisp is closely related to the Maclisp dialect, with some later influence from Common Lisp." A scripting language used for scripting an application is called an extension language. Elisp is considered an extension language. Elisp is a scripting language dialect of a general-purpose language.
+
+If you want to read more about the history of the GNU Project, type <code>C-h g</code> (M-x describe-gnu-project) in Emacs. To paraphrase one of my favourite quotes in that document: "Sharing of software is as old as computers, just as sharing of recipes is as old as cooking." Extremely well articulated, Richard!
 
 
 # Installing [Emacs](https://www.gnu.org/software/emacs/)
@@ -89,7 +93,7 @@ If <code>C-</code> and <code>M-</code> are both used, it doesn't matter which mo
 
 Wherever you see Alt (i.e., M), you can use &lt;ESC&gt; instead. In that case, press &lt;ESC&gt;, but don't hold it.
 
-Multi-character commands are echoed in the echo area if you pause for more than a second in the middle of a command. Emacs then echoes all the characters of the command so far, to prompt you for the rest. Once echoing has started, the rest of the command echoes immediately as you type it.
+Multi-character commands are echoed in the echo area if you pause for more than a second in the middle of a command. Emacs then echoes all the characters of the command so far, to prompt you for the rest. Once echoing has started, the rest of the command echoes immediately as you type it. While the minibuffer is in use, key sequences do not echo.
 
 What some programs call "assigning a keyboard shortcut", Emacs calls "binding a key sequence."
 
@@ -218,10 +222,110 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
 
 <dl>
   <dt><dfn>
+  C-h C-h<br>
+  M-x help-for-help</dfn></dt>
+  <dd>Display a list of help commands. TODO</dd>
+
+  <dt><dfn>
+  C-h b<br>
+  &lt;F1&gt; b<br>
+  M-x describe-bindings</dfn></dt>
+  <dd>Display a list of all the active keybindings (minor mode bindings are listed first, followed by major mode, followed by global).</dd>
+
+  <dt><dfn>
+  C-h m<br>
+  &lt;F1&gt; m<br>
+  M-x describe-mode</dfn></dt>
+  <dd>Display the documentation for the current major mode, including its commands.</dd>
+
+  <dt><dfn>
+  C-h c KEYSEQUENCE<br>
+  &lt;F1&gt; c KEYSEQUENCE<br>
+  M-x describe-key-briefly &lt;RET&gt; KEYSEQUENCE</dfn></dt>
+  <dd>Display the command name that's bound to the specified key sequence.</dd>
+
+  <dt><dfn>
+  C-h w COMMAND<br>
+  &lt;F1&gt; w COMMAND<br>
+  M-x where-is &lt;RET&gt; COMMAND</dfn></dt>
+  <dd>Display the key sequence that runs the specified command.</dd>
+
+  <dt><dfn>
+  C-h f COMMAND<br>
+  C-h k KEYSEQUENCE<br>
+  &lt;F1&gt; f COMMAND<br>
+  &lt;F1&gt; k KEYSEQUENCE<br>
+  M-x describe-function &lt;RET&gt; COMMAND<br>
+  M-x describe-key &lt;RET&gt; KEYSEQUENCE</dfn></dt>
+  <dd>Display the documentation for the specified command. You can look up the command's documentation by its name or by its key sequence; both ways will take you to the same documentation.</dd>
+
+  <dt><dfn>
+  C-h F COMMAND<br>
+  C-h K KEYSEQUENCE<br>
+  &lt;F1&gt; F COMMAND<br>
+  &lt;F1&gt; K KEYSEQUENCE<br>
+  M-x Info-goto-emacs-command-node &lt;RET&gt; COMMAND<br>
+  M-x Info-goto-emacs-key-command-node &lt;RET&gt; KEYSEQUENCE</dfn></dt>
+  <dd>Go to the section in the corresponding manual that documents the specified command or key sequence.</dd>
+
+  <dt><dfn>
+  C-h v VARIABLE<br>
+  &lt;F1&gt; v VARIABLE<br>
+  M-x describe-variable &lt;RET&gt; VARIABLE</dfn></dt>
+  <dd>Display the documentation for the given Emacs variable.</dd>
+
+  <dt><dfn>
+  C-h a PATTERN<br>
+  &lt;F1&gt; a PATTERN<br>
+  M-x apropos-command &lt;RET&gt; PATTERN</dfn></dt>
+  <dd>
+<p>Display a list of commands that match PATTERN.</p>
+
+<p>An apropos pattern means either a word, a space-delimited list of words, or a regular expression. If a list of words is given, the apropos will match anything that contains at least two of the words.</p>
+  </dd>
+
+  <dt><dfn>M-x apropos PATTERN</dfn></dt>
+  <dd>Display a list of commands and variables that match PATTERN.</dd>
+
+  <dt><dfn>M-x apropos-variable PATTERN</dfn></dt>
+  <dd>Display a list of user-customisable variables that match PATTERN. With a prefix argument, search for non-customisable variables too.</dd>
+
+  <dt><dfn>M-x apropos-value</dfn></dt>
+  <dd>Display a list of variables whose values match PATTERN.</dd>
+
+  <dt><dfn>
+  C-h d TOPICS<br>
+  &lt;F1&gt; d TOPICS<br>
+  M-x apropos-documentation &lt;RET&gt; TOPICS</dfn></dt>
+  <dd>Display the commands and variables whose documentation matches TOPICS.</dd>
+
+  <dt><dfn>
+  C-h P PACKAGE<br>
+  &lt;F1&gt; P PACKAGE<br>
+  M-x describe-package &lt;RET&gt; PACKAGE</dfn></dt>
+  <dd>Display the documentation for the specified package.</dd>
+
+  <dt><dfn>
+  C-h p<br>
+  &lt;F1&gt; p<br>
+  M-x finder-by-keyword</dfn></dt>
+  <dd>Display a list of package categories. From there, you can select a package category to get a list of packages in that category, and from there, you can select a package name to view the documentation for that package. Use &lt;RET&gt; or your mouse for selection.</dd>
+
+  <dt><dfn>
+  C-h l<br>
+  &lt;F1&gt; l<br>
+  M-x view-lossage</dfn></dt>
+  <dd>Display a history of your most recent input keystrokes, ordered from oldest to newest (newest appears near the end of the buffer). This is useful when something surprising happens and you want to figure out what you did.</dd>
+
+  <dt><dfn>
   C-h r<br>
   &lt;F1&gt; r<br>
   M-x info-emacs-manual</dfn></dt>
-  <dd>Display the Emacs manual.</dd>
+  <dd>
+<p>Display the Emacs manual.</p>
+
+<p>To search the index, use <code>i TOPIC &lt;RET&gt;</code> To search the text, use <code>s TOPIC &lt;RET&gt;</code>. Topic can be a word or a regular expression.</p>
+  </dd>
 
   <dt><dfn>
   C-h t<br>
@@ -256,11 +360,41 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
   <dd>Display the Emacs Lisp reference manual.</dd>
 
   <dt><dfn>
-  C-h a PATTERN<br>
-  &lt;F1&gt; a PATTERN<br>
-  M-x apropos-command &lt;RET&gt; PATTERN</dfn></dt>
-  <dd>TODO</dd>
+  C-h I INPUTMETHOD<br>
+  &lt;F1&gt; I INPUTMETHOD<br>
+  M-x describe-input-method &lt;RET&gt; INPUTMETHOD</dfn></dt>
+  <dd>Display the documentation for the specified input method.</dd>
+
+  <dt><dfn>
+  C-h C-n<br>
+  &lt;F1&gt; C-n<br>
+  M-x view-emacs-news</dfn></dt>
+  <dd>View the release notes for various versions of Emacs.</dd>
+
+  <dt><dfn>
+  C-h C-p<br>
+  &lt;F1&gt; C-p<br>
+  M-x view-emacs-problems</dfn></dt>
+  <dd>Display the list of known Emacs problems, sometimes with suggested workarounds.</dd>
+
+  <dt><dfn>
+  C-h C-t<br>
+  &lt;F1&gt; C-t<br>
+  M-x view-emacs-todo</dfn></dt>
+  <dd>Display the Emacs to-do list.</dd>
+
+  <dt><dfn>
+  C-h C-d<br>
+  &lt;F1&gt; C-d<br>
+  M-x view-emacs-debugging</dfn></dt>
+  <dd>Display help for debugging Emacs.</dd>
 </dl>
+
+Note that modes correspond to commands, so if you want to read the documentation for a mode, just look up its documentantation by its command.
+
+<code>C-h c</code>, <code>C-h k</code>, and <code>C-h K</code> work for any sort of key sequences, including function keys, menus, and mouse events; for example, after <code>C-h k</code>, you can select a menu item from the menu bar, to view the documentation string of the command it runs.
+
+In a help buffer, you can use <code>&lt;SPC&gt;</code> to scroll forward and <code>&lt;DEL&gt;</code> to scroll backward. When a function name, variable name, or face name appears in the documentation in the help buffer, it is normally an underlined hyperlink. To view the associated documentation, move point there and type <code>&lt;RET&gt;</code>, or click on the hyperlink. Doing so replaces the contents of the help buffer; to retrace your steps, type <code>C-c C-b</code> (<code>M-x help-go-back</code>) to navigate back to where you came from. A help buffer can also contain hyperlinks to Info manuals, source code definitions, and URLs (Web pages). The first two are opened in Emacs, and the third using a Web browser via the browse-url command. To move to the next hyperlink, use <code>&lt;TAB&gt;</code>. To move to the previous hyperlink, use <code>S-&lt;TAB&gt;</code>. <code>&lt;TAB&gt;</code> and <code>S-&lt;TAB&gt;</code> act cyclically, so if you're on the last hyperlink, <code>&lt;TAB&gt;</code> moves to the first hyperlink; if you're on the first hyperlink, <code>S-&lt;TAB&gt;</code> moves to the last hyperlink. If a variable, function, or face name isn't hyperlinked, you can still views its documentation by typing <code>C-c C-c</code> (<code>M-x help-follow-symbol</code>). To exit a help buffer, press <code>q</code>.
 
 A list of Emacs mailing lists is available here: https://savannah.gnu.org/mail/?group=emacs (help-gnu-emacs@gnu.org or help-emacs-windows@gnu.org are probably the ones you want (if you're looking for help)). You can search the mailing lists at https://lists.gnu.org/archive/html/help-gnu-emacs/ or https://lists.gnu.org/archive/html/help-emacs-windows/.
 
@@ -272,6 +406,8 @@ Emacs comes with reference cards (cheat sheets) in TeX and PDF format. On my mac
 
 
 ## Using GNU Info
+
+TODO
 
 
 # What You See on the Screen
