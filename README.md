@@ -1,3 +1,5 @@
+TODO: add a table of contents (it would be nice if GitHub's markdown auto-generated this...)
+
 # Legal Stuff
 
 You do **not** have permission to make any money off of this document or any version of it (either in its entirety or in parts), claim any credit for this document or any version of it (either in its entirety or in parts), or modify this document or any version of it.
@@ -750,15 +752,46 @@ There are different things that you can optionally add to the mode line, each of
 
 When only line-number-mode is enabled, then you'll see L followed by the line number. When only column-number-mode is enabled, then you'll see C followed by the column number. When both line-number-mode and column-number-mode are enabled, you'll see two numbers in parentheses: <code>(LineNumber, ColumnNumber)</code>.
 
-If you're using display-time-mode, then you can have the word "Mail" appear when you have unread email. Set <code>display-time-mail-directory</code> to the directory to check for unread email (any nonempty regular file in the directory is considered as unread email); for example, I use [mutt](http://www.mutt.org) and would add the following to my ~/.emacs.d/init.el: <code>(setq display-time-mail-directory "~/.mutt/mail/INBOX/new")</code>.
 
-You should use 24-hour time format (don't you dare call this military time; 24-hour time is the most commonly used time format in the world and it makes a lot of sense and is heavily used outside the military and didn't even originate with the military). Add the following to your ~/.emacs.d/init.el: <code>(setq display-time-24hr-format t)</code>.
+## Menu Bar
 
-Personally, for now, I'm just using column-number-mode in addition to the defaults, so I've added the following to my ~/.emacs.d/init.el: <code>(column-number-mode t)</code> (i.e., set the column-number-mode variable to true).
 
-You can customise the format of the mode line by modifying the <code>mode-line-format</code> variable. Read its documentation (<code>C-h v mode-line-format</code>) for help on modifying it.
+### GUI
+
+You can use the mouse to choose a command from the menu bar. An arrow on the right edge of a menu item means it leads to a submenu. A '...' at the end of a menu item means that the command will prompt you for further input before it actually does anything. Some menu items show what key sequence you can use for invoking the corresponding command.
+
+To view the full command name and documentation for a menu item, type <code>C-h k</code>, and then select the menu bar with the mouse in the usual way. You can't do this in terminal Emacs.
+
+Instead of using the mouse, you can also invoke the first menu bar item by pressing <code>&lt;F10&gt;</code> (to run the command <code>menu-bar-open</code>). You can then navigate the menus with the arrow keys. To activate a selected menu item, press <code>&lt;RET&gt;</code>. To cancel menu navigation, press <code>&lt;ESC&gt;</code>.
+
+
+### Terminal
+
+You can use the menu bar by typing <code>M-`</code> or <code>&lt;F10&gt;</code> (both of which run the command <code>tmm-menubar</code>). You can use the up and down arrow keys to move through the menu to different items, and then you can type <code>&lt;RET&gt;</code> to select the item. Each menu item is also designated by a letter or digit (usually the initial of some word in the item's name). This letter or digit is separated from the item name by '==>'. You can type the item's letter or digit to select the item.
+
+When you're in the menu bar's minibuffer, you can press <code>&lt;PageUp&gt;</code> to move to the Completions buffer, where you can move point to the item you want and then press <code>&lt;RET&gt;</code> to select it.
 
 
 ## Minibuffer
 
 TODO
+
+Since the minibuffer is just a buffer (with a small amount of screen space), you can use the usual basic Emacs keys for moving around (for example, <code>C-a</code> and <code>C-e</code>) and editing (for example, <code>C-k</code> and <code>C-/</code>) a line of text; however, you can't invoke anything that invokes the minibuffer (you can't use a minibuffer within another minibuffer).
+
+
+# Customisation
+
+## Mode Line
+
+In your ~/.emacs/init.el:
+
+* Show the size of the buffer: <code>(size-indication-mode t)</code>.
+* Show the column number of point: <code>(column-number-mode t)</code>.
+* Show the current time: <code>(display-time-mode t)</code>.
+* Show your computer's battery charge: <code>(display-battery-mode t)</code>.
+
+If you're using display-time-mode, then you can have the word "Mail" appear when you have unread email. Set <code>display-time-mail-directory</code> to the directory to check for unread email (any nonempty regular file in the directory is considered as unread email); for example, I use [mutt](http://www.mutt.org) and would add the following to my ~/.emacs.d/init.el: <code>(setq display-time-mail-directory "~/.mutt/mail/INBOX/new")</code>.
+
+You should use 24-hour time format (don't you dare call this military time; 24-hour time is the most commonly used time format in the world and it makes a lot of sense and is heavily used outside the military and didn't even originate with the military). Add the following to your ~/.emacs.d/init.el: <code>(setq display-time-24hr-format t)</code>.
+
+You can customise the format of the mode line by modifying the <code>mode-line-format</code> variable. Read its documentation (<code>C-h v mode-line-format</code>) for help on modifying it.
