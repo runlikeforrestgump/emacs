@@ -2,7 +2,7 @@
 
 You do **not** have permission to make any money off of this document or any version of it (either in its entirety or in parts) or claim any credit for this document or any version of it (either in its entirety or in parts).
 
-You do have permission to share this document, as long as you keep this legal section as is and intact with the copies you share.
+You do have permission to share this document, as long as you keep this legal section as is and intact with the copies you share and as long as you honour this legal section.
 
 If you have a copy of the document, you can find the original document at https://github.com/runlikeforrestgump/emacs/README.md.
 
@@ -140,7 +140,7 @@ Some conflicts that I've run into:
 
 * <code>C-S-&lt;DEL&gt;</code> is supposed to invoke <code>kill-whole-line</code>, but instead it invokes the help prefix (<code>C-h</code>). This was only a problem for me in my terminal ([rxvt-unicode](http://software.schmorp.de/pkg/rxvt-unicode.html)). Note that the key sequence <code>C-&lt;DEL&gt;</code> seems to behave the same as <code>C-S-&lt;DEL&gt;</code> (they both invoke the help prefix). TODO: resolve the conflict and document how I resolved it.
 * <code>C-M-v</code> is supposed to invoke <code>scroll-other-window</code>, but instead it pastes text. This was only a problem for me in my terminal. This is because I'm using the rxvt-unicode clipboard extension from [urxvt-perls](https://github.com/muennich/urxvt-perls), which binds <code>C-M-v</code> to paste_escaped by default. To resolve the conflict, I defined a different key binding for paste_escaped in my ~/.Xresources file: <code>URxvt.keysym.C-S-M-V:perl:clipboard:paste_escaped</code> (yes, this is an awkward key binding, but I don't care because I don't use paste_escaped). Another solution you could do is remove the <code>paste_escaped</code> elsif in the on_user_command subroutine in /usr/lib\*/urxvt/perl/clipboard, if paste_escaped is something that you don't use.
-* I don't know what <code>C-&lt;TAB&gt;</code> is supposed to do (Emacs tells me <code>C-&lt;TAB&gt;</code> is undefined, but the Emacs manual says that it's bound to the command file-cache-minibuffer-complete); however, I know that if I wanted to use <code>C-&lt;TAB&gt;</code> in my terminal, I currently can't. A plain &lt;TAB&gt; is inserted instead. TODO: resolve the conflict and document how I resolved it.
+* I don't know what <code>C-&lt;TAB&gt;</code> is supposed to do (Emacs tells me <code>C-&lt;TAB&gt;</code> is undefined, but the Emacs manual says that it's bound to the command file-cache-minibuffer-complete); however, I know that if I wanted to use <code>C-&lt;TAB&gt;</code> in my terminal, I currently can't: a plain &lt;TAB&gt; is inserted instead. TODO: resolve the conflict and document how I resolved it.
 
 
 ## Numeric Arguments (aka Prefix Arguments)
@@ -459,7 +459,7 @@ Each node has a name (for example, Help) and a topic (for example, "How to use I
 
 Nodes can have parents or children or both.
 
-The top line of a node is its header. The header says what the next, previous, and parent nodes are. The header doesn't point to subnodes; it only points to nodes at the same level (in the case of next and previuos) or above (in the case of up).
+The top line of a node is its header. The header says what the next, previous, and parent nodes are. The header doesn't point to subnodes; it only points to nodes at the same level (in the case of next and previuos) or above (in the case of up), relative to the current node.
 
 <dl>
   <dt><dfn>n</dfn></dt>
@@ -482,10 +482,10 @@ The top line of a node is its header. The header says what the next, previous, a
   <dt><dfn>r</dfn></dt>
   <dd>r is the opposite of l. It moves forward in the history list.</dd>
 
-  <dt><dfn>\]</dfn></dt>
+  <dt><dfn>]</dfn></dt>
   <dd>Move to the next node regardless of level.</dd>
 
-  <dt><dfn>\[</dfn></dt>
+  <dt><dfn>[</dfn></dt>
   <dd>Move to the previous node regardless of level.</dd>
 
   <dt><dfn>&lt;SPC&gt;</dfn></dt>
@@ -664,3 +664,14 @@ My attempt at an ASCII art Emacs frame (looks kind of like a polaroid):
 | | echo area / minibuffer                                      |
 +---------------------------------------------------------------+
 ```
+
+## Mode Line
+
+A mode line exists at the bottom of each window to provide information about the contents of the respective window.
+
+In graphical Emacs, you can mouse over items in the mode line to get a rough idea of what the various things in the mode line mean.
+
+The format of the mode line is slightly different for terminal Emacs and graphical Emacs:
+
+* Graphical-Emacs mode line format: &lt;BUFFER_CODING_SYSTEM&gt;&lt;END_OF_LINE_STYLE&gt;&lt;READ_ONLY_FLAG&gt;&lt;MODIFICATION_STATE&gt;&lt;LOCAL_OR_REMOTE&gt; &lt;BUFFER_NAME&gt; &lt;POSITION&gt; &lt;LINE_NUMBER_OF_POINT&gt; (&lt;MAJOR_MODE&gt; &lt;MINOR_MODES&gt;)
+* Terminal-Emacs mode line format: -&lt;INPUT_METHOD_NAME&gt;&lt;KEYBOARD_INPUT_CODING_SYSTEM&gt;&lt;TERMINAL_OUTPUT_CODING_SYSTEM&gt;&lt;BUFFER_CODING_SYSTEM&gt;&lt;END_OF_LINE_STYLE&gt;&lt;READ_ONLY_FLAG&gt;&lt;MODIFICATION_STATE&gt;&lt;LOCAL_OR_REMOTE&gt;-&lt;SELECTED_FRAME_NAME&gt; &lt;BUFFER_NAME&gt; &lt;POSITION&gt; &lt;LINE_NUMBER_OF_POINT&gt; (&lt;MAJOR_MODE&gt; &lt;MINOR MODES&gt;)
