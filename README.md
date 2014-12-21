@@ -1,6 +1,6 @@
 # Legal Stuff
 
-You do **not** have permission to make any money off of this document or any version of it (either in its entirety or in parts) or claim any credit for this document or any version of it (either in its entirety or in parts).
+You do **not** have permission to make any money off of this document or any version of it (either in its entirety or in parts), claim any credit for this document or any version of it (either in its entirety or in parts), or modify this document or any version of it.
 
 You do have permission to share this document, as long as you keep this legal section as is and intact with the copies you share and as long as you honour this legal section.
 
@@ -681,7 +681,7 @@ The format of the mode line is slightly different for terminal Emacs and graphic
     * End-of-line convention used in the buffer.
         * <code>:</code> or (Unix) means Unix-style (\\n).
         * <code>/</code> or (Mac) means Mac-style (\\r).
-        * <code>\</code> or (DOS) means DOS-style (\\r\\n).
+        * <code>\\</code> or (DOS) means DOS-style (\\r\\n).
     * Read-only flag.
         * <code>-</code> means that the buffer is writable and unmodified.
         * <code>*</code> means that the buffer is writable and modified.
@@ -716,7 +716,7 @@ The format of the mode line is slightly different for terminal Emacs and graphic
     * End-of-line convention used in the buffer.
         * <code>:</code> or (Unix) means Unix-style (\\n).
         * <code>/</code> or (Mac) means Mac-style (\\r).
-        * <code>\</code> or (DOS) means DOS-style (\\r\\n).
+        * <code>\\</code> or (DOS) means DOS-style (\\r\\n).
     * Read-only flag.
         * <code>-</code> means that the buffer is writable and unmodified.
         * <code>*</code> means that the buffer is writable and modified.
@@ -729,7 +729,7 @@ The format of the mode line is slightly different for terminal Emacs and graphic
         * <code>-</code> means that the buffer's current directory is local.
         * <code>@</code> means that the buffer's current directory is remote.
     * -
-    * The name of the selected frame. The initial frame's name is F1, and subsequent frames are usually name F2, F3, and so on.
+    * The name of the selected frame. The initial frame's name is F1, and subsequent frames are usually named F2, F3, and so on.
     * The name of the buffer, which is usually the same name as the file you are editing. For buffers that aren't associated with files, the buffer name is surrounded by asterisks.
     * Position in the file.
         * <code>All</code> means that the entire buffer is visible.
@@ -750,6 +750,15 @@ There are different things that you can optionally add to the mode line, each of
 
 When only line-number-mode is enabled, then you'll see L followed by the line number. When only column-number-mode is enabled, then you'll see C followed by the column number. When both line-number-mode and column-number-mode are enabled, you'll see two numbers in parentheses: <code>(LineNumber, ColumnNumber)</code>.
 
+If you're using display-time-mode, then you can have the word "Mail" appear when you have unread email. Set <code>display-time-mail-directory</code> to the directory to check for unread email (any nonempty regular file in the directory is considered as unread email); for example, I use [mutt](http://www.mutt.org) and would add the following to my ~/.emacs.d/init.el: <code>(setq display-time-mail-directory "~/.mutt/mail/INBOX/new")</code>.
+
+You should use 24-hour time format (don't you dare call this military time; 24-hour time is the most commonly used time format in the world and it makes a lot of sense and is heavily used outside the military and didn't even originate with the military). Add the following to your ~/.emacs.d/init.el: <code>(setq display-time-24hr-format t)</code>.
+
 Personally, for now, I'm just using column-number-mode in addition to the defaults, so I've added the following to my ~/.emacs.d/init.el: <code>(column-number-mode t)</code> (i.e., set the column-number-mode variable to true).
 
 You can customise the format of the mode line by modifying the <code>mode-line-format</code> variable. Read its documentation (<code>C-h v mode-line-format</code>) for help on modifying it.
+
+
+## Minibuffer
+
+TODO
