@@ -677,14 +677,22 @@ The format of the mode line is slightly different for terminal Emacs and graphic
     * The coding system of the text in the buffer.
         * U means utf-8-unix
         * 1 means iso-latin-1-unix
-        * = means no-conversion
+        * = means no-conversion (usually used for binary files)
     * End-of-line convention used in the buffer.
         * : or (Unix) means Unix-style (\\n)
         * / or (Mac) means Mac-style (\\r)
         * \ or (DOS) means DOS-style (\\r\\n)
-    * &lt;READ_ONLY_FLAG&gt;
-    * &lt;MODIFICATION_STATE&gt;
-    * &lt;LOCAL_OR_REMOTE&gt;
+    * Read-only flag.
+        * - means that the buffer is writable and unmodified
+        * * means that the buffer is writable and modified
+        * % means that the buffer is read-only
+    * Modification state.
+        * - means that the buffer is unmodified
+        * * means that the buffer is modified
+        * % means that the read-only buffer is unmodified
+    * Directory location flag.
+        * - means that the buffer's current directory is local
+        * @ means that the buffer's current directory is remote
     * &lt;BUFFER_NAME&gt;
     * &lt;POSITION&gt;
     * &lt;LINE_NUMBER_OF_POINT&gt;
@@ -697,14 +705,22 @@ The format of the mode line is slightly different for terminal Emacs and graphic
     * The coding system of the text in the buffer.
         * U means utf-8-unix
         * 1 means iso-latin-1-unix
-        * = means no-conversion
+        * = means no-conversion (usually used for binary files)
     * End-of-line convention used in the buffer.
         * : or (Unix) means Unix-style (\\n)
         * / or (Mac) means Mac-style (\\r)
         * \ or (DOS) means DOS-style (\\r\\n)
-    * &lt;READ_ONLY_FLAG&gt;
-    * &lt;MODIFICATION_STATE&gt;
-    * &lt;LOCAL_OR_REMOTE&gt;
+    * Read-only flag.
+        * - means that the buffer is writable and unmodified
+        * * means that the buffer is writable and modified
+        * % means that the buffer is read-only
+    * Modification state.
+        * - means that the buffer is unmodified
+        * * means that the buffer is modified
+        * % means that the read-only buffer is unmodified
+    * Directory location flag.
+        * - means that the buffer's current directory is local
+        * @ means that the buffer's current directory is remote
     * -
     * &lt;SELECTED_FRAME_NAME&gt;
     * &lt;BUFFER_NAME&gt;
