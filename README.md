@@ -1,3 +1,14 @@
+# Legal Stuff
+
+You do **not** have permission to make any money off of this document or any version of it (either in its entirety or in parts) or claim any credit for this document or any version of it (either in its entirety or in parts).
+
+You do have permission to share this document, as long as you keep this legal section as is and intact with the copies you share.
+
+If you have a copy of the document, you can find the original document at https://github.com/runlikeforrestgump/emacs/README.md.
+
+Copyright 2014 by https://github.com/runlikeforrestgump.
+
+
 # Background
 
 I have used [Vim](http://www.vim.org) for years. I've also used [Eclipse](https://www.eclipse.org) for my Java needs. As I gain more experience as a software engineer, I find that I'm using more and more languages. Since I'm comfortable with Vim and am a huge fan of the command-line, I've looked into turning Vim into a powerful IDE for all the languages I use because I want my IDE to support me being productive. If all I'm doing is Python or Ruby development, then I can probably get by with Vim as my IDE, but I use way more languages than Python and Ruby. I've looked hard and have been frustrated by the lack of plugins and frustrated that the plugins that do exist usually don't work well together. I saw that Emacs is extremely customisable and supports a lot of what I want and has a great framework for making plugins work well together, so I decided to finally make an effort to learn Emacs. I'm glad I've learned Vim, and I'll still use its ugly step-sister Vi (since it comes with a fresh install of most Unix-like operating systems and is better than ed and nano for system administration needs), but for my daily programming needs, I'm switching to Emacs.
@@ -50,7 +61,7 @@ To invoke a command in Emacs:
 1. You can use a key sequence (aka keyboard shortcut, key binding, or key for short).
 2. Or you can call the command by name.
 
-Some commands are (or can be) disabled, which means that you'll be asked for confirmation when you try to invoke them.
+Some commands are (or can be) disabled, which means that you'll be asked for confirmation when you try to invoke them. The usual reason for disabling a command is that some commands are potentially confusing for beginning users.
 
 
 ## Invoking Commands by Key Sequence
@@ -112,6 +123,8 @@ For commands that you don't use often, it's probably easier to remember the comm
 
 Not all commands are bound to keys.
 
+By convention, a command name consists of one or more words, separated by hyphens.
+
 
 ## Key Conflicts
 
@@ -119,13 +132,15 @@ Sometimes you'll notice that a key sequence should invoke a certain command, but
 
 If you found the key sequence defined outside of Emacs and determined that it's something that you rarely or never use, then redefine the key sequence outside Emacs. If you found the key sequence defined outside of Emacs and determined that it's something you commonly use and the key sequence in Emacs is one that you rarely or never use, or you can't redefine the key sequence outside Emacs, or if you couldn't find out the source of the key conflict, then redefine the key sequence in Emacs. For the cases where you commonly use the same key sequence inside and outside Emacs, then you have a tougher decision.
 
+The quick and easy way to define a key binding is to bind the key to the global keymap in your init file (typically ~/.emacs): <code>(global-set-key (kbd "KEY_SEQUENCE") 'COMMAND)</code>, where KEY_SEQUENCE is written in the same notation that you see in all the Emacs documentation (C- for control, M- for alt, S- for shift, &lt;TAB&gt; for tab, etc.).
+
 The Alt key will sometimes be involved in key conflicts. A way around this is to use &lt;ESC&gt; in place of Alt (you don't need to rebind anything; &lt;ESC&gt; is already an alias for Alt, right out of the box).
 
 Some conflicts that I've run into:
 
 * <code>C-S-&lt;DEL&gt;</code> is supposed to invoke <code>kill-whole-line</code>, but instead it invokes the help prefix (<code>C-h</code>). This was only a problem for me in my terminal ([rxvt-unicode](http://software.schmorp.de/pkg/rxvt-unicode.html)). Note that the key sequence <code>C-&lt;DEL&gt;</code> seems to behave the same as <code>C-S-&lt;DEL&gt;</code> (they both invoke the help prefix). TODO: resolve the conflict and document how I resolved it.
-* TODO: C-&lt;TAB&gt;
-* TODO: C-M-v
+* <code>C-M-v</code> is supposed to invoke <code>scroll-other-window</code>, but instead it pastes text. This was only a problem for me in my terminal. This is because I'm using the rxvt-unicode clipboard extension from [urxvt-perls](https://github.com/muennich/urxvt-perls), which binds <code>C-M-v</code> to paste_escaped by default. To resolve the conflict, I defined a different key binding for paste_escaped in my ~/.Xresources file: <code>URxvt.keysym.C-S-M-V:perl:clipboard:paste_escaped</code> (yes, this is an awkward key binding, but I don't care because I don't use paste_escaped). Another solution you could do is remove the <code>paste_escaped</code> elsif in the on_user_command subroutine in /usr/lib\*/urxvt/perl/clipboard, if paste_escaped is something that you don't use.
+* I don't know what <code>C-&lt;TAB&gt;</code> is supposed to do (Emacs tells me <code>C-&lt;TAB&gt;</code> is undefined, but the Emacs manual says that it's bound to the command file-cache-minibuffer-complete); however, I know that if I wanted to use <code>C-&lt;TAB&gt;</code> in my terminal, I currently can't. A plain &lt;TAB&gt; is inserted instead. TODO: resolve the conflict and document how I resolved it.
 
 
 ## Numeric Arguments (aka Prefix Arguments)
@@ -239,7 +254,7 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
   <dt><dfn>
   C-h C-h<br>
   M-x help-for-help</dfn></dt>
-  <dd>Display a list of help commands. TODO</dd>
+  <dd>Display a list of help commands.</dd>
 
   <dt><dfn>
   C-h b<br>
@@ -355,6 +370,17 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
   <dd>Start the GNU Info learn-by-doing tutorial.</dd>
 
   <dt><dfn>
+  C-h r m Glossary &lt;RET&gt;<br>
+  &lt;F1&gt; r m Glossary &lt;RET&gt;<br>
+  M-x search-emacs-glossary</dfn></dt>
+  <dd>Display the Emacs glossary.</dd>
+
+  <dt><dfn>
+  C-h a -mode<br>
+  &lt;F1&gt; a -mode</dfn></dt>
+  <dd>Display a list of all available major and minor modes.</dd>
+
+  <dt><dfn>
   C-h C-f<br>
   &lt;F1&gt; C-f<br>
   M-x view-emacs-FAQ</dfn></dt>
@@ -385,6 +411,11 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
   &lt;F1&gt; C-n<br>
   M-x view-emacs-news</dfn></dt>
   <dd>View the release notes for various versions of Emacs.</dd>
+
+  <dt><dfn>
+  C-h r m Antinews<br>
+  &lt;F1&gt; r m Antinews</dfn></dt>
+  <dd>View hilarious release notes from the perspective of downgrading Emacs and losing features and gaining bugs. It talks about a downgrade as if you are going to a newer version of Emacs.</dd>
 
   <dt><dfn>
   C-h C-p<br>
@@ -422,7 +453,133 @@ Emacs comes with reference cards (cheat sheets) in TeX and PDF format. On my mac
 
 ## Using GNU Info
 
-TODO
+GNU Info is the GNU documentation browser, which uses a hypertext format (a collection of documents with links) called Texinfo. Since a lot of the Emacs documentation is found in Info pages, it's worth learning how to use GNU Info, which can be used as a standalone program or used through Emacs's Info mode.
+
+Each node has a name (for example, Help) and a topic (for example, "How to use Info").
+
+Nodes can have parents or children or both.
+
+The top line of a node is its header. The header says what the next, previous, and parent nodes are. The header doesn't point to subnodes; it only points to nodes at the same level (in the case of next and previuos) or above (in the case of up).
+
+<dl>
+  <dt><dfn>n</dfn></dt>
+  <dd>Move to the next node at the same level as the current node.</dd>
+
+  <dt><dfn>p</dfn></dt>
+  <dd>Move to the previous node at the same level as the current node.</dd>
+
+  <dt><dfn>
+  u<br>
+  ^</dfn></dt>
+  <dd>Move up to the parent node.</dd>
+
+  <dt><dfn>t</dfn></dt>
+  <dd>Move to the top node of the manual.</dd>
+
+  <dt><dfn>l</dfn></dt>
+  <dd>Retrace your steps. As you move from node to node, Info records the nodes where you have been in a special history list. The l command revisits nodes in the history list; each successive l command moves one step back through the history.</dd>
+
+  <dt><dfn>r</dfn></dt>
+  <dd>r is the opposite of l. It moves forward in the history list.</dd>
+
+  <dt><dfn>\]</dfn></dt>
+  <dd>Move to the next node regardless of level.</dd>
+
+  <dt><dfn>\[</dfn></dt>
+  <dd>Move to the previous node regardless of level.</dd>
+
+  <dt><dfn>&lt;SPC&gt;</dfn></dt>
+  <dd>Scroll forward if there is still text to scroll forward to; otherwise, move to the next node regardless of level.</dd>
+
+  <dt><dfn>&lt;DEL&gt;</dfn></dt>
+  <dd>Scroll backward if there is still text to scroll back to; otherwise, move to the previous node regardless of level.</dd>
+
+  <dt><dfn>C-v</dfn></dt>
+  <dd>Scroll forward, but don't move to the next node if the bottom of the node has been reached.</dd>
+
+  <dt><dfn>M-v</dfn></dt>
+  <dd>Scroll backward, but don't move to the previous node if the top of the node has been reached.</dd>
+
+  <dt><dfn>b</dfn></dt>
+  <dd>Immediately scroll to the top of the current node.</dd>
+
+  <dt><dfn>?</dfn></dt>
+  <dd>Display a list of Info commands.</dd>
+
+  <dt><dfn>m NODE_NAME</dfn></dt>
+  <dd>
+<p>Go to the node that has the specified name.</p>
+
+<p>A menu is a list of other nodes you can move to. The beginning of a menu is always identified by a line which starts with '* Menu:'. A node contains a menu if and only if it has a line in it which starts that way. The only menu you can use at any moment is the one in the node you are in. To use a menu in any other node, you must move to that node first.</p>
+
+<p>You can abbreviate the node name. If the abbreviation is not unique, the first matching node is chosen. Some menus put the shortest possible abbreviation for each node name in capital letters, so you can see how much you need to type. It does not matter whether you use upper case or lower case when you type the node name. If you type &lt;TAB&gt; after entering part of a name, it will fill in more of the name--as much as Info can deduce from the part you have entered. You can also move point over a node name, and then press &lt;RET&gt;. You can type &lt;TAB&gt; to move point to the next item in the menu and type S-&lt;TAB&gt; to move point to the previous item in the menu.</p>
+
+<p>If you type <code>?</code> as the node name, then a list of possible menu items will appear.</p>
+
+<p>Rather than using <code>m</code> and specifying a node name, you can enter a digit from 1 to 9 to access items in the menu.</p>
+
+<p>If you invoke <code>m</code> with a prefix argument (thus, <code>C-u m NODE_NAME</code>), then the node you specify will be opened in a new Info buffer.</p>
+  </dd>
+
+  <dt><dfn>f CROSS_REFERENCE</dfn></dt>
+  <dd>
+<p>Go to the cross reference that has the specified name.</p>
+
+<p>A cross reference is a link that doesn't appear in a menu.</p>
+
+<p>You can type &lt;TAB&gt; to move point to the next cross reference and type S-&lt;TAB&gt; to move point to the previous cross reference.</p>
+
+<p>If you type <code>?</code> as the cross reference name, then a list of possible cross reference names will appear.</p>
+  </dd>
+
+  <dt><dfn>g NODE_NAME</dfn></dt>
+  <dd>
+<p>Go to the node that has the specified name. The difference between this and <code>m</code> is that <code>m</code> only accepts names of nodes that appear in the current node's menu; whereas, <code>g</code> accepts the name of any node whether it's in the menu or not.</p>
+
+<p>If you specify <code>*</code> as the node name, then the whole file will be displayed.</p>
+
+<p>To go to a node in another file, you can include the file name in the node name by putting it at the front, in parentheses; for example, <code>g (emacs)Top &lt;RET&gt;</code> will take you to the top node of the Emacs manual.</p>
+
+<p>If you invoke <code>g</code> with a prefix argument (thus, <code>C-u g NODE_NAME</code>), then the node you specify will be opened in a new Info buffer.</p>
+  </dd>
+
+  <dt><dfn>d</dfn></dt>
+  <dd>Go to the Directory node, which is a node that lists all the manuals and other Info documents that are installed on your system.</dd>
+
+  <dt><dfn>M-n</dfn></dt>
+  <dd>Clone the current Info buffer in another window.</dd>
+
+  <dt><dfn>i TOPIC</dfn></dt>
+  <dd>
+<p>Search the index for a specified topic and go to the node which is listed in the index for that topic.</p>
+
+<p>To search for keys, use the notation that the Emacs documentation uses; for example, <code>i C-n</code>, where you literally spell out uppercase C, hyphen, lowercase n (rather than holding Ctrl and pressing n).</p>
+  </dd>
+
+  <dt><dfn>s STRING</dfn></dt>
+  <dd>Search the entire manual for the specified string.</dd>
+
+  <dt><dfn>L</dfn></dt>
+  <dd>Display a menu of all the nodes you've visited. You can jump to one of those nodes by selecting it from the menu.</dd>
+
+  <dt><dfn>T</dfn></dt>
+  <dd>Go to the table of contents of the current Info file.</dd>
+
+  <dt><dfn>&lt;</dfn></dt>
+  <dd>Move to the top node of the current Info file.</dd>
+
+  <dt><dfn>&gt;</dfn></dt>
+  <dd>Move to the last node of the current Info file.</dd>
+
+  <dt><dfn>q</dfn></dt>
+  <dd>Quit Info.</dd>
+
+  <dt><dfn>C-u C-h i</dfn></dt>
+  <dd>Open an Info file that isn't listed in the Directory node.</dd>
+
+  <dt><dfn>M-x info-apropos STRING</dfn></dt>
+  <dd>Search for the specified string in the indeces of all the Info files. The <code>i</code> command only searches the index of the current Info file.</dd>
+</dl>
 
 
 # What You See on the Screen
@@ -472,6 +629,8 @@ Each frame consists of several distinct regions:
 * **Faces** refer to styles of displaying text or even the cursor. Faces have attributes such as font, height, weight, slant, and colour.
 * A **fontset** is a named collection of fonts. A font typically defines shapes for a single alphabet or script; therefore, displaying the entire range of scripts that Emacs supports requires a collection of many fonts, hence the use for fontsets.
 * The **speedbar** is a special tall frame for conveniently navigating in or operating on another frame. When the speedbar exists, it's always associated with a specific frame, called its **attached frame**; all speedbar operations act on that frame.
+* A **clipboard** is a buffer provided by your window system for transferring text between applications. Graphical Emacs works with the system clipboard out of the box. If you want to integrate terminal Emacs (emacs -nw) with the system clipboard, then you'll need to use something like [xclip](http://sourceforge.net/projects/xclip/) or [xsel](http://www.vergenet.net/~conrad/software/xsel/).
+* A major definition at the top level in the buffer is called a **defun**. The name comes from Lisp, where most such definitions use the construct <code>defun</code>, but in Emacs, the term "defun" applies to all languages.
 
 My attempt at an ASCII art Emacs frame (looks kind of like a polaroid):
 
