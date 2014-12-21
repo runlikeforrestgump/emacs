@@ -675,30 +675,30 @@ The format of the mode line is slightly different for terminal Emacs and graphic
 
 * Graphical-Emacs mode line format:
     * The coding system of the text in the buffer.
-        * U means utf-8-unix.
-        * 1 means iso-latin-1-unix.
-        * = means no-conversion (usually used for binary files).
+        * <code>U</code> means utf-8-unix.
+        * <code>1</code> means iso-latin-1-unix.
+        * <code>=</code> means no-conversion (usually used for binary files).
     * End-of-line convention used in the buffer.
-        * : or (Unix) means Unix-style (\\n).
-        * / or (Mac) means Mac-style (\\r).
-        * \ or (DOS) means DOS-style (\\r\\n).
+        * <code>:</code> or (Unix) means Unix-style (\\n).
+        * <code>/</code> or (Mac) means Mac-style (\\r).
+        * <code>\</code> or (DOS) means DOS-style (\\r\\n).
     * Read-only flag.
-        * - means that the buffer is writable and unmodified.
-        * * means that the buffer is writable and modified.
-        * % means that the buffer is read-only.
+        * <code>-</code> means that the buffer is writable and unmodified.
+        * <code>*</code> means that the buffer is writable and modified.
+        * <code>%</code> means that the buffer is read-only.
     * Modification state.
-        * - means that the buffer is unmodified.
-        * * means that the buffer is modified.
-        * % means that the read-only buffer is unmodified.
+        * <code>-</code> means that the buffer is unmodified.
+        * <code>*</code> means that the buffer is modified.
+        * <code>%</code> means that the read-only buffer is unmodified.
     * Directory location flag.
-        * - means that the buffer's current directory is local.
-        * @ means that the buffer's current directory is remote.
+        * <code>-</code> means that the buffer's current directory is local.
+        * <code>@</code> means that the buffer's current directory is remote.
     * The name of the buffer, which is usually the same name as the file you are editing. For buffers that aren't associated with files, the buffer name is surrounded by asterisks.
     * Position in the file.
-        * All means that the entire buffer is visible.
-        * Top means that the very beginning of the buffer is visible and that there is text that can be scrolled down to.
-        * Bot means that the very end of the buffer is visible and that there is text that can be scrolled up to.
-        * nn% means that nn% of the buffer is above the top of the window and that there is text that can be scrolled up or down to.
+        * <code>All</code> means that the entire buffer is visible.
+        * <code>Top</code> means that the very beginning of the buffer is visible and that there is text that can be scrolled down to.
+        * <code>Bot</code> means that the very end of the buffer is visible and that there is text that can be scrolled up to.
+        * <code>nn%</code> means that nn% of the buffer is above the top of the window and that there is text that can be scrolled up or down to.
     * The character 'L' followed by the line number at point.
     * (
     * The name of the major mode being used. Some major modes also display additional information after the major mode name.
@@ -710,31 +710,31 @@ The format of the mode line is slightly different for terminal Emacs and graphic
     * The keyboard input coding system.
     * The terminal output coding system.
     * The coding system of the text in the buffer.
-        * U means utf-8-unix.
-        * 1 means iso-latin-1-unix.
-        * = means no-conversion (usually used for binary files).
+        * <code>U</code> means utf-8-unix.
+        * <code>1</code> means iso-latin-1-unix.
+        * <code>=</code> means no-conversion (usually used for binary files).
     * End-of-line convention used in the buffer.
-        * : or (Unix) means Unix-style (\\n).
-        * / or (Mac) means Mac-style (\\r).
-        * \ or (DOS) means DOS-style (\\r\\n).
+        * <code>:</code> or (Unix) means Unix-style (\\n).
+        * <code>/</code> or (Mac) means Mac-style (\\r).
+        * <code>\</code> or (DOS) means DOS-style (\\r\\n).
     * Read-only flag.
-        * - means that the buffer is writable and unmodified.
-        * * means that the buffer is writable and modified.
-        * % means that the buffer is read-only.
+        * <code>-</code> means that the buffer is writable and unmodified.
+        * <code>*</code> means that the buffer is writable and modified.
+        * <code>%</code> means that the buffer is read-only.
     * Modification state.
-        * - means that the buffer is unmodified.
-        * * means that the buffer is modified.
-        * % means that the read-only buffer is unmodified.
+        * <code>-</code> means that the buffer is unmodified.
+        * <code>*</code> means that the buffer is modified.
+        * <code>%</code> means that the read-only buffer is unmodified.
     * Directory location flag.
-        * - means that the buffer's current directory is local.
-        * @ means that the buffer's current directory is remote.
+        * <code>-</code> means that the buffer's current directory is local.
+        * <code>@</code> means that the buffer's current directory is remote.
     * -
     * The name of the selected frame. The initial frame's name is F1, and subsequent frames are usually name F2, F3, and so on.
     * The name of the buffer, which is usually the same name as the file you are editing. For buffers that aren't associated with files, the buffer name is surrounded by asterisks.
     * Position in the file.
-        * All means that the entire buffer is visible.
-        * Top means that the very beginning of the buffer is visible and that there is text that can be scrolled down to.
-        * Bot means that the very end of the buffer is visible and that there is text that can be scrolled up to.
+        * <code>All</code> means that the entire buffer is visible.
+        * <code>Top</code> means that the very beginning of the buffer is visible and that there is text that can be scrolled down to.
+        * <code>Bot</code> means that the very end of the buffer is visible and that there is text that can be scrolled up to.
         * <code>nn%</code> means that nn% of the buffer is above the top of the window and that there is text that can be scrolled up or down to.
     * The character 'L' followed by the line number at point.
     * (
@@ -744,11 +744,11 @@ The format of the mode line is slightly different for terminal Emacs and graphic
 
 If Emacs is inside a recursive editing level, square brackets appear around the parentheses that surround the modes. If Emacs is in one recursive editing level within another, double square brackets appear, and so on. Since recursive editing levels affects Emacs globally, the square brackets appear in the mode line of every window.
 
-When reading Info pages, I noticed that there's some additional stuff after the buffer name in the mode line: (FILENAME) NODE_NAME. This suggests to me that some modes customise the mode line format.
+When reading Info pages, I noticed that there's some additional stuff after the buffer name in the mode line: <code>(FILENAME) NODE_NAME</code>. This suggests to me that some modes customise the mode line format.
 
-There are different things that you can optionally add to the mode line, each of which can usually be displayed by enabling a mode; for example, size of the buffer (size-indication-mode), column number of point (column-number-mode), current time (display-time-mode), and battery charge (display-battery-mode). If you don't want to the see the line number of point, then you can toggle the line-number-mode off. There are several Emacs packages out there that provide additional mode line features; two common ones are [Power Line](http://www.emacswiki.org/emacs/PowerLine) and [Smart Mode Line](https://github.com/Bruce-Connor/smart-mode-line).
+There are different things that you can optionally add to the mode line, each of which can usually be displayed by enabling a mode; for example, size of the buffer (<code>size-indication-mode</code>), column number of point (<code>column-number-mode</code>), current time (<code>display-time-mode</code>), and battery charge (<code>display-battery-mode</code>). If you don't want to the see the line number of point, then you can toggle the line-number-mode off. There are several Emacs packages out there that provide additional mode line features; two common ones are [Power Line](http://www.emacswiki.org/emacs/PowerLine) and [Smart Mode Line](https://github.com/Bruce-Connor/smart-mode-line).
 
-When only line-number-mode is enabled, then you'll see L followed by the line number. When only column-number-mode is enabled, then you'll see C followed by the column number. When both line-number-mode and column-number-mode are enabled, you'll see two numbers in parentheses: (LineNumber, ColumnNumber).
+When only line-number-mode is enabled, then you'll see L followed by the line number. When only column-number-mode is enabled, then you'll see C followed by the column number. When both line-number-mode and column-number-mode are enabled, you'll see two numbers in parentheses: <code>(LineNumber, ColumnNumber)</code>.
 
 Personally, for now, I'm just using column-number-mode in addition to the defaults, so I've added the following to my ~/.emacs.d/init.el: <code>(column-number-mode t)</code> (i.e., set the column-number-mode variable to true).
 
