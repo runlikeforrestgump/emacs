@@ -675,55 +675,81 @@ The format of the mode line is slightly different for terminal Emacs and graphic
 
 * Graphical-Emacs mode line format:
     * The coding system of the text in the buffer.
-        * U means utf-8-unix
-        * 1 means iso-latin-1-unix
-        * = means no-conversion (usually used for binary files)
+        * U means utf-8-unix.
+        * 1 means iso-latin-1-unix.
+        * = means no-conversion (usually used for binary files).
     * End-of-line convention used in the buffer.
-        * : or (Unix) means Unix-style (\\n)
-        * / or (Mac) means Mac-style (\\r)
-        * \ or (DOS) means DOS-style (\\r\\n)
+        * : or (Unix) means Unix-style (\\n).
+        * / or (Mac) means Mac-style (\\r).
+        * \ or (DOS) means DOS-style (\\r\\n).
     * Read-only flag.
-        * - means that the buffer is writable and unmodified
-        * * means that the buffer is writable and modified
-        * % means that the buffer is read-only
+        * - means that the buffer is writable and unmodified.
+        * * means that the buffer is writable and modified.
+        * % means that the buffer is read-only.
     * Modification state.
-        * - means that the buffer is unmodified
-        * * means that the buffer is modified
-        * % means that the read-only buffer is unmodified
+        * - means that the buffer is unmodified.
+        * * means that the buffer is modified.
+        * % means that the read-only buffer is unmodified.
     * Directory location flag.
-        * - means that the buffer's current directory is local
-        * @ means that the buffer's current directory is remote
-    * &lt;BUFFER_NAME&gt;
-    * &lt;POSITION&gt;
-    * &lt;LINE_NUMBER_OF_POINT&gt;
-    * (&lt;MAJOR_MODE&gt; &lt;MINOR_MODES&gt;)
+        * - means that the buffer's current directory is local.
+        * @ means that the buffer's current directory is remote.
+    * The name of the buffer, which is usually the same name as the file you are editing. For buffers that aren't associated with files, the buffer name is surrounded by asterisks.
+    * Position in the file.
+        * All means that the entire buffer is visible.
+        * Top means that the very beginning of the buffer is visible and that there is text that can be scrolled down to.
+        * Bot means that the very end of the buffer is visible and that there is text that can be scrolled up to.
+        * nn% means that nn% of the buffer is above the top of the window and that there is text that can be scrolled up or down to.
+    * The character 'L' followed by the line number at point.
+    * (
+    * The name of the major mode being used. Some major modes also display additional information after the major mode name.
+    * A list of the minor mode names and feature names (such as Narrow) being used.
+    * )
 * Terminal-Emacs mode line format:
     * -
     * If an input method is being used, then its name is displayed; otherwise, this field is not included in the mode line.
     * The keyboard input coding system.
     * The terminal output coding system.
     * The coding system of the text in the buffer.
-        * U means utf-8-unix
-        * 1 means iso-latin-1-unix
-        * = means no-conversion (usually used for binary files)
+        * U means utf-8-unix.
+        * 1 means iso-latin-1-unix.
+        * = means no-conversion (usually used for binary files).
     * End-of-line convention used in the buffer.
-        * : or (Unix) means Unix-style (\\n)
-        * / or (Mac) means Mac-style (\\r)
-        * \ or (DOS) means DOS-style (\\r\\n)
+        * : or (Unix) means Unix-style (\\n).
+        * / or (Mac) means Mac-style (\\r).
+        * \ or (DOS) means DOS-style (\\r\\n).
     * Read-only flag.
-        * - means that the buffer is writable and unmodified
-        * * means that the buffer is writable and modified
-        * % means that the buffer is read-only
+        * - means that the buffer is writable and unmodified.
+        * * means that the buffer is writable and modified.
+        * % means that the buffer is read-only.
     * Modification state.
-        * - means that the buffer is unmodified
-        * * means that the buffer is modified
-        * % means that the read-only buffer is unmodified
+        * - means that the buffer is unmodified.
+        * * means that the buffer is modified.
+        * % means that the read-only buffer is unmodified.
     * Directory location flag.
-        * - means that the buffer's current directory is local
-        * @ means that the buffer's current directory is remote
+        * - means that the buffer's current directory is local.
+        * @ means that the buffer's current directory is remote.
     * -
-    * &lt;SELECTED_FRAME_NAME&gt;
-    * &lt;BUFFER_NAME&gt;
-    * &lt;POSITION&gt;
-    * &lt;LINE_NUMBER_OF_POINT&gt;
-    * (&lt;MAJOR_MODE&gt; &lt;MINOR MODES&gt;)
+    * The name of the selected frame. The initial frame's name is F1, and subsequent frames are usually name F2, F3, and so on.
+    * The name of the buffer, which is usually the same name as the file you are editing. For buffers that aren't associated with files, the buffer name is surrounded by asterisks.
+    * Position in the file.
+        * All means that the entire buffer is visible.
+        * Top means that the very beginning of the buffer is visible and that there is text that can be scrolled down to.
+        * Bot means that the very end of the buffer is visible and that there is text that can be scrolled up to.
+        * <code>nn%</code> means that nn% of the buffer is above the top of the window and that there is text that can be scrolled up or down to.
+    * The character 'L' followed by the line number at point.
+    * (
+    * The name of the major mode being used. Some major modes also display additional information after the major mode name.
+    * A list of the minor mode names and feature names (such as Narrow) being used.
+    * )
+
+If Emacs is inside a recursive editing level, square brackets appear around the parentheses that surround the modes. If Emacs is in one recursive editing level within another, double square brackets appear, and so on. Since recursive editing levels affects Emacs globally, the square brackets appear in the mode line of every window.
+
+When reading Info pages, I noticed that there's some additional stuff after the buffer name in the mode line: (FILENAME) NODE_NAME. This suggests to me that some modes customise the mode line format.
+
+There are different things that you can optionally add to the mode line, each of which can usually be displayed by enabling a mode; for example, size of the buffer (size-indication-mode), column number of point (column-number-mode), current time (display-time-mode), and battery charge (display-battery-mode). If you don't want to the see the line number of point, then you can toggle the line-number-mode off. There are several Emacs packages out there that provide additional mode line features; two common ones are [Power Line](http://www.emacswiki.org/emacs/PowerLine) and [Smart Mode Line](https://github.com/Bruce-Connor/smart-mode-line).
+
+When only line-number-mode is enabled, then you'll see L followed by the line number. When only column-number-mode is enabled, then you'll see C followed by the column number. When both line-number-mode and column-number-mode are enabled, you'll see two numbers in parentheses: (LineNumber, ColumnNumber).
+
+Personally, for now, I'm just using column-number-mode in addition to the defaults, so I've added the following to my ~/.emacs.d/init.el: <code>(column-number-mode t)</code> (i.e., set the column-number-mode variable to true).
+
+You can customise the format of the mode line by modifying the <code>mode-line-format</code> variable. Read its documentation (<code>C-h v mode-line-format</code>) for help on modifying it.
