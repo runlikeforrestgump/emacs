@@ -673,5 +673,29 @@ In graphical Emacs, you can mouse over items in the mode line to get a rough ide
 
 The format of the mode line is slightly different for terminal Emacs and graphical Emacs:
 
-* Graphical-Emacs mode line format: &lt;BUFFER_CODING_SYSTEM&gt;&lt;END_OF_LINE_STYLE&gt;&lt;READ_ONLY_FLAG&gt;&lt;MODIFICATION_STATE&gt;&lt;LOCAL_OR_REMOTE&gt; &lt;BUFFER_NAME&gt; &lt;POSITION&gt; &lt;LINE_NUMBER_OF_POINT&gt; (&lt;MAJOR_MODE&gt; &lt;MINOR_MODES&gt;)
-* Terminal-Emacs mode line format: -&lt;INPUT_METHOD_NAME&gt;&lt;KEYBOARD_INPUT_CODING_SYSTEM&gt;&lt;TERMINAL_OUTPUT_CODING_SYSTEM&gt;&lt;BUFFER_CODING_SYSTEM&gt;&lt;END_OF_LINE_STYLE&gt;&lt;READ_ONLY_FLAG&gt;&lt;MODIFICATION_STATE&gt;&lt;LOCAL_OR_REMOTE&gt;-&lt;SELECTED_FRAME_NAME&gt; &lt;BUFFER_NAME&gt; &lt;POSITION&gt; &lt;LINE_NUMBER_OF_POINT&gt; (&lt;MAJOR_MODE&gt; &lt;MINOR MODES&gt;)
+* Graphical-Emacs mode line format:
+    * &lt;BUFFER_CODING_SYSTEM&gt;
+    * &lt;END_OF_LINE_STYLE&gt;
+    * &lt;READ_ONLY_FLAG&gt;
+    * &lt;MODIFICATION_STATE&gt;
+    * &lt;LOCAL_OR_REMOTE&gt;
+    * &lt;BUFFER_NAME&gt;
+    * &lt;POSITION&gt;
+    * &lt;LINE_NUMBER_OF_POINT&gt;
+    * (&lt;MAJOR_MODE&gt; &lt;MINOR_MODES&gt;)
+* Terminal-Emacs mode line format:
+    * -
+    * &lt;INPUT_METHOD_NAME&gt;
+    * &lt;KEYBOARD_INPUT_CODING_SYSTEM&gt;
+    * &lt;TERMINAL_OUTPUT_CODING_SYSTEM&gt;
+    * &lt;BUFFER_CODING_SYSTEM&gt;
+    * &lt;END_OF_LINE_STYLE&gt;
+    * &lt;READ_ONLY_FLAG&gt;
+    * &lt;MODIFICATION_STATE&gt;
+    * &lt;LOCAL_OR_REMOTE&gt;
+    * -
+    * &lt;SELECTED_FRAME_NAME&gt;
+    * &lt;BUFFER_NAME&gt;
+    * &lt;POSITION&gt;
+    * &lt;LINE_NUMBER_OF_POINT&gt;
+    * (&lt;MAJOR_MODE&gt; &lt;MINOR MODES&gt;)
