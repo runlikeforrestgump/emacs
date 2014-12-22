@@ -174,31 +174,31 @@ To insert a non-graphic character, type <code>C-q</code> and then the character.
 
 <dl>
   <dt><dfn>C-q C-S-2</dfn></dt>
-  <dd>Null (caret notation: ^@; C escape code: \\0).</dd>
+  <dd>Null (caret notation: ^@; C escape code: \0).</dd>
 
   <dt><dfn>C-q C-g</dfn></dt>
-  <dd>Bell (caret notation: ^G; C escape code: \\a).</dd>
+  <dd>Bell (caret notation: ^G; C escape code: \a).</dd>
 
   <dt><dfn>C-q C-h</dfn></dt>
-  <dd>Backspace (caret notation: ^H; C escape code: \\b).</dd>
+  <dd>Backspace (caret notation: ^H; C escape code: \b).</dd>
 
   <dt><dfn>C-q C-i</dfn></dt>
-  <dd>Horizontal tab (caret notation: ^I; C escape code: \\t).</dd>
+  <dd>Horizontal tab (caret notation: ^I; C escape code: \t).</dd>
 
   <dt><dfn>C-q C-j</dfn></dt>
-  <dd>Line feed (caret notation: ^J; C escape code: \\n).</dd>
+  <dd>Line feed (caret notation: ^J; C escape code: \n).</dd>
 
   <dt><dfn>C-q C-k</dfn></dt>
-  <dd>Vertical tab (caret notation: ^K; C escape code: \\v).</dd>
+  <dd>Vertical tab (caret notation: ^K; C escape code: \v).</dd>
 
   <dt><dfn>C-q C-l</dfn></dt>
-  <dd>Form feed (caret notation: ^L; C escape code: \\f).</dd>
+  <dd>Form feed (caret notation: ^L; C escape code: \f).</dd>
 
   <dt><dfn>C-q C-m</dfn></dt>
-  <dd>Carriage return (caret notation: ^M; C escape code: \\r).</dd>
+  <dd>Carriage return (caret notation: ^M; C escape code: \r).</dd>
 
   <dt><dfn>C-q C-[</dfn></dt>
-  <dd>Escape (caret notation: ^[; C escape code: \\e).</dd>
+  <dd>Escape (caret notation: ^[; C escape code: \e).</dd>
 </dl>
 
 If you want to insert ASCII control characters literally, then look up their value in caret notation (the caret stands for the Ctrl key); for example, end of file is ^D, which means C-d, so to insert that control character literally, type <code>C-q</code> to quote the following character, and then type <code>C-d</code> as the character you want to quote and insert literally. To find the caret notation for ASCII control characters, search for something like "C0 control codes."
@@ -802,16 +802,22 @@ Instead of using the mouse, you can also invoke the first menu bar item by press
 
 You can use the menu bar by typing <code>M-`</code> or <code>&lt;F10&gt;</code> (both of which run the command <code>tmm-menubar</code>). You can use the up and down arrow keys to move through the menu to different items, and then you can type <code>&lt;RET&gt;</code> to select the item. Each menu item is also designated by a letter or digit (usually the initial of some word in the item's name). This letter or digit is separated from the item name by '==>'. You can type the item's letter or digit to select the item.
 
-When you're in the menu bar's minibuffer, you can press <code>&lt;PageUp&gt;</code> to move to the Completions buffer, where you can move point to the item you want and then press <code>&lt;RET&gt;</code> to select it.
+When you're in the menu bar's minibuffer, you can press <code>&lt;PageUp&gt;</code> to move to the Completions buffer, where you can move point to the menu item you want and then press <code>&lt;RET&gt;</code> to select it.
 
 
 ## Minibuffer
 
 TODO
 
+The minibuffer is where Emacs commands read complicated arguments, such as file names, buffer names, Emacs command names, or Lisp expressions. When the minibuffer is in use, it appears in the echo area with a cursor. The minibuffer starts with a prompt string, which states what kind of input is expected. The prompt string usually ends with a colon and stands out from the input text.
+
 Since the minibuffer is just a buffer (with a small amount of screen space), you can use the usual basic Emacs keys for moving around (for example, <code>C-a</code> and <code>C-e</code>) and editing (for example, <code>C-k</code> and <code>C-/</code>) a line of text; however, you can't invoke anything that invokes the minibuffer (you can't use a minibuffer within another minibuffer).
 
 The minibuffer prompt string is read-only and cannot be changed. If you try to change it, then "Text is read-only" will briefly appear in the echo area.
+
+Sometimes, the prompt shows a default argument, inside parentheses before the colon. This default will be used as the argument if you just type <code>&lt;RET&gt;</code> without entering anything else (in other words, when you submit an empty string).
+
+If an error message or an informative message is emitted while the minibuffer is active, the message hides the minibuffer for a few seconds, or until you type something; then the minibuffer comes back.
 
 
 # Customisation
