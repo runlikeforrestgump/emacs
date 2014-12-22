@@ -172,6 +172,39 @@ To insert a non-graphic character, type <code>C-q</code> and then the character.
 
 <code>C-q</code> (<code>M-x quoted-insert</code>) followed by a sequence of octal digits inserts the character with the specified octal character code. You can use any number of octal digits; any non-digit terminates the octal sequence. To use decimal or hexadecimal instead of octal, set the variable *read-quoted-char-radix* to 10 or 16. If the radix is 16, the letters 'a' to 'f' serve as part of the character code, just like digits. Case is ignored.
 
+<dl>
+  <dt><dfn>C-q C-S-2</dfn></dt>
+  <dd>Null (caret notation: ^@; C escape code: \\0).</dd>
+
+  <dt><dfn>C-q C-g</dfn></dt>
+  <dd>Bell (caret notation: ^G; C escape code: \\a).</dd>
+
+  <dt><dfn>C-q C-h</dfn></dt>
+  <dd>Backspace (caret notation: ^H; C escape code: \\b).</dd>
+
+  <dt><dfn>C-q C-i</dfn></dt>
+  <dd>Horizontal tab (caret notation: ^I; C escape code: \\t).</dd>
+
+  <dt><dfn>C-q C-j</dfn></dt>
+  <dd>Line feed (caret notation: ^J; C escape code: \\n).</dd>
+
+  <dt><dfn>C-q C-k</dfn></dt>
+  <dd>Vertical tab (caret notation: ^K; C escape code: \\v).</dd>
+
+  <dt><dfn>C-q C-l</dfn></dt>
+  <dd>Form feed (caret notation: ^L; C escape code: \\f).</dd>
+
+  <dt><dfn>C-q C-m</dfn></dt>
+  <dd>Carriage return (caret notation: ^M; C escape code: \\r).</dd>
+
+  <dt><dfn>C-q C-[</dfn></dt>
+  <dd>Escape (caret notation: ^[; C escape code: \\e).</dd>
+</dl>
+
+If you want to insert ASCII control characters literally, then look up their value in caret notation (the caret stands for the Ctrl key); for example, end of file is ^D, which means C-d, so to insert that control character literally, type <code>C-q</code> to quote the following character, and then type <code>C-d</code> as the character you want to quote and insert literally. To find the caret notation for ASCII control characters, search for something like "C0 control codes."
+
+Caret notation is used for the 33 ASCII control characters. The notation consists of a caret (^) followed by a character in the ASCII range from ? to \_ (look at an ASCII table); this digraph stands for the ASCII control character that has the numerical equivalent to the characters's position in the range from ? to \_: ? is -1 (for ASCII control character 127), @ is 0 (for ASCII control character 0), A is 1, Z is 26, \[ is 27, and \_ is 31. For the letters, it's easy, because it's the position in the alphabet (A is the first, M is the 13th letter, Z is the 26th letter). ASCII control character 10 is the line feed (\\n) character. The 10th letter of the alphabet is J, so the caret notation for \\n is ^J. ASCII control character 27 is the escape (\\e) character. The first character after Z ("letter 27") in the ASCII table is \[, so the caret notation for escape is ^\[.
+
 
 ## Inserting Non-ASCII Characters
 
@@ -777,6 +810,8 @@ When you're in the menu bar's minibuffer, you can press <code>&lt;PageUp&gt;</co
 TODO
 
 Since the minibuffer is just a buffer (with a small amount of screen space), you can use the usual basic Emacs keys for moving around (for example, <code>C-a</code> and <code>C-e</code>) and editing (for example, <code>C-k</code> and <code>C-/</code>) a line of text; however, you can't invoke anything that invokes the minibuffer (you can't use a minibuffer within another minibuffer).
+
+The minibuffer prompt string is read-only and cannot be changed. If you try to change it, then "Text is read-only" will briefly appear in the echo area.
 
 
 # Customisation
