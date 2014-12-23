@@ -54,6 +54,30 @@ If you really want, you can grab the development version of Emacs from here: htt
 An Emacs version number with two components (e.g., 22.1) indicates a released version; three components indicates a development version (e.g., 23.0.50).
 
 
+# Starting Emacs
+
+If you installed Emacs with X support, then invoking Emacs with <code>emacs &</code> will launch graphical Emacs and invoking Emacs with <code>emacs -nw</code> will launch terminal Emacs. If you installed Emacs without X support, then invoking Emacs with either <code>emacs</code> or <code>emacs -nw</code> will launch terminal Emacs.
+
+The recommended way to use Emacs is to start it just once and do all your editing in the same Emacs session rather than starting a new instance each time you want to edit a file.
+
+Additionally, you can tell Emacs to load one or more specified files after launching:
+
+<dl>
+  <dt><dfn>emacs FILENAME</dfn></dt>
+  <dd>Launch Emacs and then load the specified file.</dd>
+
+  <dt><dfn>emacs +LINE_NUMBER FILENAME</dfn></dt>
+  <dd>Launch Emacs, load the specified file, and then move point to the specified line number in that file.</dd>
+
+  <dt><dfn>emacs +LINE_NUMBER:COLUMN_NUMBER FILENAME</dfn></dt>
+  <dd>Launch Emacs, load the specified file, and then move the cursor to the specified column number on the specified line number in that file.</dd>
+</dl>
+
+You'll only see the last file that you specified; however, the other files will also have been loaded and are available in the buffer list.
+
+The optional <code>+LINE_NUMBER:COLUMN_NUMBER</code> applies only to the next file specified.
+
+
 # Most Important Things to Know First
 
 The most important things to know first are knowing how to quit, cancel, undo, close, switch and close buffers, and get help, and before you can know that, you need to know how to invoke commands in Emacs.
@@ -233,31 +257,31 @@ An input method is a system for entering non-ASCII text characters by typing seq
 
 <dl>
   <dt><dfn>
-C-x C-c<br>
-M-x save-buffers-kill-terminal</dfn></dt>
-  <dd>Quit Emacs.</dd>
+  C-x C-c<br>
+  M-x save-buffers-kill-terminal</dfn></dt>
+  <dd>Exit/quit/terminate/kill Emacs.</dd>
 
   <dt><dfn>
-C-g<br>
-&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;</dfn></dt>
+  C-g<br>
+  &lt;ESC&gt; &lt;ESC&gt; &lt;ESC&gt;</dfn></dt>
   <dd>
 <p>Cancel something.</p>
 
 <p>Quitting means cancelling a partially typed command or a running command. Quitting Emacs is called killing it.</p>
 
-<p><code>C-g</code> and <code>&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;</code> are similar, but not exactly.</p>
+<p><code>C-g</code> and <code>&lt;ESC&gt; &lt;ESC&gt; &lt;ESC&gt;</code> are similar, but not exactly.</p>
 
-<p><code>C-g</code> doesn't invoke a command (instead, it sets a variable that Emacs frequently checks), so it can be used to stop commands. If <code>C-g</code> invoked a command, then Emacs wouldn't execute it until the previous command finished executing. The downside to <code>C-g</code> is that it doesn't cancel a key sequence because it's interpreted as part of the key sequence.</p>
+<p><code>C-g</code> doesn't invoke a command (instead, it sets a variable that Emacs frequently checks), so it can be used to stop commands.</p>
 
-<p><code>&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;</code> can't stop commands because it invokes a command, which wouldn't be executed until the previous command finished executing. The good thing is that <code>&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;</code> works in most other situations. The annoying thing is that you have to type <code>&lt;ESC&gt;</code> exactly 3 times.</p>
+<p><code>&lt;ESC&gt; &lt;ESC&gt; &lt;ESC&gt;</code> can't stop commands because it invokes a command, which wouldn't be executed until the previous command finished executing. The good thing is that <code>&lt;ESC&gt; &lt;ESC&gt; &lt;ESC&gt;</code> works in most other situations. The annoying thing is that you have to type <code>&lt;ESC&gt;</code> exactly 3 times.</p>
   </dd>
 
   <dt><dfn>
-C-/<br>
-C-x u<br>
-C-_<br>
-M-x undo<br>
-M-x undo-only</dfn></dt>
+  C-/<br>
+  C-x u<br>
+  C-_<br>
+  M-x undo<br>
+  M-x undo-only</dfn></dt>
   <dd>
 <p>Undo one thing.</p>
 
@@ -277,6 +301,33 @@ M-x undo-only</dfn></dt>
 <p>Rather than doing this, you could also just quit Emacs without saving your changes.</p>
   </dd>
 </dl>
+
+
+# Killing or Suspending Emacs
+
+Emacs uses the term "quitting" for what you probably think of as "cancelling." Emacs defines a couple meanings for the term "killing", one of which means to exit Emacs (what you might think of as "quitting").
+
+<dl>
+  <dt><dfn>
+  C-x C-c<br>
+  M-x save-buffers-kill-terminal</dfn></dt>
+  <dd>
+<p>Exit/quit/terminate/kill Emacs.</p>
+
+<p>If there are any unsaved buffers, Emacs will ask you if you'd like to save them before exiting.</p>
+
+<p>If there are any running subprocesses, Emacs will tell you and ask you if you'd still like to kill Emacs (and thus also kill any of its subprocesses).</p>
+  </dd>
+
+  <dt><dfn>
+  C-z<br>
+  M-x suspend-emacs</dfn></dt>
+  <dd>
+<p>In terminal Emacs, suspend Emacs; in graphical Emacs, minimise the selected frame.</p>
+  </dd>
+</dl>
+
+TODO
 
 
 # Getting Help
@@ -433,7 +484,11 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
   &lt;F1&gt; i d m Elisp &lt;RET&gt; g * &lt;RET&gt;<br>
   M-x info &lt;RET&gt; d m &lt;RET&gt; g * &lt;RET&gt;<br>
   M-x menu-bar-read-lispref</dfn></dt>
-  <dd>Display the Emacs Lisp reference manual.</dd>
+  <dd>
+<p>Display the Emacs Lisp reference manual.</p>
+
+<p>The Elisp reference manual looks really useful, but I think it's okay to just read the Emacs Lisp Intro for now and come to the Elisp reference when you actually need it; otherwise, it's just too many details that will probably all go over your head.</p>
+  </dd>
 
   <dt><dfn>
   C-h I INPUTMETHOD<br>
@@ -807,20 +862,76 @@ When you're in the menu bar's minibuffer, you can press <code>&lt;PageUp&gt;</co
 
 ## Minibuffer
 
-TODO
-
-The minibuffer is where Emacs commands read complicated arguments, such as file names, buffer names, Emacs command names, or Lisp expressions. When the minibuffer is in use, it appears in the echo area with a cursor. The minibuffer starts with a prompt string, which states what kind of input is expected. The prompt string usually ends with a colon and stands out from the input text.
-
-Since the minibuffer is just a buffer (with a small amount of screen space), you can use the usual basic Emacs keys for moving around (for example, <code>C-a</code> and <code>C-e</code>) and editing (for example, <code>C-k</code> and <code>C-/</code>) a line of text; however, you can't invoke anything that invokes the minibuffer (you can't use a minibuffer within another minibuffer).
-
-The minibuffer prompt string is read-only and cannot be changed. If you try to change it, then "Text is read-only" will briefly appear in the echo area.
-
-Sometimes, the prompt shows a default argument, inside parentheses before the colon. This default will be used as the argument if you just type <code>&lt;RET&gt;</code> without entering anything else (in other words, when you submit an empty string).
+The minibuffer is where Emacs commands read complicated arguments, such as file names, buffer names, command names, or Lisp expressions. When the minibuffer is in use, it appears in the echo area with a cursor. The minibuffer starts with a prompt string, which states what kind of input is expected. The prompt string usually ends with a colon and stands out from the input text. Sometimes, the prompt shows a default argument, inside parentheses before the colon. This default will be used as the argument if you just type <code>&lt;RET&gt;</code> without entering anything else (in other words, when you submit an empty string). The minibuffer doesn't have a mode line.
 
 If an error message or an informative message is emitted while the minibuffer is active, the message hides the minibuffer for a few seconds, or until you type something; then the minibuffer comes back.
 
+Normally, the minibuffer window occupies a single screen line; however, if you add two or more lines' worth of text into the minibuffer, it expands automatically to accomodate the text (see the <code>resize-mini-windows</code> variable).
+
+Since the minibuffer is just a buffer (with a small amount of screen space), you can use the usual basic Emacs keys for moving around (for example, <code>C-a</code> and <code>C-e</code>) and editing (for example, <code>C-k</code> and <code>C-/</code>) a line of text. You can also switch to another window and then come back to the minibuffer later. <code>C-a</code> in a minibuffer moves point to the beginning of the argument text, not the beginning of the prompt.
+
+By default, you can't invoke anything that invokes the minibuffer (you can't use a minibuffer within another minibuffer); however, you can set the <code>enable-recursive-minibuffers</code> variable to 't', so that you can use a minibuffer within another minibuffer.
+
+Since &lt;RET&gt; in the minibuffer submits the argument, you can't use it to insert a newline. Instead, you can use <code>C-q C-j</code> or <code>C-o</code>. This applies to other characters as well: if a character has a special meaning in the minibuffer, then quote it using <code>C-q</code>.
+
+The minibuffer prompt string is read-only and cannot be changed. If you try to change it, then "Text is read-only" will briefly appear in the echo area.
+
+When the minibuffer displays a password prompt, you are more limited in what you can do. Most of the features and commands associated with the minibuffer can not be used when entering a password. There is no history or completion, and you cannot change windows or perform any other actions with Emacs until you have submitted the password. While you are typing the password, you may press <code>&lt;DEL&gt;</code> to delete backwards, removing the last character entered. <code>C-u</code> deletes everything you have typed so far. <code>C-g</code> quits the password prompt. <code>C-y</code> inserts the current kill into the password. You may type either <code>&lt;RET&gt;</code> or <code>&lt;ESC&gt;</code> to submit the password. Any other self-inserting character key inserts the associated character into the password, and all other input is ignored. To prevent others from seeing your password, every password character you type is displayed as a dot ('.').
+
+Sometimes, the minibuffer prompts you with a question with a list of possible values; these are called "yes or no" queries. There are two main types of "yes or no" queries:
+
+1. The prompt ends with "(y or n)". Such a query does not actually use the minibuffer; the prompt appears in the echo area, and you answer by typing either 'y' or 'n', which immediately delivers the response. Because this query does not actually use the minibuffer, the usual minibuffer editing commands cannot be used.
+2. The second type of "yes or no" prompt is typically used if giving the wrong answer could have serious consequences. It uses the minibuffer and features a prompt ending with "(yes or no)". To answer, you must type either 'yes' or 'no' into the minibuffer, followed by <code>&lt;RET&gt;</code>. Since this type of query uses the minibuffer, you can use the usual minibuffer commands.
+
+Every argument that you enter with the minibuffer is saved in a minibuffer history list, so that you can easily reuse the argument next time you use the minibuffer. Emacs actually keeps separate history lists for several different kinds of arguments: file names, buffer names, command names, and command arguments.
+
+<dl>
+  <dt><dfn>
+  M-p<br>
+  &lt;Up&gt;</dfn></dt>
+  <dd>Replace the contents of the minibuffer with the previous history item (cycle backwards).</dd>
+
+  <dt><dfn>
+  M-n<br>
+  &lt;Down&gt;</dfn></dt>
+  <dd>
+<p>Replace the contents of the minibuffer with the next history item (cycle forwards).</p>
+
+<p>If you type <code>M-n</code> (or <code>&lt;Down&gt;</code>) in the minibuffer when you're on the last item in the history list, then Emacs will start cycling through a list of default arguments (values that you are likely to enter). You can think of the list of default arguments as a "future history" list.
+  </dd>
+</dl>
+
+If you edit the text inserted by <code>M-p</code> or <code>M-n</code>, this does not change its entry in the history list; however, the edited argument does go at the end of the history list when you submit it.
+
+Every command that uses the minibuffer is saved in a command history list, together with the value of its arguments, so that you can repeat the entire command. You won't see your previous incremental searches in the minibuffer, unless you set <code>isearch-resume-in-command-history</code> to true.
+
+<dl>
+  <dt><dfn>C-x &lt;ESC&gt; &lt;ESC&gt;</dfn></dt>
+  <dd>
+<p>Turn the previous command into a Lisp expression and then enter a minibuffer initialised with the text for that expression. If you type just &lt;RET&gt;, that repeats the command unchanged. You can also change the command by editing the Lisp expression before you execute it.</p>
+
+<p>A numeric argument to <code>C-x &lt;ESC&gt; &lt;ESC&gt;</code> specifies which command to repeat; 1 means the last one, 2 the previous, and so on.</p>
+
+<p>Once inside the minibuffer for <code>C-x &lt;ESC&gt; &lt;ESC&gt;</code>, you can use the usual minibuffer history commands to move through the history list.</p>
+  </dd>
+
+  <dt><dfn>M-x list-command-history</dfn></dt>
+  <dd>Display a list of the entire command history.</dd>
+</dl>
+
+
+# Completion
+
+TODO
+
+
+## Minibuffer
+
+TODO
+
 
 # Customisation
+
 
 ## Mode Line
 
@@ -836,3 +947,8 @@ If you're using display-time-mode, then you can have the word "Mail" appear when
 You should use 24-hour time format (don't you dare call this military time; 24-hour time is the most commonly used time format in the world and it makes a lot of sense and is heavily used outside the military and didn't even originate with the military). Add the following to your ~/.emacs.d/init.el: <code>(setq display-time-24hr-format t)</code>.
 
 You can customise the format of the mode line by modifying the <code>mode-line-format</code> variable. Read its documentation (<code>C-h v mode-line-format</code>) for help on modifying it.
+
+
+## Minibuffer
+
+Delete duplicates from the minibuffer history list: <code>(setq history-delete-duplicates t)</code>.
