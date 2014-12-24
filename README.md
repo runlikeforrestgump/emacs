@@ -250,6 +250,11 @@ An input method is a system for entering non-ASCII text characters by typing seq
   C-x &lt;RET&gt; C-\ METHOD &lt;RET&gt;<br>
   M-x set-input-method &lt;RET&gt; METHOD</dfn></dt>
   <dd>Use input method METHOD for the current buffer.</dd>
+
+  <dt><dfn>
+  C-\<br>
+  M-x toggle-input-method</dfn></dt>
+  <dd>Toggle the use of the selected input method.</dd>
 </dl>
 
 
@@ -265,6 +270,8 @@ An input method is a system for entering non-ASCII text characters by typing seq
 <p>If there are any unsaved buffers, Emacs will ask you if you'd like to save them before exiting.</p>
 
 <p>If there are any running subprocesses, Emacs will tell you and ask you if you'd still like to kill Emacs (and thus also kill any of its subprocesses).</p>
+
+<p>All frames will be closed.</p>
   </dd>
 
   <dt><dfn>
@@ -323,6 +330,8 @@ Emacs uses the term "quitting" for what you probably think of as "cancelling." E
 <p>If there are any unsaved buffers, Emacs will ask you if you'd like to save them before exiting.</p>
 
 <p>If there are any running subprocesses, Emacs will tell you and ask you if you'd still like to kill Emacs (and thus also kill any of its subprocesses).</p>
+
+<p>All frames will be closed.</p>
   </dd>
 
   <dt><dfn>M-x kill-emacs</dfn></dt>
@@ -932,7 +941,47 @@ Every command that uses the minibuffer is saved in a command history list, toget
 
 ## Frames
 
-TODO
+All frames created in the same Emacs session have access to the same underlying buffers and other data.
+
+It's possible to create multiple frames on text terminals; such frames are displayed one at a time, filling the entire terminal screen.
+
+If you don't give a frame a name, then the default name is of the form FN, where N is an integer indicating the frame number (first frame is F1, second frame is F2, and so on).
+
+<dl>
+  <dt><dfn>
+  C-x 5 2<br>
+  M-x make-frame-command</dfn></dt>
+  <dd>Create a new frame.</dd>
+
+  <dt><dfn>
+  C-x 5 0<br>
+  M-x delete-frame</dfn></dt>
+  <dd>Delete the selected frame.</dd>
+
+  <dt><dfn>
+  C-x 5 o<br>
+  M-x other-frame</dfn></dt>
+  <dd>Switch frames.</dd>
+
+  <dt><dfn>
+  C-x 5 1<br>
+  M-x delete-other-frames</dfn></dt>
+  <dd>Delete all the frames except for the selected one.</dd>
+  
+  <dt><dfn>M-x set-frame-name &lt;RET&gt; FRAME_NAME</dfn></dt>
+  <dd>Rename the selected frame.</dd>
+
+  <dt><dfn>M-x select-frame-by-name &lt;RET&gt; FRAME_NAME</dfn></dt>
+  <dd>Select the specified frame by its name.</dd>
+
+  <dt><dfn>M-x fit-frame-to-buffer</dfn></dt>
+  <dd>Adjust the selected frame's height to display its buffer's contents exactly (if it can fit in the maximum height of the frame); otherwise, adjust the selected frame's height to the maximum height that your window manager will allow.</dd>
+
+  <dt><dfn>
+  M-x make-frame<br>
+  M-x new-frame</dfn></dt>
+  <dd>Clone the selected buffer into a new frame.</dd>
+</dl>
 
 
 ## Windows
@@ -1003,7 +1052,7 @@ The minibuffer is special. Don't expect all the window commands to work in the m
   C-x 1<br>
   M-x delete-other-windows</dfn></dt>
   <dd>
-<p>Delete all the windows (but not their buffers) in the selected frame except the selected window.</p>
+<p>Delete all the windows (but not their buffers) in the selected frame except for the selected window.</p>
 
 <p>You cannot use the command while in the minibuffer.</p>
   </dd>
@@ -1077,7 +1126,115 @@ If you enable Scroll All mode (<code>M-x scroll-all-mode</code>), then all scrol
 
 ## Buffers
 
-TODO
+The text you are editing in Emacs resides in an object called a buffer.
+
+The buffer is the basic editing unit; one buffer corresponds to one text being edited. You normally have several buffers, but at any time you are editing only one, the current buffer, though several can be visible when you are using multiple windows or frames. Most buffers are visiting some file.
+
+Emacs keeps a buffer selection history that records how recently each Emacs buffer has been selected. This is used for choosing a buffer to select.
+
+Each buffer has a unique name, which can be of any length. The distinction between upper and lower case matters in buffer names. Most buffers are made by visiting files, and their names are derived from the files' names.
+
+<code>C-x 4</code> is a prefix key for a variety of commands that switch to a buffer in another window. <code>C-x 5</code> is a prefix key for a variety of commands that switch to a buffer in another frame.
+
+<dl>
+  <dt><dfn>
+  C-x b BUFFER_NAME<br>
+  M-x switch-to-buffer</dfn></dt>
+  <dd>Select or create a buffer named BUFFER_NAME.</dd>
+
+  <dt><dfn>
+  C-x 4 b BUFFER_NAME<br>
+  M-x switch-to-buffer-other-window</dfn></dt>
+  <dd>Select or create a buffer named BUFFER_NAME in another window.</dd>
+
+  <dt><dfn>
+  C-x 5 b BUFFER_NAME<br>
+  M-x switch-to-buffer-other-frame</dfn></dt>
+  <dd>Select or create a buffer named BUFFER_NAME in another frame.</dd>
+
+  <dt><dfn>
+  C-x &lt;left&gt;<br>
+  M-x previous-buffer</dfn></dt>
+  <dd>Select the previous buffer in the buffer list.</dd>
+
+  <dt><dfn>
+  C-x &lt;right&gt;<br>
+  M-x next-buffer</dfn></dt>
+  <dd>Select the next buffer in the buffer list.</dd>
+
+  <dt><dfn>
+  C-x C-b<br>
+  M-x list-buffers</dfn></dt>
+  <dd>
+<p>Display a list of the existing buffers.</p>
+
+<p>"CRM" means "Current, Read-only, and Modified." A period ('.') under C means that that buffer is the current one. A percent sign ('%') means that that buffer is read-only. An asterisk ('*') means that that buffer is modified. The Buffer column displays the buffer's name. The Size column displays the buffer's size. The Mode column displays the buffer's major mode. The File column displays the file that the buffer is visiting, if any. The buffers are listed in the order that they were last used (most recent at the top; least recent at the bottom).</p>
+
+<p>What <code>C-x C-b</code> displays is actually an interactive menu. Switch to the menu and press <code>h</code> for help. Instead of opening the buffer menu and then manually switching to it, you can open the buffer menu and automatically switch to it: use <code>M-x buffer-menu</code> or <code>M-x buffer-menu-other-window</code>.</p>
+  </dd>
+
+  <dt><dfn>C-u C-x C-b</dfn></dt>
+  <dd>Display only a list of the existing buffers that are visiting files.</dd>
+
+  <dt><dfn>
+  C-x C-q<br>
+  M-x read-only-mode</dfn></dt>
+  <dd>Toggle the read-only status of a buffer.</dd>
+
+  <dt><dfn>M-x rename-buffer &lt;RET&gt; BUFFER_NAME</dfn></dt>
+  <dd>Rename the current buffer to BUFFER_NAME.</dd>
+
+  <dt><dfn>M-x rename-uniquely</dfn></dt>
+  <dd>Rename the current buffer by appending a unique number to its current name.</dd>
+
+  <dt><dfn>
+  C-x k BUFFER_NAME<br>
+  M-x kill-buffer &lt;RET&gt; BUFFER_NAME</dfn></dt>
+  <dd>Kill buffer BUFFER_NAME. If you don't specify a name and just immediately press <code>&lt;RET&gt;</code>, then the current buffer will be killed by default.</dd>
+
+  <dt><dfn>M-x kill-some-buffers</dfn></dt>
+  <dd>Offer to kill each buffer, one by one.</dd>
+
+  <dt><dfn>M-x kill-matching-buffers</dfn></dt>
+  <dd>Offer to kill all buffers matching a regular expression.</dd>
+
+  <dt><dfn>M-x clean-buffer-list</dfn></dt>
+  <dd>
+<p>By default, kill any unmodified buffers that haven't been displayed in the past three days.</p>
+
+<p>If you enable Midnight mode (<code>M-x midnight-mode</code>), then <code>clean-buffer-list</code> will be run automatically for you every midnight.</p>
+  </dd>
+</dl>
+
+Enabling Iswitchb mode (<code>M-x iswitchb-mode</code>) makes it much easier to switch buffers. It redefines what <code>C-x b</code>, <code>C-x 4 b</code>, and <code>C-x 5 b</code> do. When you enter one of those commands, they will prompt you with a list of possible buffer names. You can do one of two things: you can either start typing the name of the buffer you want to switch to it, until it appears first in the list, or you can press <code>C-s</code> (rotate left) or <code>C-r</code> (rotate right) until the buffer you want to switch to appears first in the list. Once the buffer you want to switch to appears first in the list (or is the only buffer listed), then press <code>&lt;RET&gt;</code>.
+
+Narrowing means focusing in on some portion of the buffer, making the rest temporarily inaccessible. When you have narrowed down to a part of the buffer, that part appears to be all there is. You can't see the rest, you can't move into it (motion commands won't go outside the accessible part), you can't change it in any way; however, it is not gone, and if you save the file, all the inaccessible text will be saved. The word "Narrow" appears in the mode line whenever narrowing is in effect.
+
+<dl>
+  <dt><dfn>
+  C-x n n<br>
+  M-x narrow-to-region</dfn></dt>
+  <dd>
+<p>Narrow buffer down to the region (the area that point and mark delineate).</p>
+
+<p>You can narrow a narrowed region, but when you widen, the entire buffer will be made accessible (rather than undoing the most recent narrow).</p>
+</dd>
+
+  <dt><dfn>
+  C-x n d<br>
+  M-x narrow-to-defun</dfn></dt>
+  <dd>Narrow buffer down to the current defun.</dd>
+
+  <dt><dfn>
+  C-x n w<br>
+  M-x widen</dfn></dt>
+  <dd>Widen the current buffer (make the entire buffer accessible again).</dd>
+
+  <dt><dfn>
+  C-x =<br>
+  M-x what-cursor-position</dfn></dt>
+  <dd>Display information about where point is relative to the entire buffer (not just the narrowed region). The numbers in angle brackets are the first line number in the narrowed region (relative to the entire buffer) and the last line number in the narrowed region (also relative to the entire buffer).</dd>
+</dl>
 
 
 # Completion
