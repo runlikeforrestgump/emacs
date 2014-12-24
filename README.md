@@ -165,7 +165,7 @@ The Alt key will sometimes be involved in key conflicts. A way around this is to
 Some conflicts that I've run into:
 
 * <code>C-S-&lt;DEL&gt;</code> is supposed to invoke <code>kill-whole-line</code>, but instead it invokes the help prefix (<code>C-h</code>). This was only a problem for me in my terminal ([rxvt-unicode](http://software.schmorp.de/pkg/rxvt-unicode.html)). Note that the key sequence <code>C-&lt;DEL&gt;</code> seems to behave the same as <code>C-S-&lt;DEL&gt;</code> (they both invoke the help prefix). TODO: resolve the conflict and document how I resolved it.
-* <code>C-M-v</code> is supposed to invoke <code>scroll-other-window</code>, but instead it pastes text. This was only a problem for me in my terminal. This is because I'm using the rxvt-unicode clipboard extension from [urxvt-perls](https://github.com/muennich/urxvt-perls), which binds <code>C-M-v</code> to paste_escaped by default. To resolve the conflict, I defined a different key binding for paste_escaped in my ~/.Xresources file: <code>URxvt.keysym.C-S-M-V:perl:clipboard:paste_escaped</code> (yes, this is an awkward key binding, but I don't care because I don't use paste_escaped). Another solution you could do is remove the <code>paste_escaped</code> elsif in the on_user_command subroutine in /usr/lib\*/urxvt/perl/clipboard, if paste_escaped is something that you don't use.
+* <code>C-M-v</code> is supposed to invoke <code>scroll-other-window</code>, but instead it pastes text. This was only a problem for me in my terminal. This is because I'm using the rxvt-unicode clipboard extension from [urxvt-perls](https://github.com/muennich/urxvt-perls), which binds <code>C-M-v</code> to paste_escaped by default. To resolve the conflict, you can define a different key binding for paste_escaped in your ~/.Xresources file: <code>URxvt.keysym.CHANGEME:perl:clipboard:paste_escaped</code>. Don't bind to <code>C-M-S-v</code> because that will conflict with <code>scroll-other-window-down</code>. Another solution you could do is remove the <code>paste_escaped</code> elsif in the on_user_command subroutine in /usr/lib\*/urxvt/perl/clipboard, if paste_escaped is something that you don't use; it's not something that I use, so it's the solution that I went with.
 * I don't know what <code>C-&lt;TAB&gt;</code> is supposed to do (Emacs tells me <code>C-&lt;TAB&gt;</code> is undefined, but the Emacs manual says that it's bound to the command file-cache-minibuffer-complete); however, I know that if I wanted to use <code>C-&lt;TAB&gt;</code> in my terminal, I currently can't: a plain &lt;TAB&gt; is inserted instead. TODO: resolve the conflict and document how I resolved it.
 
 
@@ -259,7 +259,13 @@ An input method is a system for entering non-ASCII text characters by typing seq
   <dt><dfn>
   C-x C-c<br>
   M-x save-buffers-kill-terminal</dfn></dt>
-  <dd>Exit/quit/terminate/kill Emacs.</dd>
+  <dd>
+<p>Exit/quit/terminate/kill Emacs.</p>
+
+<p>If there are any unsaved buffers, Emacs will ask you if you'd like to save them before exiting.</p>
+
+<p>If there are any running subprocesses, Emacs will tell you and ask you if you'd still like to kill Emacs (and thus also kill any of its subprocesses).</p>
+  </dd>
 
   <dt><dfn>
   C-g<br>
@@ -319,15 +325,19 @@ Emacs uses the term "quitting" for what you probably think of as "cancelling." E
 <p>If there are any running subprocesses, Emacs will tell you and ask you if you'd still like to kill Emacs (and thus also kill any of its subprocesses).</p>
   </dd>
 
+  <dt><dfn>M-x kill-emacs</dfn></dt>
+  <dd>Exit/quit/terminate/kill Emacs without being prompted about saving.</dd>
+
   <dt><dfn>
   C-z<br>
-  M-x suspend-emacs</dfn></dt>
+  C-x C-z<br>
+  M-x suspend-frame</dfn></dt>
   <dd>
 <p>In terminal Emacs, suspend Emacs; in graphical Emacs, minimise the selected frame.</p>
+
+<p>In terminal Emacs, in most shells, you can resume Emacs using the shell command <code>%emacs</code>. If that doesn't work, try <code>jobs emacs</code>, and then use the number in brackets as the arg to <code>fg</code>, or if Emacs is the job that was most recently suspended, placed in the background, or run as a background job, then a simple <code>fg</code> with no args should work.
   </dd>
 </dl>
-
-TODO
 
 
 # Getting Help
@@ -918,6 +928,156 @@ Every command that uses the minibuffer is saved in a command history list, toget
   <dt><dfn>M-x list-command-history</dfn></dt>
   <dd>Display a list of the entire command history.</dd>
 </dl>
+
+
+## Frames
+
+TODO
+
+
+## Windows
+
+
+Each window belongs to one and only one frame and each window displays only one buffer at any time. Multiple windows can display parts of different buffers, or different parts of one buffer. If a single buffer appears in more than one window, then any changes in its text are displayed in all the windows where it appears.
+
+The minibuffer is special. Don't expect all the window commands to work in the minibuffer; for example, you cannot split the minibuffer. You also can't make the minibuffer the only remaining window and you cannot delete the minibuffer.
+
+<dl>
+  <dt><dfn>
+  C-x 2<br>
+  M-x split-window-below</dfn></dt>
+  <dd>Split the selected window horizontally into two separate windows, one above the other. After splitting, the selected window is the top one and both windows have the same value of point as before.</dd>
+
+  <dt><dfn>
+  C-x 3<br>
+  M-x split-window-right</dfn></dt>
+  <dd>
+<p>Split the selected window vertically into two separate windows, positioned side by side. After splitting, the selected window is the one on the left and both windows have the same value of point as before.</p>
+
+<p>If the windows are too narrow, then long lines will be truncated (see the <code>truncate-partial-width-windows</code> variable).</p>
+  </dd>
+
+  <dt><dfn>
+  C-x o<br>
+  M-x other-window</dfn></dt>
+  <dd>
+<p>Switch windows.</p>
+
+<p><code>C-x o</code> cycles through the windows generally top to bottom and left to right. When the minibuffer is active, the minibuffer is the last window in the cycle.</p>
+
+<p><code>M-x windmove-default-keybindings</code> makes it much easier for you to move to the window you want by binding some convenience commands to <code>S-&lt;left&gt;</code>, <code>S-&lt;right&gt;</code>, <code>S-&lt;up&gt;</code>, and <code>S-&lt;down&gt;</code> (you only need to run <code>M-x windmove-default-keybindings</code> once). Unfortunately, those key bindings will break shift selection. If you want shift selection and a convenient way to select windows, then you should bind the <code>windmove-left</code>, <code>windmove-right</code>, <code>windmove-up</code>, and <code>windmove-down</code> commands to keys that won't conflict with anything else.</p>
+  </dd>
+
+  <dt><dfn>
+  M-v<br>
+  &lt;PageUp&gt;</dfn></dt>
+  <dd>Select the completion list window.</dd>
+
+  <dt><dfn>
+  C-M-v<br>
+  &lt;ESC&gt; C-v<br>
+  M-x scroll-other-window</dfn></dt>
+  <dd>
+<p>Scroll up the next window that <code>C-x o</code> would select.</p>
+
+<p>In the minibuffer, <code>C-M-v</code> scrolls the help window associated with the minibuffer, if any, rather than the next window in the standard cyclic order.</p>
+  </dd>
+
+  <dt><dfn>
+  C-M-S-v<br>
+  &lt;ESC&gt; C-S-v<br>
+  M-x scroll-other-window-down</dfn></dt>
+  <dd>Scroll down the next window that <code>C-x o</code> would select.</dd>
+
+  <dt><dfn>
+  C-x 0<br>
+  M-x delete-window</dfn></dt>
+  <dd>Delete the selected window, but not its buffer.</dd>
+
+  <dt><dfn>
+  C-x 4 0<br>
+  M-x kill-buffer-and-window</dfn></dt>
+  <dd>Delete the selected window and its buffer.</dd>
+
+  <dt><dfn>
+  C-x 1<br>
+  M-x delete-other-windows</dfn></dt>
+  <dd>
+<p>Delete all the windows (but not their buffers) in the selected frame except the selected window.</p>
+
+<p>You cannot use the command while in the minibuffer.</p>
+  </dd>
+
+  <dt><dfn>
+  C-x ^<br>
+  M-x enlarge-window</dnf></dt>
+  <dd>
+<p>Make the selected window one line taller.</p>
+
+<p>If you supply a positive numeric argument, then make the selected window that many lines taller. If you supply a negative argument, then make the selected window that many lines shorter.</p>
+  </dd>
+
+  <dt><dfn>
+  C-x }<br>
+  M-x enlarge-window-horizontally</dfn></dt>
+  <dd>
+<p>Make the selected window one column wider.</p>
+
+<p>If you supply a positive numeric argument, then make the selected window that many columns wider. If you supply a negative argument, then make the selected window that many lines narrower.</p>
+  </dd>
+
+  <dt><dfn>
+  C-x {<br>
+  M-x shrink-window-horizontally</dfn></dt>
+  <dd>
+<p>Make the selected window one column narrower.</p>
+
+<p>If you supply a positive numeric argument, then make the selected window that many columns narrower. If you supply a negative argument, then make the selected window that many lines wider.</p>
+  </dd>
+
+  <dt><dfn>M-x maximize-window</dfn></dt>
+  <dd>Make the selected window as tall and wide as possible.</dd>
+
+  <dt><dfn>M-x minimize-window</dfn></dt>
+  <dd>Make the selected window as short and narrow as possible.</dd>
+
+  <dt><dfn>
+  C-x +<br>
+  M-x balance-windows</dfn></dt>
+  <dd>Even out the heights of all the windows in the selected frame, making their sizes as similar as possible.</dd>
+
+  <dt><dfn>M-x balance-windows-area</dfn></dt>
+  <dd>Adjust the area of all the windows in the selected frame, making their sizes as similar as possible.</dd>
+
+  <dt><dfn>M-x fit-window-to-buffer</dfn></dt>
+  <dd>Adjust the selected window's height to display its buffer's contents exactly (if it can fit in the height of the frame); otherwise, adjust the selected window's height to the height of the frame.</dd>
+
+  <dt><dfn>M-x delete-windows-on &lt;RET&gt; BUFFER_NAME</dfn></dt>
+  <dd>Delete all windows showing the specified buffer.</dd>
+</dl>
+
+If you enable Winner mode (<code>M-x winner-mode</code>), then you can undo and redo the windows-related changes that you make (such as splitting, killing, or resizing windows):
+
+<dl>
+  <dt><dfn>
+  C-c &lt;left&gt;<br>
+  M-x winner-undo</dfn></dt>
+  <dd>Undo windows-related changes (such as splits, kills, and resizes). Selecting windows doesn't count as a change.</dd>
+
+  <dt></dfn>
+  C-c &lt;right&gt;<br>
+  M-x winner-redo</dfn></dt>
+  <dd>Redo windows-related changes (such as splits, kills, and resizes). Selecting windows doesn't count as a change.</dd>
+</dl>
+
+If you enable Follow mode (<code>M-x follow-mode</code>), then if you have two or more windows showing the same buffer, then when you scroll, the buffers are adjusted so that they always show adjacent portions of the buffer's text. This means that if one buffer were showing lines 1 to 50, then another buffer would show lines 51 to 100, and another buffer would show lines 101 to 150, and so on (assuming all those windows have the same height). If you are at the very first line in a window and then you scroll up, either point will move to the adjacent window showing the same buffer on the left (if there is one) or if you're already on the leftmost window showing the same buffer, then scrolling up will scroll all windows up. Same idea applies when scrolling down: if you are at the very last line in a window and then you scroll down, either point will move to the adjacent window showing the same buffer on the right (if there is one) or if you're already on the rightmost window showing the same buffer, then scrolling down will scroll all windows down. <code>M-x follow-delete-other-windows-and-split</code> command will create two side-by-side windows and then enter Follow mode.
+
+If you enable Scroll All mode (<code>M-x scroll-all-mode</code>), then all scrolling commands and point motion commands apply to every single window, even if they display different buffers.
+
+
+## Buffers
+
+TODO
 
 
 # Completion
