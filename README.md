@@ -1312,7 +1312,7 @@ A dribble file is a file into which Emacs writes all the characters that you typ
 
 <p>If you visit a file archive, then Emacs will use Tar mode or Archive mode to provide a Dired-like list of the contents of the archive. You can edit or delete files in an archive. When you save your changes, the archive will automatically be recreated with your changes.</p>
 
-<p>The TRAMP package (comes with Emacs and works right out of the box) provides a way to edit remote files (files that are stored on a system other than your own) or edit files as another user (the package also allows you to do other things, but the gist of the package is that it allows you to do things remotely). All you have to do is prepend some stuff to the file name you want to visit: <code>/METHODNAME:USERNAME@HOST.DOMAINNAME#PORTNUMBER:/PATH/TO/FILE</code>. Only the initial forward slash ('/'), host, colon (':'), and filename are required. Note that the host can be specified by name, IPv4 address, or IPv6 address. If you use IPv6, then you must surround the IPv6 address with square brackets. There are many possibilities for method name: rsh, ssh, telnet, su, sudo, sshx, krlogin, ksu, plink, plinkx, rcp, scp, sftp, rsync, scpx, scpc, rsyncc, pscp, psftp, fcp, ftp, and smb. TRAMP is supposed to make editing a remote file seem just like editing a local file, so all the commands you normally you use for local files can also be used with remote files.</p>
+<p>The TRAMP package (comes with Emacs and works right out of the box) provides a way to edit remote files (files that are stored on a system other than your own) or edit files as another user (the package also allows you to do other things, but the gist of the package is that it allows you to do things remotely). All you have to do is prepend some stuff to the file name you want to visit: <code>/METHODNAME:USERNAME@HOST.DOMAINNAME#PORTNUMBER:/PATH/TO/FILE</code>. Only the initial forward slash ('/'), host, colon (':'), and filename are required. Note that the host can be specified by name, IPv4 address, or IPv6 address. If you use IPv6, then you must surround the IPv6 address with square brackets. There are many possibilities for method name: rsh, ssh, telnet, su, sudo, sshx, krlogin, ksu, plink, plinkx, rcp, scp, sftp, rsync, scpx, scpc, rsyncc, pscp, psftp, fcp, ftp, and smb. If you don't specify a directory path, then the default directory that is searched for file is the home directory on the remote machine. TRAMP is supposed to make editing a remote file seem just like editing a local file, so all the commands you normally you use for local files can also be used with remote files. Minibuffer killing via a double slash or tilde works a bit differently with remote files. If a double slash ('//') appears immediately after the colon, then everything before the double slash is ignored. If the double slash appears somewhere after the colon, but not immediately after, then only the text between the colon and the double slash will be ignored. If a triple slash appears somewhere after the colon, but not immediately after, then everything before the triple slash is ignored.</p>
 
 <p>In graphical Emacs, if you visit an image, the image will be displayed in Emacs. You can type <code>C-c C-c</code> to toggle between viewing the image and viewing the image's file contents. If the image is animated, then <code>&lt;RET&gt;</code> can toggle animation on and off.</p>
 
@@ -1436,6 +1436,272 @@ A dribble file is a file into which Emacs writes all the characters that you typ
   M-x set-file-modes<br>
   M-x chmod</dfn></dt>
   <dd>Change the file modes (file permissions) of the specified file. Specify the arguments in the same format that chmod would expect.</dd>
+</dl>
+
+
+# Moving Around a Buffer
+
+Very often, Alt (M-) is used for operations related to the units defined by language (words, sentences, paragraphs, etc.), while Ctrl (C-) is used for operations on basic units that are independent of what you are editing (characters, lines, etc.).
+
+The sentence commands assume that you follow the convention of putting two spaces at the end of a sentence. A sentence ends wherever there is a '.', '?', or '!' followed by two spaces or the end of the line. Between a '.', '?', or '!' and two spaces or the end of the line can be any number or mixture of '.', '?', '!', ']', '}', ')', ''', or '"'. If you want to use just one space between sentences, you can put the following in your ~/.emacs.d/init.el: <code>(setq sentence-end-double-space nil)</code>; the downside to using one space to end sentences is that Emacs can't distinguish between periods that end sentences and periods that indicate abbreviations.
+
+<dl>
+  <dt><dfn>
+  C-f<br>
+  &lt;right&gt;<br>
+  M-x forward-char</dfn></dt>
+  <dd>Move forward one character. If you're at the end of a line, <code>C-f</code> will take you to the first character on the next line.</dd>
+
+  <dt><dfn>
+  C-d<br>
+  M-x delete-char<br>
+  &lt;Delete&gt;<br>
+  M-x delete-forward-char</dfn></dt>
+  <dd>Delete forward one character. If you're at the end of a line, <code>C-d</code> will delete the newline.</dd>
+
+  <dt><dfn>
+  C-b<br>
+  &lt;left&gt;<br>
+  M-x backward-char</dfn></dt>
+  <dd>Move backward one character. If you're at the beginning of a line, <code>C-b</code> will take you to the last character on the previous line.</dd>
+
+  <dt><dfn>
+  &lt;DEL&gt;<br>
+  M-x delete-backward-char</dfn></dt>
+  <dd>Delete backward one character. If you're at the beginning of a line, <code>&lt;DEL&gt;</code> will delete the newline.</dd>
+
+  <dt><dfn>
+  M-f<br>
+  M-&lt;right&gt;<br>
+  M-x forward-word</dfn></dt>
+  <dd>Move forward one word.</dd>
+
+  <dt><dfn>
+  M-d<br>
+  C-&lt;Delete&gt;<br>
+  M-x kill-word</dfn></dt>
+  <dd>Kill forward one word.</dd>
+
+  <dt><dfn>
+  M-b<br>
+  M-&lt;left&gt;<br>
+  M-x backward-word</dfn></dt>
+  <dd>Move backward one word.</dd>
+
+  <dt><dfn>
+  M-&lt;DEL&gt;<br>
+  C-&lt;DEL&gt;<br>
+  M-x backward-kill-word</dfn></dt>
+  <dd>Kill backward one word.</dd>
+
+  <dt><dfn>
+  M-e<br>
+  M-x forward-sentence</dfn></dt>
+  <dd>Move forward one sentence.</dd>
+
+  <dt><dfn>
+  M-k<br>
+  M-x kill-sentence</dfn></dt>
+  <dd>Kill forward from point to the end of one sentence.</dd>
+
+  <dt><dfn>
+  M-a<br>
+  M-x backward-sentence</dfn></dt>
+  <dd>Move backward one sentence.</dd>
+
+  <dt><dfn>
+  C-x &lt;DEL&gt;<br>
+  M-x backward-kill-sentence</dfn></dt>
+  <dd>Kill backward from point to the beginning of one sentence.</dd>
+
+  <dt><dfn>
+  C-e<br>
+  &lt;End&gt;<br>
+  M-x move-end-of-line</dfn></dt>
+  <dd>Move to the end of one logical line.</dd>
+
+  <dt><dfn>
+  C-k<br>
+  M-x kill-line</dfn></dt>
+  <dd>Kill forward from point to the end of one logical line. Press C-k again to kill the newline.</dd>
+
+  <dt><dfn>
+  C-a<br>
+  &lt;Home&gt;<br>
+  M-x move-beginning-of-line</dfn></dt>
+  <dd>Move to the beginning of one logical line.</dd>
+
+  <dt><dfn>
+  M-0 C-k<br>
+  C-u 0 C-k<br>
+  C-u C-0 C-k</dfn></dt>
+  <dd>Kill backward from point to the beginning of one logical line.</dd>
+
+  <dt><dfn>
+  C-S-&lt;DEL&gt;<br>
+  C-a C-k C-k<br>
+  M-x kill-whole-line</dfn></dt>
+  <dd>Kill one whole logical line, regardless of where point is in it.</dd>
+
+  <dt><dfn>
+  C-x C-o<br>
+  M-x delete-blank-lines</dfn></dt>
+  <dd>If point is on a blank line, then delete all the surrounding blank lines, leaving just one blank line.</dd>
+
+  <dt><dfn>
+  C-n<br>
+  &lt;down&gt;<br>
+  M-x next-line</dfn></dt>
+  <dd>Move down one screen line.</dd>
+
+  <dt><dfn>
+  C-p<br>
+  &lt;up&gt;<br>
+  M-x previous-line</dfn></dt>
+  <dd>Move up one screen line.</dd>
+
+  <dt><dfn>
+  M-g &lt;TAB&gt;<br>
+  M-x move-to-column</dfn></dt>
+  <dd>Move to the specified column number in the current line.</dd>
+
+  <dt><dfn>
+  M-g M-g LINE-NUMBER<br>
+  M-g g LINE-NUMBER<br>
+  C-u LINE-NUMBER M-g M-g<br>
+  C-u LINE-NUMBER M-g g<br>
+  M-LINE-NUMBER M-g M-g<br>
+  M-LINE-NUMBER M-g g</dfn></dt>
+  <dd>Move to the specified line number.</dd>
+
+  <dt><dfn>
+  M-}<br>
+  C-&lt;down&gt;<br>
+  M-x forward-paragraph</dfn></dt>
+  <dd>Move forward one paragraph.</dd>
+
+  <dt><dfn>M-x kill-paragraph</dfn></dt>
+  <dd>Kill forward from point to the end of one paragraph.</dd>
+
+  <dt><dfn>
+  M-{<br>
+  C-&lt;up&gt;<br>
+  M-x backward-paragraph</dfn></dt>
+  <dd>Move backward one paragraph.</dd>
+
+  <dt><dfn>M-x backward-kill-paragraph</dfn></dt>
+  <dd>Kill backward from point to the beginning of one paragraph.</dd>
+
+  <dt><dfn>
+  C-v<br>
+  &lt;PageDown&gt;<br>
+  M-x scroll-up-command</dfn></dt>
+  <dd>Scroll the text up one screenful (or you can think of this as scrolling the scrollbar down one screenful).</dd>
+
+  <dt><dfn>
+  M-v<br>
+  &lt;PageUp&gt;<br>
+  M-x scroll-down-command</dfn></dt>
+  <dd>Scroll the text down one screenful (or you can think of this as scrolling the scrollbar up one screenful).</dd>
+
+  <dt><dfn>
+  C-x ]<br>
+  M-x forward-page</dfn></dt>
+  <dd>Move forward one page (move to previous ^L).</dd>
+
+  <dt><dfn>
+  C-x [<br>
+  M-x backward-page</dfn></dt>
+  <dd>Move backward one page (move to next ^L).</dd>
+
+  <dt><dfn>
+  C-x C-p C-w<br>
+  C-x C-p S-&lt;DEL&gt;</dfn></dt>
+  <dd>Kill one whole page (up to and including ^L) regardless of where point is in the page. If you simply press <code>&lt;DEL&gt;</code> instead of <code>S-&lt;DEL&gt;</code> or <code>C-w</code>, then that will delete the text instead of killing it.</dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
 
   <dt><dfn>
   </dfn></dt>
@@ -1453,7 +1719,6 @@ A dribble file is a file into which Emacs writes all the characters that you typ
   </dfn></dt>
   <dd></dd>
 </dl>
-
 
 
 # Completion
