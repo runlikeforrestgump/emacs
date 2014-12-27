@@ -89,6 +89,8 @@ To invoke a command in Emacs:
 
 Some commands are (or can be) disabled, which means that you'll be asked for confirmation when you try to invoke them. The usual reason for disabling a command is that some commands are potentially confusing for beginning users.
 
+You'll notice that some commands are grouped by similar prefix keys or prefix or suffix names; for example, a lot of window-based key sequences start with <code>C-x 4</code> and a lot of frame-based commands start with <code>C-x 5</code>.
+
 
 ## Invoking Commands by Key Sequence
 
@@ -166,6 +168,7 @@ Some conflicts that I've run into:
 
 * <code>C-S-&lt;DEL&gt;</code> is supposed to invoke <code>kill-whole-line</code>, but instead it invokes the help prefix (<code>C-h</code>). This was only a problem for me in my terminal ([rxvt-unicode](http://software.schmorp.de/pkg/rxvt-unicode.html)). Note that the key sequence <code>C-&lt;DEL&gt;</code> seems to behave the same as <code>C-S-&lt;DEL&gt;</code> (they both invoke the help prefix). TODO: resolve the conflict and document how I resolved it.
 * <code>C-M-v</code> is supposed to invoke <code>scroll-other-window</code>, but instead it pastes text. This was only a problem for me in my terminal. This is because I'm using the rxvt-unicode clipboard extension from [urxvt-perls](https://github.com/muennich/urxvt-perls), which binds <code>C-M-v</code> to paste_escaped by default. To resolve the conflict, you can define a different key binding for paste_escaped in your ~/.Xresources file: <code>URxvt.keysym.CHANGEME:perl:clipboard:paste_escaped</code>. Don't bind to <code>C-M-S-v</code> because that will conflict with <code>scroll-other-window-down</code>. Another solution you could do is remove the <code>paste_escaped</code> elsif in the on_user_command subroutine in /usr/lib\*/urxvt/perl/clipboard, if paste_escaped is something that you don't use; it's not something that I use, so it's the solution that I went with.
+* <code>C-M-s</code> is supposed to invoke <code>isearch-forward-regexp</code>, but instead it invokes a urxvtperl scrollback search. This was only a problem for me in my terminal. I never use it, so I simply removed "searchable-scrollback" from the URxvt.perl-ext-common line in my ~/.Xresources.
 * I don't know what <code>C-&lt;TAB&gt;</code> is supposed to do (Emacs tells me <code>C-&lt;TAB&gt;</code> is undefined, but the Emacs manual says that it's bound to the command file-cache-minibuffer-complete); however, I know that if I wanted to use <code>C-&lt;TAB&gt;</code> in my terminal, I currently can't: a plain &lt;TAB&gt; is inserted instead. TODO: resolve the conflict and document how I resolved it.
 
 
@@ -991,6 +994,8 @@ Each window belongs to one and only one frame and each window displays only one 
 
 The minibuffer is special. Don't expect all the window commands to work in the minibuffer; for example, you cannot split the minibuffer. You also can't make the minibuffer the only remaining window and you cannot delete the minibuffer.
 
+Remember, each window is associated with one buffer. Instead of switching windows, you can switch buffers. Also, if you're already visiting a file in a buffer, then you can switch to that buffer by visiting the file again (<code>C-x C-f</code>): when you try visiting a file that is already in a buffer, then Emacs will switch to that buffer rather than opening a new buffer.
+
 <dl>
   <dt><dfn>
   C-x 2<br>
@@ -1130,9 +1135,17 @@ The text you are editing in Emacs resides in an object called a buffer.
 
 The buffer is the basic editing unit; one buffer corresponds to one text being edited. You normally have several buffers, but at any time you are editing only one, the current buffer, though several can be visible when you are using multiple windows or frames. Most buffers are visiting some file.
 
+Each buffer has its own value of point. A buffer that is not currently displayed remembers its value of point if you later display it again. Furthermore, if a buffer is displayed in multiple windows, each of those windows has its own value of point.
+
 Emacs keeps a buffer selection history that records how recently each Emacs buffer has been selected. This is used for choosing a buffer to select.
 
-Each buffer has a unique name, which can be of any length. The distinction between upper and lower case matters in buffer names. Most buffers are made by visiting files, and their names are derived from the files' names.
+Each buffer has a unique name, which can be of any length. The distinction between upper and lower case matters in buffer names. Most buffers are made by visiting files, and their names are derived from the files' names. Emacs normally constructs the buffer name from the file name, omitting the directory name. If there is already a buffer with that name, Emacs constructs a unique name.
+
+If a buffer contains changes that have not been saved, the buffer is considered modified. This implies that some changes will be lost if the buffer is not saved.
+
+An indirect buffer shares the text of some other buffer, which is called the base buffer of the indirect buffer. The text of the indirect buffer is always identical to the text of its base buffer; changes made by editing either one are visible immediately in the other, but in all other respects, the indirect buffer and its base buffer are completely separate. They can have different names, different values of point, different narrowing, different markers, different major modes, and different local variables. An indirect buffer cannot visit a file, but its base buffer can. If you try to save the indirect buffer, that actually works by saving the base buffer. Killing the base buffer effectively kills the indirect buffer, but killing an indirect buffer has no effect on its base buffer. To create an indirect buffer, you can do any of the following: <code>C-x 4 c</code> (or <code>M-x clone-indirect-buffer-other-window</code>0, <code>M-x clone-indirect-buffer</code>, or <code>M-x make-indirect-buffer &lt;RET&gt; BASE-BUFFER &lt;RET&gt; INDIRECT-NAME</code>.
+
+A split buffer is not the same thing as an indirect buffer. When you split a buffer, no new buffers are created; however, when you make an indirect buffer, the indirect buffer is a new buffer. An indirect buffer setup is special because any changes you make in the base buffer or indirect buffer are reflected in both buffers.
 
 <code>C-x 4</code> is a prefix key for a variety of commands that switch to a buffer in another window. <code>C-x 5</code> is a prefix key for a variety of commands that switch to a buffer in another frame.
 
@@ -1235,6 +1248,212 @@ Narrowing means focusing in on some portion of the buffer, making the rest tempo
   M-x what-cursor-position</dfn></dt>
   <dd>Display information about where point is relative to the entire buffer (not just the narrowed region). The numbers in angle brackets are the first line number in the narrowed region (relative to the entire buffer) and the last line number in the narrowed region (also relative to the entire buffer).</dd>
 </dl>
+
+
+# Modes
+
+Modes alter the functionality of buffers; for example, by introducing new commands and variables, altering key sequences, or altering various variables. Major modes tailor a buffer for a specific type of task.
+
+Major modes are mutually exclusive; each buffer has one and only one major mode at any time. Minor modes are optional features which you can turn on or off, not necessarily specific to a type of file or buffer. Minor modes are independent of one another, and of the selected major mode.
+
+The least specialised major mode is called "Fundamental mode". This mode has no mode-specific redefinitions or variable settings, so that each Emacs commands behaves in its most general manner, and each user option variable is in its default state.
+
+Modes are either major or minor. Minor modes are either buffer-local (can be selectively enabled on a per-buffer basis) or global (always applies to all buffers).
+
+Each mode is associated with a mode command, whose name consists of the mode name followed by "-mode". To toggle a minor mode (if it's enabled, then disable it; if it's disabled, then enable it) or switch to a major mode, you simply invoke its mode command: <code>M-x MODENAME-mode</code>. Since a buffer must have a major mode and can't have more than one major mode, you can't toggle a major mode on and off. Enabling a major mode disables the previous major mode. If you don't want to use the current major mode, then switch to a different one.
+
+
+# Files
+
+When editing a file in Emacs, you're actually working with a copy of the file: Emacs inserts the contents of the file into a buffer, which is called "visiting the file." Your changes last only as long as the Emacs session. To keep your changes permanently, you must save the buffer back into the file.
+
+Each buffer is associated with a different default directory (typically the directory of the file that's being visited in the buffer). Entering a file name without a directory specifies a file in the default directory. Entering a file name with a relative path specifies a file relative to the default directory. When you create a new buffer that is not visiting a file, its default directory is usually copied from the buffer that was current at the time. To see the default directory, type <code>M-x pwd</code>. To set the default directory explicitly, type <code>M-x cd</code>.
+
+Saving a buffer in Emacs means writing its contents back into the file that the buffer is visiting.
+
+A backup file records the contents that a file had before the current editing session. The first time you save a file from a buffer, a backup file will automatically be created for you consisting of the contents of the file before your changes. The backup will be overwritten next time you visit the file and then save. A backup filename will appear as <code>FILENAME~</code>, <code>%FILENAME%~</code>, or <code>FILENAME.~NUMBER~</code>. To prevent excessive consumption of disk space, Emacs will automatically keep the first few backups and the latest few backups, and delete any in between, each time a new backup is made.
+
+Auto saving is the practice of periodically saving the contents of an Emacs buffer in a separate file, so that the information will be preserved if the buffer is lost due to a system error or user error. By default, when visiting a file, Emacs will auto-save the buffer into a separate file after 300 or more characters have been typed in the buffer or after Emacs has been idle for 30 seconds. Emacs will also automatically auto save whenever it gets a fatal error. To explicitly auto save a buffer, type <code>M-x do-auto-save</code>. The auto-save file name is of the form <code>#FILENAME#</code> or <code>#FILENAME#UNIQUESTRING</code>. When you delete a substantial part of the text in a large buffer, auto save turns off temporarily in that buffer. To reenable auto-saving after this happens, save the buffer with <code>C-x C-s</code>, or use <code>C-u 1 M-x auto-save-mode</code>. A buffer's auto-save file is deleted when you save the buffer of the visited file. Changing the visited file name with <code>C-x C-w</code> or <code>set-visited-file-name</code> renames any auto-save file to go with the new visited name. If you want to recover a file from an auto save file, then do <code>M-x recover-file &lt;RET&gt; FILENAME &lt;RET&gt;</code>, where FILENAME is the official file's name, not the auto save file's name; note that this alone doesn't recover the file on disk. To recover the file on disk, you should save the buffer (after you invoke <code>M-x recover-file</code>). If Emacs or the computer crashes, you can recover all the files you were editing from their auto save files with the command <code>M-x recover-session</code>.
+
+Shadow files are files that are identical to each other and exist in more than one place and possibly on different machines. A shadow file group consists of one or more shadow files. The shadow file group persists across Emacs sessions, so you don't need to set it up every time you start Emacs. Once the group is set up, every time you exit Emacs or type <code>M-x shadow-copy-files</code>, it will copy the file you edited to the other files in its group. Before you start shadowing files, you need to set Emacs up for file shadowing. To do that, type <code>M-x shadow-initialize</code>. It'll seem like that command didn't do anything; however, you should see "(New file)" in the echo area. If you look at the buffer list (<code>C-x C-b</code>), then you should see two new empty files: ~/.shadows and ~/.shadow_todo. Visit and save both those buffers. To set up a shadow file group, type <code>M-x shadow-define-literal-group</code> or <code>M-x shadow-define-regexp-group</code>. I assume that all the files you specify during one shadow-define-literal-group session will be added to the same group and that each separate invocation of shadow-define-literal-group defines a new group. A shadow cluster is a group of hosts that share directories, so that copying to or from one of the hosts is sufficient to update the file on all of them. To define a shadow cluster, type <code>M-x shadow-define-cluster</code>. TODO: how to edit shadow file groups?
+
+A fileset is a group of files that can be treated as a unit. You can use <code>M-x filesets-open</code> to open all the files in the fileset; <code>M-x filesets-close</code> to close them; and <code>M-x filesets-run-cmd</code> to run a shell command against them. TODO: expand this section.
+
+If you want to view the current buffer in a Web browser (for example, if the buffer is HTML), you can type <code>M-x browse-url-of-file</code>.
+
+Dired is the Emacs directory browser. It enables you to list files in a directory (and optional its subdirectories), move around that list, visit, rename, delete, and otherwise operate on the files. To invoke Dired, type <code>C-x d</code> or <code>M-x dired</code>; you can also invoke Dired by giving <code>C-x C-f</code> a directory name. There are actually many ways to invoke Dired. The Dired buffer is read-only. Press <code>h</code> for help.
+
+Wdired is a special mode that allows you to perform file operations by editing the Dired buffer directly (the W in Wdired stands for Writable). To enter Wdired mode, type <code>C-x C-q</code> or <code>M-x wdired-change-to-wdired-mode</code> while in a Dired buffer. After you are done making changes, type <code>C-c C-c</code> to apply your changes and switch back to ordinary Dired mode.
+
+Image-Dired is a special mode for viewing a directory that contains images. To enter Image-Dired mode, type <code>C-t d</code> while in a Dired buffer or by typing <code>M-x image-tired</code>.
+
+A dribble file is a file into which Emacs writes all the characters that you type on the keyboard. Dribble files can be used to make a record for debugging Emacs bugs. Emacs does not make a dribble file unless you tell it to. To start writing all keyboard characters to a dribble file called FILENAME, type <code>M-x open-dribble-file &lt;RET&gt; FILENAME</code>. From then on, Emacs copies all your input to the specified dribble file until the Emacs process is killed.
+
+<dl>
+  <dt><dfn>
+  C-x C-f FILENAME<br>
+  M-x find-file &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>
+<p>Visit the specified file (copy the file's contents into an Emacs buffer, so that you can view or edit the file) in the current frame and window. If the file doesn't exist, then an empty buffer is created.</p>
+
+<p>If you visit a file that is already in Emacs, <code>C-x C-f</code> switches to the existing buffer instead of making another copy. Before doing so, it checks whether the file has changed since you last visited for saved it. If the file has changed, Emacs offers to reread it.</p>
+
+<p>When the minibuffer is used to read a file name, it typically starts out with some initial text ending in a slash. This is the default directory. If you don't want the prompt to display the default directory, then add the following to your ~/.emacs.d/init.el: <code>(setq insert-default-directory nil)</code>. If you set insert-default-directory to nil, then file names you specify will still be relative to the default directory; you just won't see the default directory in the prompt. If you insert a double slash ('//') or a tilde ('~') in the file name prompt, then everything before the double slash or tilde will be ignored. This provides a convenient way for you to enter a file name without having to kill the entire line.</p>
+
+<p>You can specify environment variables in file names; Emacs will expand them. Just write them like you normally would in the terminal: preceded by a dollar sign (<code>$ENVAR</code>) and optionally surrounded by braces (<code>${ENVAR}</code>). You can enter file names, just as you would in a terminal: <code>~/</code> means your home directory; <code>~/USERNAME/</code> or <code>~USERNAME/</code> means the home directory of the specified user; <code>.</code> means the current directory; and <code>..</code> means the parent directory. You can also use the '?' and '*' wildcard characters; Emacs will visit all the files that match the wildcard.</p>
+
+<p>If you want to specify a file name literally, without having special characters being interpreted, then start the line with <code>/:</code>. Note that you can still use relative paths.</p>
+
+<p>If the specified filename is actually a directory, then Emacs will invoke Dired, the Emacs directory browser.</p>
+
+<p>If you visit a file that the operating system won't let you modify, or that is marked read-only, Emacs makes the buffer read-only too.</p>
+
+<p>Emacs automatically uncompresses compressed files when you visit them, and automatically recompresses them if you alter them and save them.</p>
+
+<p>If you visit a file archive, then Emacs will use Tar mode or Archive mode to provide a Dired-like list of the contents of the archive. You can edit or delete files in an archive. When you save your changes, the archive will automatically be recreated with your changes.</p>
+
+<p>The TRAMP package (comes with Emacs and works right out of the box) provides a way to edit remote files (files that are stored on a system other than your own) or edit files as another user (the package also allows you to do other things, but the gist of the package is that it allows you to do things remotely). All you have to do is prepend some stuff to the file name you want to visit: <code>/METHODNAME:USERNAME@HOST.DOMAINNAME#PORTNUMBER:/PATH/TO/FILE</code>. Only the initial forward slash ('/'), host, colon (':'), and filename are required. Note that the host can be specified by name, IPv4 address, or IPv6 address. If you use IPv6, then you must surround the IPv6 address with square brackets. There are many possibilities for method name: rsh, ssh, telnet, su, sudo, sshx, krlogin, ksu, plink, plinkx, rcp, scp, sftp, rsync, scpx, scpc, rsyncc, pscp, psftp, fcp, ftp, and smb. TRAMP is supposed to make editing a remote file seem just like editing a local file, so all the commands you normally you use for local files can also be used with remote files.</p>
+
+<p>In graphical Emacs, if you visit an image, the image will be displayed in Emacs. You can type <code>C-c C-c</code> to toggle between viewing the image and viewing the image's file contents. If the image is animated, then <code>&lt;RET&gt;</code> can toggle animation on and off.</p>
+
+<p>In graphical Emacs, if you visit a PDF, the PDF will be displayed in Emacs. You can type <code>C-c C-c</code> to toggle between viewing the PDF and viewing the PDF's file contents.</p>
+  </dd>
+
+  <dt><dfn>
+  C-x C-v FILENAME<br>
+  M-x find-alternate-file &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>
+<p>Kill the current buffer (after first offering to save it if it's modified) and then visit the specified file.</p>
+
+<p>When <code>C-x C-v</code> reads the file name to visit, it inserts the entire default file name in the buffer, with point just after the directory part; this is convenient if you made a slight error in typing the name.</p>
+</dd>
+
+  <dt><dfn>
+  C-x C-r FILENAME<br>
+  M-x find-file-read-only &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>Visit the specified file in read-only mode.</dd>
+
+  <dt><dfn>
+  C-x 4 f FILENAME<br>
+  C-x 4 C-f FILENAME<br>
+  M-x find-file-other-window &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>Visit the specified file in another window.</dd>
+
+  <dt><dfn>
+  C-x 4 r<br>
+  M-x find-file-read-only-other-window &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>Visit the specified file in read-only mode in another window.</dd>
+
+  <dt><dfn>
+  C-x 5 f FILENAME<br>
+  C-x 5 C-f FILENAME<br>
+  M-x find-file-other-frame &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>Visit the specified file in another frame.</dd>
+
+  <dt><dfn>
+  C-x 5 r FILENAME<br>
+  M-x find-file-read-only-other-frame &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>Visit the specified file in read-only mode in another frame.</dd>
+
+  <dt><dfn>
+  C-x C-s<br>
+  M-x save-buffer</dfn></dt>
+  <dd>
+<p>Save the current buffer to its file. If the current buffer is not modified (no changes have been made in it since the buffer was created or last saved), saving is not really done, because it would have no effect. Instead, a message is displayed in the echo area: "(No changes need to be saved)".</p>
+
+<p>If you want to request for a backup to be created next time you save, then invoke save-buffer with a prefix argument: <code>C-u C-x C-s</code>.</p>
+
+<p>If you want to make a backup immediately, and then save your changes, then invoke save-buffer with two prefix arguments: <code>C-u C-u C-x C-s</code>.</p>
+
+<p>If you want to make a backup immediately, save your changes, and then request for a backup to be created next time you save, then invoke save-buffer with three prefix arguments: <code>C-u C-u C-u C-x C-s</code>.</p>
+  </dd>
+
+  <dt><dfn>
+  C-x s<br>
+  M-x save-some-buffers</dfn></dt>
+  <dd>For each modified buffer, answer whether you want to save the buffer or not. Note that <code>C-x C-c</code> invokes <code>save-some-buffers</code> before killing Emacs.</dd>
+
+  <dt><dfn>
+  M-~<br>
+  M-x not-modified</dfn></dt>
+  <dd>
+<p>Mark the current buffer as "not modified" to protect it from being saved. This is useful if you made changes to the buffer, but don't want to save those changes (and don't want to risk saving those changes).</p>
+
+<p>To mark a buffer as modified, type <code>C-u M-~</code>.</p>
+  </dd>
+
+  <dt><dfn>M-x set-visited-file-name &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>Change the name of the file that the buffer is visiting; this doesn't visit the new file name and doesn't save the buffer changes to the new file name. If you want to save the buffer's contents to the new file name, then use <code>C-x C-s</code>.</dd>
+
+  <dt><dfn>
+  C-x C-w FILENAME<br>
+  M-x write-file &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>Change the name of the file that the buffer is visiting, and then save the current buffer under that file name. This is equivalent to <code>M-x set-visited-file-name &lt;RET&gt; FILENAME &lt;RET&gt; C-x C-s</code>.</dd>
+
+  <dt><dfn>
+  C-x C-d DIR-OR-PATTERN<br>
+  M-x list-directory &lt;RET&gt; DIR-OR-PATTERN</dfn></dt>
+  <dd>Display a brief directory listing (like <code>ls -CF</code>).</dd>
+
+  <dt><dfn>
+  C-u C-x C-d DIR-OR-PATTERN<br>
+  C-u M-x list-directory &lt;RET&gt; DIR-OR-PATTERN</dfn></dt>
+  <dd>Display a verbose directory listing (like <code>ls -l</code>).</dd>
+
+  <dt><dfn>M-x make-directory &lt;RET&gt; DIRNAME</dfn></dt>
+  <dd>Create a new directory using the specified name.</dd>
+
+  <dt><dfn>M-x delete-file &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>Delete the specified file.</dd>
+
+  <dt><dfn>M-x delete-directory &lt;RET&gt; DIRNAME</dfn></dt>
+  <dd>Delete the specified directory.</dd>
+
+  <dt><dfn>M-x copy-file &lt;RET&gt; OLD &lt;RET&gt; NEW</dfn></dt>
+  <dd>Copy the specified file into a file named NEW.</dd>
+
+  <dt><dfn>M-x copy-directory &lt;RET&gt; OLD &lt;RET&gt; NEW</dfn></dt>
+  <dd>Copy the specified directory into a directory named NEW.</dd>
+
+  <dt><dfn>M-x rename-file &lt;RET&gt; OLD &lt;RET&gt; NEW</dfn></dt>
+  <dd>Rename the specified file from OLD to NEW. If NEW is a directory name, then use that directory, and move OLD into it.</dd>
+
+  <dt><dfn>M-x make-symbolic-link &lt;RET&gt; TARGET &lt;RET&gt; LINKNAME</dfn></dt>
+  <dd>Create a symbolic link named LINKNAME, which points to TARGET.</dd>
+
+  <dt><dfn>
+  C-x i<br>
+  M-x insert-file</dfn></dt>
+  <dd>Insert a copy of the contents of the specified file into the current buffer at point, leaving point unchanged, but moving mark to the end of the inserted contents.</dd>
+
+  <dt><dfn>M-x write-region</dfn></dt>
+  <dd>Copy the contents of region into the specified file.</dd>
+
+  <dt><dfn>M-x append-to-file</dfn></dt>
+  <dd>Append the contents of region to the end of the specified file.</dd>
+
+  <dt><dfn>
+  M-x set-file-modes<br>
+  M-x chmod</dfn></dt>
+  <dd>Change the file modes (file permissions) of the specified file. Specify the arguments in the same format that chmod would expect.</dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+</dl>
+
 
 
 # Completion
