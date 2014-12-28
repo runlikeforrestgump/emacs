@@ -17,12 +17,16 @@ I have used [Vim](http://www.vim.org) for years. I've also used [Eclipse](https:
 
 At first, my plan was to try to write down everything I normally do in Vim and Eclipse, and then translate those things into Emacs. Then, I realised that Emacs can probably do much more than those things (people do call it an operating system for a reason). That's when I decided to read the entire GNU Emacs manual, which took me a solid two weeks of reading (I'm a slow reader and take notes when I read; I was reading about 5% per day, and more on the weekend (10% per day)). I also spent another week reading some of the other Info manuals.
 
-The problem with a lot of Emacs guides out there is that they seem to be copy-and-pasted from each other (I think this applies to a lot of guides in general) and really only cover working with plaintext files. Then there are guides out there that only focus on one programming language. Then there's the GNU Emacs manual, which takes weeks to read. Then there's using Emacs on a daily basis and slowly learning as you go for years. The problem with switching IDEs is that you don't want to sacrifice your productivity. This is where my guide comes in. The purpose of the guide is to get you up to speed on typical things that programmers demand from their IDE while also being useful as a reference for jogging your memory for those things. I don't want the guide to be comprehensive. I just want it to get straight to the point for all the important things. Essentially, I want to develop a conceptual framework, from which you (and I) can build on. You may feel overwhelmed by Emacs's steep learning curve, but consider it a worthwhile investment: you're investing your time in something that you'll use for a lifetime.
+The problem with a lot of Emacs guides out there is that they seem to be copy-and-pasted from each other (I think this applies to a lot of guides in general, which you can often find on people's blogs) and really only cover the basics of working with plaintext files. Then there are guides out there that only focus on one programming language, which means you'll have to depend on different guides (assuming you use more than one language), which likely differ in their quality. Then there's the GNU Emacs manual, which takes weeks to read and doesn't cover everything that a programmer would want to know. Then there's using Emacs on a daily basis and very slowly learning as you go for years. The problem with switching IDEs is that you don't want to sacrifice your productivity. This is where my guide comes in. The purpose of the guide is to get you up to speed on typical things that programmers demand from their IDE while also being useful as a reference for jogging your memory for those things. I don't want the guide to be comprehensive. I just want it to get straight to the point for all the important things. Essentially, I want to develop a conceptual framework, from which you (and I) can build on. You may feel overwhelmed by Emacs's steep learning curve, but consider it a worthwhile investment: you're investing your time in something that you'll use for a lifetime.
+
+Another problem with a lot of guides in general is that the trend these days seems to be that guides try hard (often too hard) to be cute and funny (and sometimes come off as condescending and overly simplistic). I value humour, but I very rarely come across a guide that uses humour well. In most cases, the humour is noisy and distracting and doesn't even serve its purpose of being funny; I've even run into cases where the humour introduced confusion and ambiguity. Remember, if your primary goal is to teach something, then focus your efforts on teaching, not telling jokes.
 
 
 # History
 
 Richard Stallman joined the MIT Artificial Intelligence Lab in 1971 (when he was about 18 years old).
+
+The original EMACS was written in 1976 by Richard Stallman (when he was about 23 years old) and Guy L. Steele, Jr. as a set of **E**ditor **MAC**ro**S** for the TECO (Tape Editor and Corrector) editor for the Incompatible Timesharing System (ITS) operating system on the PDP line of computers in use at MIT at the time.
 
 The GNU Project was created on 27 September 1983 by Richard Stallman (when he was 30 years old) as a project for developing free software (free as in freedom). The main project was the GNU operating system.
 
@@ -36,16 +40,14 @@ Emacs actually refers to a family of text editors; however, when unqualified, it
 
 Note that GNU Emacs wasn't the first Emacs, but the first Emacs was also written by Richard Stallman. GNU Emacs was initially created as a free software alternative to the proprietary Gosling Emacs (also known as Gosmacs, gmacs, or UniPress Emacs), which was created by James Gosling (the creator of Java) in 1981. Gosling Emacs was owned by UniPress. Gosling Emacs was written in C and Mocklisp (aka MLisp). It was the first Emacs to run on Unix.
 
-The original EMACS was written in 1976 by Richard Stallman (when he was about 23 years old) and Guy L. Steele, Jr. as a set of **E**ditor **MAC**ro**S** for the TECO (Tape Editor and Corrector) editor for the Incompatible Timesharing System (ITS) operating system on the PDP line of computers in use at MIT at the time.
+GNU Emacs is written in C and Emacs Lisp (Elisp). LISP 1 was the first implementation of Lisp. LISP 1.5 was the first widely used Lisp implementation. MACLISP appeared in the 1960s; it was developed for MIT's ProjectMAC and was a direct descendent of LISP 1.5. Scheme (influenced by LISP 1.5 and MACLISP) appeared in 1975 and Common Lisp appeared in 1984. "Richard Stallman chose Lisp as the extension language for his rewrite of Emacs because of its powerful features, including the ability to treat functions as data. Unlike Common Lisp, Scheme existed at the time Stallman was rewriting Gosling Emacs into GNU Emacs, but he chose not to use it because of its comparatively poor performance on workstations, and he wanted to develop a dialect which he thought would be more easily optimized." "In terms of features, Elisp is closely related to the Maclisp dialect, with some later influence from Common Lisp." A scripting language used for scripting an application is called an extension language. Elisp is considered an extension language. Elisp is a scripting language dialect of a general-purpose language (Lisp).
 
-GNU Emacs is written in C and Emacs Lisp (Elisp). LISP 1 was the first implementation of Lisp. LISP 1.5 was the first widely used Lisp implementation. MACLISP appeared in the 1960s; it was developed for MIT's ProjectMAC and was a direct descendent of LISP 1.5. Scheme (influenced by LISP 1.5 and MACLISP) appeared in 1975 and Common Lisp appeared in 1984. "Richard Stallman chose Lisp as the extension language for his rewrite of Emacs because of its powerful features, including the ability to treat functions as data. Unlike Common Lisp, Scheme existed at the time Stallman was rewriting Gosling Emacs into GNU Emacs, but he chose not to use it because of its comparatively poor performance on workstations, and he wanted to develop a dialect which he thought would be more easily optimized." "In terms of features, Elisp is closely related to the Maclisp dialect, with some later influence from Common Lisp." A scripting language used for scripting an application is called an extension language. Elisp is considered an extension language. Elisp is a scripting language dialect of a general-purpose language.
-
-If you want to read more about the history of the GNU Project, type <code>C-h g</code> (<code>M-x describe-gnu-project</code>) in Emacs. To paraphrase one of my favourite quotes from that document: "Sharing of software is as old as computers, just as sharing of recipes is as old as cooking." Extremely well articulated, Richard!
+If you want to read more about the history of the GNU Project, type <code>C-h g</code> (<code>M-x describe-gnu-project</code>) in Emacs. To paraphrase one of my favourite quotes from that document: "Sharing of software is as old as computers, just as sharing of recipes is as old as cooking."
 
 
 # Installing [Emacs](https://www.gnu.org/software/emacs/)
 
-At first, I installed Emacs without X support, which meant that I only used Emacs in a terminal. After a lot of reading and after watching experienced users use Emacs, I decided to reinstall Emacs with X support. It's not the most pleasant looking GUI (at least on Linux), but I recommend installing with X support (unless you don't have X and don't want it) because then you have the flexibility of starting Emacs in graphical mode (<code>emacs</code>) or in terminal mode (<code>emacs -nw</code>). Also, there are some things you can do in graphical mode that you can't do in terminal mode, and graphical mode provides conveniences like a menu, which is useful when you're completely lost and don't know what you're doing (like when you're a beginner). Graphical mode also has helpful tooltips when you mouseover things. This guide assumes that you didn't install with X support; I'm sure you have experience with a GUI and can figure out GUI-specific stuff on your own (click, click, click, click, click).
+At first, I installed Emacs without X support, which meant that I only used Emacs in a terminal. After a lot of reading and after watching experienced users use Emacs, I decided to reinstall Emacs with X support. It's not the most pleasant looking GUI (at least on Linux), but I recommend installing with X support (unless you don't have X and don't want it) because then you have the flexibility of starting Emacs in graphical mode (<code>emacs</code>) or in terminal mode (<code>emacs -nw</code>). Also, there are some things you can do in graphical mode that you can't do in terminal mode, and graphical mode provides conveniences like a menu, which is useful when you're completely lost and don't know what you're doing (like when you're a beginner). Graphical mode also has helpful tooltips when you mouseover things. Another benefit of graphical mode is that you're less likely to encounter key conflicts (most key conflicts are caused by your terminal). This guide assumes that you didn't install with X support; I'm sure you have experience with a GUI and can figure out GUI-specific stuff on your own (click, click, click, click, click).
 
 I'm using [dwm](http://dwm.suckless.org) on [Gentoo GNU/Linux](http://www.gentoo.org). I installed with the toolkit-scroll-bars and xft USE flags because the Emacs toolbars didn't look very good and without xft support, Emacs displayed some strings (such as the buffer name in the mode line) in hex.
 
@@ -67,15 +69,15 @@ Additionally, you can tell Emacs to load one or more specified files after launc
   <dd>Launch Emacs and then load the specified file.</dd>
 
   <dt><dfn>emacs +LINE_NUMBER FILENAME</dfn></dt>
-  <dd>Launch Emacs, load the specified file, and then move point to the specified line number in that file.</dd>
+  <dd>Launch Emacs, load the specified file, and then move point to the specified line number in the specified file.</dd>
 
   <dt><dfn>emacs +LINE_NUMBER:COLUMN_NUMBER FILENAME</dfn></dt>
-  <dd>Launch Emacs, load the specified file, and then move the cursor to the specified column number on the specified line number in that file.</dd>
+  <dd>Launch Emacs, load the specified file, and then move the cursor to the specified column number on the specified line number in the specified file.</dd>
 </dl>
 
-You'll only see the last file that you specified; however, the other files will also have been loaded and are available in the buffer list.
-
 The optional <code>+LINE_NUMBER:COLUMN_NUMBER</code> applies only to the next file specified.
+
+If you specify more than one file, then you'll only see the last file that you specified; however, the other files will also have been loaded and are available in the buffer list.
 
 
 # Most Important Things to Know First
@@ -89,7 +91,7 @@ To invoke a command in Emacs:
 
 Some commands are (or can be) disabled, which means that you'll be asked for confirmation when you try to invoke them. The usual reason for disabling a command is that some commands are potentially confusing for beginning users.
 
-You'll notice that some commands are grouped by similar prefix keys or prefix or suffix names; for example, a lot of window-based key sequences start with <code>C-x 4</code> and a lot of frame-based commands start with <code>C-x 5</code>.
+You'll notice that some commands are grouped by similar prefix keys or prefix or suffix names; for example, a lot of window-based key sequences start with <code>C-x 4</code> and a lot of frame-based commands start with <code>C-x 5</code>. This makes it a little easier to remember things.
 
 
 ## Invoking Commands by Key Sequence
@@ -143,15 +145,11 @@ Typing the help character (<code>C-h</code> or <code>&lt;F1&gt;</code>) after a 
 
 ## Invoking Commands by Name
 
-It's very easy to invoke a command by name. Just type <code>M-x</code>, followed by the command name, followed by <code>&lt;RET&gt;</code>.
+It's very easy to invoke a command by name. Just type <code>M-x</code>, followed by the command name, followed by <code>&lt;RET&gt;</code>. By convention, a command name consists of one or more words, separated by hyphens.
 
 If you invoke a command by name that could also have been invoked by a key sequence, then Emacs will use the echo area to tell you what key sequence you can use next time you want to invoke the command. If the message disappears too quickly, you can type <code>C-h e</code> to view a log of the echo area messages.
 
-For commands that you don't use often, it's probably easier to remember the command by name rather than by key.
-
-Not all commands are bound to keys.
-
-By convention, a command name consists of one or more words, separated by hyphens.
+For commands that you don't use often, it's probably easier to remember the command by name rather than by key. Also, not all commands are bound to keys.
 
 
 ## Key Conflicts
@@ -174,7 +172,7 @@ Some conflicts that I've run into:
 
 ## Numeric Arguments (aka Prefix Arguments)
 
-A numeric argument (aka prefix argument) is a number (positive or negative), specified before a command, to change the effect of the command. You can give any Emacs command a numeric argument. Some commands interpret the argument as a repetition count; some commands change their behaviour based on the numeric argument; some commands care whether there is an argument, but ignore its value; some commands treat a plain <code>C-u</code> (a C-u followed by no digits or minus sign) differently from an ordinary argument; some commands treat 0 specially if the numeric argument is treated as a repetition count (because a repetition count of 0 would otherwise be a no-op).
+A numeric argument (aka prefix argument) is a number (positive or negative or 0), specified before a command, to change the effect of the command. You can give any Emacs command a numeric argument. Some commands interpret the argument as a repetition count; some commands change their behaviour based on the numeric argument; some commands care whether there is an argument, but ignore its value; some commands treat a plain <code>C-u</code> (a C-u followed by no digits or minus sign) differently from an ordinary argument; some commands treat 0 specially if the numeric argument is treated as a repetition count (because a repetition count of 0 would otherwise be a no-op).
 
 The term "prefix argument" ephasises the fact that the argument is specified before the command. "Prefix argument" is a synonym for "numeric argument."
 
@@ -189,6 +187,96 @@ A minus sign without digits normally means -1.
 You can use a numeric argument before a self-inserting character to insert multiple copies of it. If the character is a number, then you need to use <code>C-u</code> to terminate the prefix argument before typing the digit; for example, to append 6 zeros to your paycheque, you can do: <code>M-6 C-u 0</code> or <code>C-u 6 C-u 0</code>.
 
 If you want to repeat a command that prompts for input or repeat a command that doesn't treat a numeric argument as a repetition count, then you need to use the command <code>C-x z</code> (<code>M-x repeat</code>). Repeating a command uses the same arguments that were used before; it does not read new arguments each time. To repeat the command more than once, type additional 'z''s: each 'z' repeats the command one more time. Repetition ends when you type a character other than 'z', or press a mouse button.
+
+
+## Keyboard Macros
+
+Keyboard macros are a way of defining new Emacs commands from sequences of existing ones, with no need to write a Lisp program. You can use a macro to record a sequence of commands, then play them back as many times as you like.
+
+Basically, you invoke a command (typically via <code>&lt;F3&gt;</code>) to start recording a keyboard macro. From that point forward, everything you type will be recorded until you either end the macro definition (typically via <code>&lt;F4&gt;</code>) or cancel it (<code>C-g</code>). To invoke the most recently defined macro, you use the same key that you used to end the definition: <code>&lt;F4&gt;</code>. If you want to invoke the macro repeatedly, then use a prefix argument with <code>&lt;F4&gt;</code>.
+
+After you've defined a keyboard macro, there are a few ways you can edit its definition: you can append a new definition to the end of the existing definition; edit the macro in a buffer with a specialised major mode for editing macros; or interactively edit the macro's definition one command at a time.
+
+After you've defined a keyboard macro, you can optionally bind it to a name or a key sequence. If you change the macro's definition after you bind it, then you'll have to rebind it to get the updated definition on your command or key sequence. Once you've at least bound the macro to a name, then you can insert its definition (optionally with its key binding) into a buffer (usually your init file), so that you can save the macro for future Emacs sessions.
+
+<dl>
+  <dt><dfn>
+  &lt;F3&gt;<br>
+  M-x kmacro-start-macro-or-insert-counter<br>
+  C-x (<br>
+  M-x kmacro-start-macro</dfn></dt>
+  <dd>
+<p>Start the definition of a keyboard macro. Your keys will continue to be executed, but will also become part of the definition of the macro; this means that the first time you define a keyboard macro is also the first time you execute it. 'Def' appears in the mode line to remind you that you're defining a keyboard macro.</p>
+
+<p>Most keyboard commands work as usual in a keyboard macro definition; however, typing <code>C-g</code> (<code>keyboard-quit</code>) quits the keyboard macro definition.</p>
+
+<p>When a command reads an argument with the minibuffer, your minibuffer input becomes part of the macro along with the command, so when you replay the macro, the command gets the same argument as when you entered the macro.</p>
+
+<p>Each keyboard macro has an associated counter, which is initialised to 0 when you start defining the macro. Each time &lt;F3&gt; appears in the macro definition, the counter's value is inserted into the buffer and then the counter's value is incremented. You can change what the increment is (default is 1) by using a numeric prefix argument. You can use this type of behaviour for doing things like making numbered lists.</p>
+
+<p>If you use <code>C-x q</code> (or <code>M-x kbd-macro-query</code>) in your macro definition, then whenever <code>C-x q</code> is encountered when the macro is executed, the macro will pause and prompt you asking you how you'd like to proceed (continue executing; skip the remainder of this repetition of the macro and start right away with the next repetition; skip the remainder of this repetition and cancel further repetitions; enter a recursive editing level, in which you can perform editing which is not part of the macro).</p>
+  </dd>
+
+  <dt><dfn>
+  &lt;F4&gt;<br>
+  M-x kmacro-end-or-call-macro<br>
+  C-x )<br>
+  M-x kmacro-end-macro<br>
+  C-x e<br>
+  M-x kmacro-end-and-call-macro</dfn></dt>
+  <dd>
+<p>If a keyboard macro is being defined, end the definition; otherwise, execute the most recent keyboard macro.</p>
+
+<p>You can supply a numeric prefix argument to invoke the macro a specified number of numbers. An argument of zero repeats the macro until it gets an error or until you type <code>C-g</code>.</p>
+  </dd>
+
+  <dt><dfn>
+  C-u &lt;F3&gt;<br>
+  C-u M-x kmacro-start-macro-or-insert-counter</dfn></dt>
+  <dd>Start the definition of a keyboard macro by recording the execution of the previous macro, and then recording anything else you type before you end the macro definition.</dd>
+
+  <dt><dfn>
+  C-u C-u &lt;F3&gt;<br>
+  C-u C-u M-x kmacro-start-macro-or-insert-counter</dfn></dt>
+  <dd>Start the definition of a keyboard macro based on the previous macro, but without executing the previous macro. Anything else you type will be recorded and appended to the definition until you end the macro definition.</dd>
+
+  <dt><dfn>
+  C-x C-k n<br>
+  M-x kmacro-name-last-macro</dfn></dt>
+  <dd>Bind the most recently defined keyboard macro to a command name for the duration of the Emacs session.</dd>
+
+  <dt><dfn>
+  C-x C-k b<br>
+  M-x kmacro-bind-to-key</dfn></dt>
+  <dd>
+<p>Bind the most recently defined keyboard macro to a key sequence for the duration of the Emacs session.</p>
+
+<p>To avoid problems caused by overriding existing bindings, the key sequences <code>C-x C-k 0</code> through <code>C-x C-k 9</code> and <code>C-x C-k A</code> through <code>C-x C-k Z</code> are reserved for your own keyboard macro bindings (or any other custom bindings). To bind to one of those key sequences, you only need to type the digit or letter rather than the whole key sequence; for example, <code>C-x C-k b 4</code> instead of <code>C-x C-k b C-x C-k 4</code>, although either way will work.</p>
+  </dd>
+
+  <dt><dfn>M-x insert-kbd-macro &lt;RET&gt; MACRO-NAME</dfn></dt>
+  <dd>If a macro is bound to the specified name (use <code>C-x C-k n</code> before you invoke <code>M-x insert-kbd-macro</code>), then insert its definition in Lisp code into the current buffer. If you use a prefix argument, then any key bindings for the macro will also be inserted into the buffer. The reason for being able to insert the macro's definition into the buffer, is so that you can persist the macro across Emacs sessions. You would typically insert the macro's definition and key bindings into your init file or into a Lisp file that you would then load with <code>M-x load-file</code>.</dd>
+
+  <dt><dfn>
+  C-x C-k C-e<br>
+  M-x kmacro-edit-macro</dfn></dt>
+  <dd>Enter a buffer with a specialised major mode for editing the most recently defined keyboard macro. Press <code>C-h m</code> for help once in that buffer.</dd>
+
+  <dt><dfn>
+  C-x C-k e MACRO-NAME-OR-KEY<br>
+  M-x edit-kbd-macro &lt;RET&gt; MACRO-NAME-OR-KEY</dfn></dt>
+  <dd>Enter a buffer with a specialised major mode for editing the specified keyboard macro. Press <code>C-h m</code> for help once in that buffer.</dd>
+
+  <dt><dfn>
+  C-x C-k l<br>
+  M-x kmacro-edit-lossage</dfn></dt>
+  <dd>Enter a buffer with a specialised major mode for editing your last 300 keystrokes as a keyboard macro. Press <code>C-h m</code> for help once in that buffer.</dd>
+
+  <dt><dfn>
+  C-x C-k &lt;SPC&gt;<br>
+  M-x kmacro-step-edit-macro</dfn></dt>
+  <dd>Interactively replay and edit the most recently defined keyboard macro, one command at a time (remember, a keyboard macro is made up of one or more commands). Press <code>?</code> for help.</dd>
+</dl>
 
 
 ## Quoting
@@ -554,7 +642,7 @@ Note that modes correspond to commands, so if you want to read the documentation
 
 In a help buffer, you can use <code>&lt;SPC&gt;</code> to scroll forward and <code>&lt;DEL&gt;</code> to scroll backward. When a function name, variable name, or face name appears in the documentation in the help buffer, it is normally an underlined hyperlink. To view the associated documentation, move point there and type <code>&lt;RET&gt;</code>, or click on the hyperlink. Doing so replaces the contents of the help buffer; to retrace your steps, type <code>C-c C-b</code> (<code>M-x help-go-back</code>). A help buffer can also contain hyperlinks to Info manuals, source code definitions, and URLs (Web pages). The first two are opened in Emacs, and the third using a Web browser via the browse-url command. To move to the next hyperlink in a help buffer, use <code>&lt;TAB&gt;</code>. To move to the previous hyperlink, use <code>S-&lt;TAB&gt;</code>. <code>&lt;TAB&gt;</code> and <code>S-&lt;TAB&gt;</code> act cyclically, so if you're on the last hyperlink, <code>&lt;TAB&gt;</code> moves to the first hyperlink; if you're on the first hyperlink, <code>S-&lt;TAB&gt;</code> moves to the last hyperlink. If a variable, function, or face name isn't hyperlinked, you can still views its documentation by moving point to the symbol and then typing <code>C-c C-c</code> (<code>M-x help-follow-symbol</code>). To exit a help buffer, press <code>q</code>.
 
-When you're in a buffer that's not meant for inserting text, you can usually press <code>h</code> or <code>?</code> for help.
+When you're in a buffer that's not meant for inserting text, you can usually press <code>h</code> or <code>?</code> for help. If you're in a buffer that's meant for inserting text, then you could use <code>C-h m</code> instead.
 
 A list of Emacs mailing lists is available here: https://savannah.gnu.org/mail/?group=emacs (help-gnu-emacs@gnu.org or help-emacs-windows@gnu.org are probably the ones you want (if you're looking for help)). You can search the mailing lists at https://lists.gnu.org/archive/html/help-gnu-emacs/ or https://lists.gnu.org/archive/html/help-emacs-windows/.
 
@@ -711,7 +799,7 @@ Each frame consists of several distinct regions:
 * Between the menu bar and the echo area is where one or more **window**s are displayed.
 * Each window displays the contents of a **buffer**. A buffer typically contains the contents of a file, but buffers aren't limited to just that use case. Each buffer has a name.
 * You can limit what text you see in the buffer, making the rest of the text in the buffer temporarily inaccessible and invisible (however, it's still there and you can still save it). This is called **narrowing**. You can think of it as zooming in on something, so that you can focus your attention without distraction (or for easily applying changes to a limited portion of the text). The opposite of narrowing is called **widening**. When narrowed, the text that is still accessible is called the **accessible portion**; the bounds of the narrowed region are called its **restriction**.
-* Each window has a **scrollbar**. The echo area and minibuffer also have a scrollbar.
+* In graphical mode, each window has a **scrollbar**. The echo area and minibuffer also have a scrollbar.
 * At the very bottom of each window is a **mode line**, which provides information about the window's buffer.
 * **Fringes** are the narrow strips that appear on the left and right of a window. They are used for displaying symbols that provide information about the buffer text. Fringes are not the same thing as borders.
 * A **margin** is the space between the usable part of a window (including the fringe) and the window edge. I guess you can think of a margin as the window's internal border and think of the window's edge as the window's external border.
@@ -727,13 +815,13 @@ Each frame consists of several distinct regions:
 * By default, the **cursor** in the selected window is a solid block that appears to be on a character. The cursor shows on the screen where point is located in the text. Cursor and point are not the same thing. You can think of point as the left edge of the cursor. Some characters (such as tabs) are extra wide; when the cursor is positioned over such a character, it normally stretches over the width of the wide character.
 * **Point** is the place in the buffer at which insertion and deletion occur. Point is considered to be between two characters, not at or on one character. The cursor indicates the location of point.
 * Before point means the character before the cursor.
-* After point means the character under the cursor.
+* After point means the character at or on the cursor.
 * **Mark** points to a position in the text. It specifies one end of the region, point being the other end.
 * The **region** is the text between point and the mark. When the region is active, it's highlighted.
 * The **empty region** is when mark and point refer to the same spot.
 * A **rectangle** consists of the text in a given range of columns on a given range of lines. It's a type of region.
 * The **empty rectangle** is when point and mark are in the same column. If they are in the same line, then the rectangle is one line high.
-* **Active text** refers to text that does something special in response to mouse clicks or <RET>. You can move your point over the active text, and then type <code>C-h .</code> to display some help text for it in the echo area.
+* **Active text** refers to text that does something special in response to mouse clicks or &lt;RET&gt;. You can move your point over the active text, and then type <code>C-h .</code> to display some help text for it in the echo area.
 * Sometimes you'll see **hyperlinks**, which you can follow by clicking with your mouse or by moving point over the link and then pressing &lt;RET&gt;.
 * **Tooltips** (**balloon help**) are small windows that display text information at the current mouse position. They activate when there is a pause in mouse movement over some significant piece of text in a window, or the mode line, or some other part of the Emacs frame such as a tool bar button or menu item.
 * A **page** is a unit of text, delimited by formfeed characters (ASCII control-L: ^L) at the beginning of a line. Traditionally, when printing to hardcopy, each formfeed character forces a page break.
@@ -886,7 +974,9 @@ When you're in the menu bar's minibuffer, you can press <code>&lt;PageUp&gt;</co
 
 ## Minibuffer
 
-The minibuffer is where Emacs commands read complicated arguments, such as file names, buffer names, command names, or Lisp expressions. When the minibuffer is in use, it appears in the echo area with a cursor. The minibuffer starts with a prompt string, which states what kind of input is expected. The prompt string usually ends with a colon and stands out from the input text. Sometimes, the prompt shows a default argument, inside parentheses before the colon. This default will be used as the argument if you just type <code>&lt;RET&gt;</code> without entering anything else (in other words, when you submit an empty string). The minibuffer doesn't have a mode line.
+The minibuffer is where Emacs commands read complicated arguments, such as file names, buffer names, command names, or Lisp expressions. When the minibuffer is in use, it appears in the echo area with a cursor. The minibuffer starts with a prompt string, which states what kind of input is expected. The prompt string usually ends with a colon and stands out from the input text. Sometimes, the prompt shows a default argument, inside parentheses before the colon. This default will be used as the argument if you just type <code>&lt;RET&gt;</code> without entering anything else (in other words, when you submit an empty string).
+
+The minibuffer doesn't have a mode line.
 
 If an error message or an informative message is emitted while the minibuffer is active, the message hides the minibuffer for a few seconds, or until you type something; then the minibuffer comes back.
 
@@ -1724,6 +1814,11 @@ TODO
 
 
 ## Minibuffer
+
+TODO
+
+
+# Spell Checking
 
 TODO
 
