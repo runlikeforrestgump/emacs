@@ -93,6 +93,8 @@ Some commands are (or can be) disabled, which means that you'll be asked for con
 
 You'll notice that some commands are grouped by similar prefix keys or prefix or suffix names; for example, a lot of window-based key sequences start with <code>C-x 4</code> and a lot of frame-based commands start with <code>C-x 5</code>. This makes it a little easier to remember things.
 
+To repeat a command, you can use <code>C-x z</code> (<code>M-x repeat</code>). Repeating a command uses the same arguments that were used before; it does not read new arguments each time. To repeat the command more than once, type additional 'z''s: each 'z' repeats the command one more time. Repetition ends when you type a character other than 'z', or press a mouse button.
+
 
 ## Invoking Commands by Key Sequence
 
@@ -1820,7 +1822,84 @@ TODO
 
 # Spell Checking
 
-TODO
+Emacs's spell checking depends on a separate (non-Emacs) spell checker program: Aspell, Ispell, or Hunspell.
+
+When the spell checker encounters a misspelled word, you will be prompted for what to do. Press <code>?</code> for help.
+
+Ispell, Aspell, and Hunspell look up spelling in two dictionaries: the standard dictionary and your personal dictionary. The standard dictionary is specified by the variable <code>ispell-local-dictionary</code> or, if that is <code>nil</code>, by the variable <code>ispell-dictionary</code>. If both are <code>nil</code>, the spelling program's default dictionary is used. The command <code>M-x ispell-change-dictionary</code> sets the standard dictionary for the buffer and then restarts the subprocess, so that it will use a different standard dictionary. Your personal dictionary is specified by the variable <code>ispell-personal-dictionary</code>. If that is <code>nil</code>, the spelling program looks for a personal dictionary in a default location.
+
+A separate dictionary is used for word completion. The variable <code>ispell-complete-word-dict</code> specifies the file name of this dictionary. The completion dictionary must be different because it cannot use root and affix information. For some languages, there is a spell checking dictionary but no word completion dictionary.
+
+<dl>
+  <dt><dfn>
+  M-$<br>
+  M-x ispell-word</dfn></dt>
+  <dd>
+<p>If the region is inactive, then check and optionally correct the spelling of the word at point.</p>
+
+<p>If the region is active, then check and optionally correct the spelling of all the words in the region.</p>
+  </dd>
+
+  <dt><dfn>
+  M-x ispell</dfn></dt>
+  <dd>
+<p>If the region is inactive, then check and optionally correct the spelling of all the words in the buffer.</p>
+
+<p>If the region is active, then check and optionally correct the spelling of all the words in the region.</p>
+  </dd>
+
+  <dt><dfn>
+  M-x ispell-buffer</dfn></dt>
+  <dd>Check and optionally correct the spelling of all the words in the buffer, regardless if the region is active or not.</dd>
+
+  <dt><dfn>
+  M-x ispell-region</dfn></dt>
+  <dd>Check and optionally correct the spelling of all the words in the region, regardless if the region is active or not.</dd>
+
+  <dt><dfn>
+  M-x ispell-comments-and-strings</dfn></dt>
+  <dd>Check and optionally correct the spelling of all the words in any comments or string literals.</dd>
+
+  <dt><dfn>
+  M-x ispell-change-dictionary &lt;RET&gt; DICT</dfn></dt>
+  <dd>Restart the Aspell/Ispell/Hunspell process, using DICT as the dictionary.</dd>
+
+  <dt><dfn>
+  M-x ispell-kill-ispell</dfn></dt>
+  <dd>
+<p>Kill the Aspell/Ispell/Hunspell subprocess.</p>
+
+<p>Once started, the Aspell or Ispell or Hunspell subprocess continues to run, waiting for something to do, so that subsequent spell checking commands complete more quickly. If you want to get rid of the process, use <code>M-x ispell-kill-ispell</code>. This is not usually necessary, since the process uses no processor time except when you do spelling correction.</p>
+  </dd>
+
+  <dt><dfn>
+  M-x flyspell-mode</dfn></dt>
+  <dd>Enable Flyspell mode, which highlights all misspelled words.</dd>
+
+  <dt><dfn>
+  M-x flyspell-prog-mode</dfn></dt>
+  <dd>Enable Flyspell mode for source code, which only highlights misspelled words in comments or string literals.</dd>
+
+  <dt><dfn>
+  M-&lt;TAB&gt;<br>
+  &lt;ESC&gt; &lt;TAB&gt;<br>
+  M-x ispell-complete-word</dfn></dt>
+  <dd>Complete the word before point based on the spelling dictionary. If you keep invoking <code>ispell-complete-word</code>, it'll cycle through other suggestions.</dd>
+
+  <dt><dfn>
+  C-M-i<br>
+  C-.<br>
+  M-x flyspell-auto-correct-word</dfn></dt>
+  <dd>When Flyspell mode is enabled, complete the word before point based on the spelling dictionary. If you keep invoking <code>flyspell-auto-correct-word</code>, it'll cycle through other suggestions.</dd>
+
+  <dt><dfn>
+  M-x flyspell-buffer</dfn></dt>
+  <dd>Using Flyspell, highlight all the words in the buffer that are misspelled.</dd>
+
+  <dt><dfn>
+  M-x flyspell-region</dfn></dt>
+  <dd>Using Flyspell, highlight all the words in the region that are misspelled, regardless if the region is active or not.</dd>
+</dl>
 
 
 # Customisation
