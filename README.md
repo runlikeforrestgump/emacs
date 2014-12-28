@@ -554,6 +554,8 @@ Note that modes correspond to commands, so if you want to read the documentation
 
 In a help buffer, you can use <code>&lt;SPC&gt;</code> to scroll forward and <code>&lt;DEL&gt;</code> to scroll backward. When a function name, variable name, or face name appears in the documentation in the help buffer, it is normally an underlined hyperlink. To view the associated documentation, move point there and type <code>&lt;RET&gt;</code>, or click on the hyperlink. Doing so replaces the contents of the help buffer; to retrace your steps, type <code>C-c C-b</code> (<code>M-x help-go-back</code>). A help buffer can also contain hyperlinks to Info manuals, source code definitions, and URLs (Web pages). The first two are opened in Emacs, and the third using a Web browser via the browse-url command. To move to the next hyperlink in a help buffer, use <code>&lt;TAB&gt;</code>. To move to the previous hyperlink, use <code>S-&lt;TAB&gt;</code>. <code>&lt;TAB&gt;</code> and <code>S-&lt;TAB&gt;</code> act cyclically, so if you're on the last hyperlink, <code>&lt;TAB&gt;</code> moves to the first hyperlink; if you're on the first hyperlink, <code>S-&lt;TAB&gt;</code> moves to the last hyperlink. If a variable, function, or face name isn't hyperlinked, you can still views its documentation by moving point to the symbol and then typing <code>C-c C-c</code> (<code>M-x help-follow-symbol</code>). To exit a help buffer, press <code>q</code>.
 
+When you're in a buffer that's not meant for inserting text, you can usually press <code>h</code> or <code>?</code> for help.
+
 A list of Emacs mailing lists is available here: https://savannah.gnu.org/mail/?group=emacs (help-gnu-emacs@gnu.org or help-emacs-windows@gnu.org are probably the ones you want (if you're looking for help)). You can search the mailing lists at https://lists.gnu.org/archive/html/help-gnu-emacs/ or https://lists.gnu.org/archive/html/help-emacs-windows/.
 
 Some people and companies offer support services and training for Emacs for free or for a fee; you can find a list of them here: https://www.fsf.org/resources/service/. Richard Stallman is even on the list, so I guess you can get help from the inventor himself, which is really cool.
@@ -1546,7 +1548,15 @@ The sentence commands assume that you follow the convention of putting two space
   <dt><dfn>
   C-x C-o<br>
   M-x delete-blank-lines</dfn></dt>
-  <dd>If point is on a blank line, then delete all the surrounding blank lines, leaving just one blank line.</dd>
+  <dd>
+<p>If point is on a blank line that is surrounded by one or more blank lines on either side, then delete all the surrounding blank lines, leaving just one blank line.</p>
+
+<p>If point is on a blank line that is not surrounded by any blank lines on either side, then delete the current blank line.</p>
+
+<p>If point is on a nonblank line that precedes one or more blank lines, then delete all following blank lines up to the next nonblank line.</p>
+
+<p>If point is on a nonblank line that is not followed by any blank lines, then do nothing.</p>
+  </dd>
 
   <dt><dfn>
   C-n<br>
@@ -1563,7 +1573,7 @@ The sentence commands assume that you follow the convention of putting two space
   <dt><dfn>
   M-g &lt;TAB&gt;<br>
   M-x move-to-column</dfn></dt>
-  <dd>Move to the specified column number in the current line.</dd>
+  <dd>Move to the specified column number in the current line (the first column is column 0).</dd>
 
   <dt><dfn>
   M-g M-g LINE-NUMBER<br>
@@ -1572,7 +1582,7 @@ The sentence commands assume that you follow the convention of putting two space
   C-u LINE-NUMBER M-g g<br>
   M-LINE-NUMBER M-g M-g<br>
   M-LINE-NUMBER M-g g</dfn></dt>
-  <dd>Move to the specified line number.</dd>
+  <dd>Move to the specified line number (the first line is line 1).</dd>
 
   <dt><dfn>
   M-}<br>
@@ -1620,104 +1630,91 @@ The sentence commands assume that you follow the convention of putting two space
   <dd>Kill one whole page (up to and including ^L) regardless of where point is in the page. If you simply press <code>&lt;DEL&gt;</code> instead of <code>S-&lt;DEL&gt;</code> or <code>C-w</code>, then that will delete the text instead of killing it.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-M-f<br>
+  C-M-&lt;right&gt;<br>
+  &lt;ESC&gt; C-&lt;right&gt;<br>
+  M-x forward-sexp</dfn></dt>
+  <dd>Move forward across one expression (could be an identifier, literal, keyword, or whatever) that is at the same nesting level as point.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-M-k<br>
+  M-x kill-sexp</dfn></dt>
+  <dd>Kill forward from point to the end of one expression (could be an identifier, literal, keyword, or whatever) that is at the same nesting level as point.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-M-b<br>
+  C-M-&lt;left&gt;<br>
+  &lt;ESC&gt; C-&lt;left&gt;<br>
+  M-x backward-sexp</dfn></dt>
+  <dd>Move backward across one expression (could be an identifier, literal, keyword, or whatever) that is at the same nesting level as point.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  &lt;ESC&gt; C-&lt;Delete&gt;<br>
+  &lt;ESC&gt; C-&lt;DEL&gt;<br>
+  M-x backward-kill-sexp</dfn></dt>
+  <dd>Kill backward from point to the beginning of one expression (could be an identifier, literal, keyword, or whatever) that is at the same nesting level as point.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-M-n<br>
+  M-x forward-list</dfn></dt>
+  <dd>Move forward across one balanced pair of delimiters (often "()", "[]", or "{}", but there could be more or less, depending on the buffer's mode) that are at the same nesting level as point.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-M-p<br>
+  M-x backward-list</dfn></dt>
+  <dd>Move backward across one balanced pair of delimiters (often "()", "[]", or "{}", but there could be more or less, depending on the buffer's mode) that are at the same nesting level as point.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-M-d<br>
+  C-M-&lt;down&gt;<br>
+  &lt;ESC&gt; C-&lt;down&gt;<br>
+  M-x down-list</dfn></dt>
+  <dd>Move down into one nested balanced pair of delimiters (often "()", "[]", or "{}", but there could be more or less, depending on the buffer's mode).</dd>
+
+  <dt><dfn>M-x up-list</dfn></dt>
+  <dd>Move forward up out of one nested balanced pair of delimiters (often "()", "[]", or "{}", but there could be more or less, depending on the buffer's mode).</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-M-u<br>
+  C-M-&lt;up&gt;<br>
+  &lt;ESC&gt; C-&lt;up&gt;<br>
+  M-x backward-up-list</dfn></dt>
+  <dd>Move backward up out of one nested balanced pair of delimiters (often "()", "[]", or "{}", but there could be more or less, depending on the buffer's mode).</dd>
+
+  <dt><dfn>M-x kill-backward-up-list</dfn></dt>
+  <dd>Kill any expression within a balanced pair of delimiters, other than the expression that point is on, and kill the balanced pair of delimiters; for example, if you have "(foo bar baz)" with point on "bar" and you invoke <code>M-x kill-backward-up-list</code>, then you will be left with "bar".</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-M-e<br>
+  C-M-&lt;End&gt;<br>
+  &lt;ESC&gt; C-&lt;End&gt;<br>
+  M-x end-of-defun</dfn></dt>
+  <dd>Move forward to the end of the next defun (function, class, template, struct, or any other major definition) at the same nesting level as point.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-M-a<br>
+  C-M-&lt;Home&gt;<br>
+  &lt;ESC&gt; C-&lt;Home&gt;<br>
+  M-x beginning-of-defun</dfn></dt>
+  <dd>Move backward to the beginning of the previous defun (function, class, template, struct, or any other major definition).</dd>
+
+  <dt><dfn>C-M-h &lt;DEL&gt;</dfn></dt>
+  <dd>Delete the current defun (function, class, template, struct, or any other major definition).</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  M-&gt;<br>
+  C-&lt;End&gt;<br> 
+  M-x end-of-buffer</dfn></dt>
+  <dd>Move forward to the end of the buffer.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  M-&lt;<br>
+  C-&lt;Home&gt;<br>
+  M-x beginning-of-buffer</dfn></dt>
+  <dd>Move backward to the beginning of the buffer.</dd>
 
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
-
-  <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  <dt><dfn>M-x erase-buffer</dfn></dt>
+  <dd>Delete the entire contents of the current buffer.</dd>
 </dl>
 
 
