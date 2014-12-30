@@ -393,7 +393,9 @@ An input method is a system for entering non-ASCII text characters by typing seq
 
 <p><code>C-/</code>, <code>C-x u</code>, and <code>C-_</code> all do the exact same thing (<code>C-x u</code> and <code>C-_</code> are aliases for <code>C-/</code>). According to the Emacs manual, <code>C-x u</code> was created as an alias for beginners, since it's easier to remember ('u' stands for "undo"). It's also bound to <code>C-_</code> because typing <code>C-/</code> on some text terminals actually enters <code>C-_</code>.</p>
 
-<p>If you keep invoking the undo command, then you'll keep undoing earlier and earlier changes. To quote the Emacs manual "Any command other than an undo command breaks the sequence of undo commands. Starting from that moment, the entire sequence of undo commands that you have just performed are themselves placed into the undo record, as a single set of changes. Therefore, to re-apply changes you have undone, type <code>C-f</code> or any other command that harmlessly breaks the sequence of undiong; then type <code>C-/</code> to undo the undo command[, thus performing a redo]. If you want to resume undoing, without redoing previous undo commands, use <code>M-x undo-only</code>. This is like <code>undo</code>, but will not redo changes you have just undone."</p>
+<p>If you keep invoking the undo command, then you'll keep undoing earlier and earlier changes. To quote the Emacs manual "Any command other than an undo command breaks the sequence of undo commands. Starting from that moment, the entire sequence of undo commands that you have just performed are themselves placed into the undo record, as a single set of changes. Therefore, to re-apply changes you have undone, type <code>C-f</code> or any other command that harmlessly breaks the sequence of undoing; then type <code>C-/</code> to undo the undo command[, thus performing a redo]. If you want to resume undoing, without redoing previous undo commands, use <code>M-x undo-only</code>. This is like <code>undo</code>, but will not redo changes you have just undone."</p>
+
+<p>Basically, to redo something, you undo its corresponding undo.</p>
 
 <p>The undo command applies only to changes in the buffer; you can't use it to undo cursor motion.</p>
 
@@ -1315,34 +1317,6 @@ A split buffer is not the same thing as an indirect buffer. When you split a buf
 
 Enabling Iswitchb mode (<code>M-x iswitchb-mode</code>) makes it much easier to switch buffers. It redefines what <code>C-x b</code>, <code>C-x 4 b</code>, and <code>C-x 5 b</code> do. When you enter one of those commands, they will prompt you with a list of possible buffer names. You can do one of two things: you can either start typing the name of the buffer you want to switch to it, until it appears first in the list, or you can press <code>C-s</code> (rotate left) or <code>C-r</code> (rotate right) until the buffer you want to switch to appears first in the list. Once the buffer you want to switch to appears first in the list (or is the only buffer listed), then press <code>&lt;RET&gt;</code>.
 
-Narrowing means focusing in on some portion of the buffer, making the rest temporarily inaccessible. When you have narrowed down to a part of the buffer, that part appears to be all there is. You can't see the rest, you can't move into it (motion commands won't go outside the accessible part), you can't change it in any way; however, it is not gone, and if you save the file, all the inaccessible text will be saved. The word "Narrow" appears in the mode line whenever narrowing is in effect.
-
-<dl>
-  <dt><dfn>
-  C-x n n<br>
-  M-x narrow-to-region</dfn></dt>
-  <dd>
-<p>Narrow buffer down to the region (the area that point and mark delineate).</p>
-
-<p>You can narrow a narrowed region, but when you widen, the entire buffer will be made accessible (rather than undoing the most recent narrow).</p>
-</dd>
-
-  <dt><dfn>
-  C-x n d<br>
-  M-x narrow-to-defun</dfn></dt>
-  <dd>Narrow buffer down to the current defun.</dd>
-
-  <dt><dfn>
-  C-x n w<br>
-  M-x widen</dfn></dt>
-  <dd>Widen the current buffer (make the entire buffer accessible again).</dd>
-
-  <dt><dfn>
-  C-x =<br>
-  M-x what-cursor-position</dfn></dt>
-  <dd>Display information about where point is relative to the entire buffer (not just the narrowed region). The numbers in angle brackets are the first line number in the narrowed region (relative to the entire buffer) and the last line number in the narrowed region (also relative to the entire buffer).</dd>
-</dl>
-
 
 # Modes
 
@@ -1355,6 +1329,8 @@ The least specialised major mode is called "Fundamental mode". This mode has no 
 Modes are either major or minor. Minor modes are either buffer-local (can be selectively enabled on a per-buffer basis) or global (always applies to all buffers).
 
 Each mode is associated with a mode command, whose name consists of the mode name followed by "-mode". To toggle a minor mode (if it's enabled, then disable it; if it's disabled, then enable it) or switch to a major mode, you simply invoke its mode command: <code>M-x MODENAME-mode</code>. Since a buffer must have a major mode and can't have more than one major mode, you can't toggle a major mode on and off. Enabling a major mode disables the previous major mode. If you don't want to use the current major mode, then switch to a different one.
+
+The major mode is chosen for you automatically based on the contents of the buffer; for example, if Emacs sees that you are visiting a Java file, then Emacs will use the cc-mode major mode. If you'd like to use a different major mode, you can always switch it to whatever you want.
 
 
 # Files
@@ -1810,12 +1786,159 @@ The sentence commands assume that you follow the convention of putting two space
 </dl>
 
 
+# Marks and Regions
+
+A lot of commands can operate on a block of text called a region. The region is the text between point and mark. The empty region is when mark and point refer to the same spot. The region always extends from the point to the mark, no matter which one comes earlier in the text; each time you move point, the region changes. To create a region, you set mark first, then point.
+
+When the mark is active, the region is active. When the region is active, it's highlighted. Some commands require the region to be active in order to work; other commands don't have that requirement (they can operate on an inactive region). To deactive the region, type <code>C-g</code>. Most commands will deactivate the region when they're done operating on it.
+
+When multiple windows show the same buffer, they can have different values of point, but they all share one common mark position.
+
+Some commands set mark without activating it (usually commands that move point will set the mark at the current point before moving point). You can tell that a command sets a mark when it shows "Mark set" in the echo area.
+
+Some commands can set mark without moving point.
+
+Some commands only operate on regions (they usually contain the word "region" in their name).
+
+The commands that mark objects (words, sentences, paragraphs, etc.) extend the region further each time they're called.
+
+The default behaviour of the mark and region, in which setting the mark activates it and highlights the region, is called Transient Mark mode. This is a minor mode that is enabled by default. It makes many Emacs commands operate on the region when the mark is active. It can be toggled with <code>M-x transient-mark-mode</code>. While Transient Mark mode is off, you can activate it temporarily using <code>C-&lt;SPC&gt; C-&lt;SPC&gt;</code> (set the mark at point and enable Transient Mark mode until the mark is deactivated) or using <code>C-u C-x C-x</code> (exchange point and mark and enable Transient Mark mode until the mark is deactivated).
+
+Marks aren't just used to help define regions. They can also be used as a way to remember a position in the buffer (<code>C-&lt;SPC&gt; C-&lt;SPC&gt;</code>), so that you can jump back to it (<code>C-u C-&lt;SPC&lt;</code>).
+
+<dl>
+  <dt><dfn>
+  C-&lt;SPC&gt;<br>
+  C-@<br>
+  M-x set-mark-command</dfn></dt>
+  <dd>Set the mark at point and activate it.</dd>
+
+  <dt><dfn>
+  C-x C-x<br>
+  M-x exchange-point-and-mark</dfn></dt>
+  <dd>Set the mark at point, activate it, and then move point to where the previous mark used to be. If you keep invoking <code>exchange-point-and-mark</code>, then you can keep swapping point and mark.</dd>
+
+  <dt><dfn>
+  M-@<br>
+  M-x mark-word</dfn></dt>
+  <dd>Set mark from point to the end of the current or next word without moving point.</dd>
+
+  <dt><dfn>
+  M-x mark-end-of-sentence</dfn></dt>
+  <dd>Set mark from point to the end of the current or next sentence without moving point.</dd>
+
+  <dt><dfn>
+  C-M-&lt;SPC&gt;<br>
+  C-M-@<br>
+  M-x mark-sexp</dfn></dt>
+  <dd>Set mark from point to the end of the current or next expression (could be an identifier, literal, keyword, or whatever) that is at the same nesting level as point without moving point.</dd>
+
+  <dt><dfn>
+  M-h<br>
+  M-x mark-paragraph</dfn></dt>
+  <dd>Set mark after the end of the current paragraph and move point to the beginning of the current paragraph.</dd>
+
+  <dt><dfn>
+  C-M-h<br>
+  M-x mark-defun</dfn></dt>
+  <dd>Set mark after the end of the current defun (function, class, template, struct, or any other major definition) and move point to the beginning of the current defun.</dd>
+
+  <dt><dfn>
+  C-x C-p<br>
+  M-x mark-page</dfn></dt>
+  <dd>Set mark after the end of the current page (^L) and move point to the beginning of the current page.</dd>
+
+  <dt><dfn>
+  C-x h<br>
+  M-x mark-whole-buffer</dfn></dt>
+  <dd>Set mark at the end of the current buffer and move point to the beginning of the current buffer (essentially, this is a Select All).</dd>
+</dl>
+
+
+## Shift Selection
+
+If you hold down the shift key while typing a cursor motion command (i.e., any command that moves point without doing anything else), this sets the mark before moving point, so that the region extends from the original position of point to its new position. In addition to the usual ways of deactivating the mark (such as changing the buffer text or typing <code>C-g</code>), the mark is deactivated by any unshifted cursor motion command. Any subsequent shifted cursor motion command avoids setting the mark anew; therefore, a series of shifted cursor motion commands will continuously adjust the region.
+
+
+## Narrowing and Widening
+
+Narrowing means focusing in on some portion of the buffer, making the rest of the buffer temporarily inaccessible. When you have narrowed down to a part of the buffer, that part appears to be all there is. You can't see the rest, you can't move into it (motion commands won't go outside the accessible part), you can't change it in any way; however, it is not gone, and if you save the file, all the inaccessible text will be saved. The word "Narrow" appears in the mode line whenever narrowing is in effect.
+
+Widening is the opposite of narrowing. When a buffer is widened, all its text is accessible and visible.
+
+<dl>
+  <dt><dfn>
+  C-x n n<br>
+  M-x narrow-to-region</dfn></dt>
+  <dd>
+<p>Narrow buffer down to the region (the area that point and mark delineate).</p>
+
+<p>You can narrow a narrowed region, but when you widen, the entire buffer will be made accessible (rather than undoing the most recent narrow).</p>
+</dd>
+
+  <dt><dfn>
+  C-x n d<br>
+  M-x narrow-to-defun</dfn></dt>
+  <dd>Narrow buffer down to the current defun (function, class, template, struct, or any other major definition).</dd>
+
+  <dt><dfn>
+  C-x n p<br>
+  M-x narrow-to-page</dfn></dt>
+  <dd>Narrow buffer down to the current page.</dd>
+
+  <dt><dfn>
+  C-x n w<br>
+  M-x widen</dfn></dt>
+  <dd>Widen the current buffer (make the entire buffer accessible again). You can also think of this as cancelling a narrow.</dd>
+
+  <dt><dfn>
+  C-x =<br>
+  M-x what-cursor-position</dfn></dt>
+  <dd>Display information about where point is relative to the entire buffer (not just the narrowed region). The numbers in angle brackets are the first line number in the narrowed region (relative to the entire buffer) and the last line number in the narrowed region (also relative to the entire buffer).</dd>
+</dl>
+
+
+## Rectangles
+
+TODO
+
+
+# Killing and Yanking
+
+TODO
+
+
+# Searching and Replacing
+
+TODO
+
+
+# Bookmarks
+
+TODO
+
+
+# Registers
+
+TODO
+
+
+# Saving Emacs's State
+
+TODO
+
+
 # Completion
 
 TODO
 
 
 ## Minibuffer
+
+TODO
+
+
+# Rings
 
 TODO
 
@@ -1900,6 +2023,21 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
   M-x flyspell-region</dfn></dt>
   <dd>Using Flyspell, highlight all the words in the region that are misspelled, regardless if the region is active or not.</dd>
 </dl>
+
+
+# Calendar (Dates and Times)
+
+TODO
+
+
+# Calculator
+
+TODO
+
+
+# Editing
+
+TODO
 
 
 # Customisation
