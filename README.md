@@ -82,7 +82,7 @@ If you specify more than one file, then you'll only see the last file that you s
 
 # Most Important Things to Know First
 
-The most important things to know first are knowing how to quit, cancel, undo, close, switch and close buffers, and get help, and before you can know that, you need to know how to invoke commands in Emacs.
+The most important things to know first are knowing how to quit, cancel, undo, switch and close buffers, and get help, and before you can know that, you need to know how to invoke commands in Emacs.
 
 To invoke a command in Emacs:
 
@@ -91,7 +91,7 @@ To invoke a command in Emacs:
 
 Some commands are (or can be) disabled, which means that you'll be asked for confirmation when you try to invoke them. The usual reason for disabling a command is that some commands are potentially confusing for beginning users.
 
-You'll notice that some commands are grouped by similar prefix keys or prefix or suffix names; for example, a lot of window-based key sequences start with <code>C-x 4</code> and a lot of frame-based commands start with <code>C-x 5</code>. This makes it a little easier to remember things.
+You'll notice that some commands are grouped by similar prefix keys or prefix or suffix names; for example, a lot of window-based key sequences start with <code>C-x 4</code> and a lot of frame-based key sequences start with <code>C-x 5</code>. This makes it a little easier to remember things.
 
 To repeat a command, you can use <code>C-x z</code> (<code>M-x repeat</code>). Repeating a command uses the same arguments that were used before; it does not read new arguments each time. To repeat the command more than once, type additional 'z''s: each 'z' repeats the command one more time. Repetition ends when you type a character other than 'z', or press a mouse button.
 
@@ -407,6 +407,36 @@ An input method is a system for entering non-ASCII text characters by typing seq
 <p>Undo all changes in the current buffer.</p>
 
 <p>Rather than doing this, you could also just quit Emacs without saving your changes.</p>
+  </dd>
+
+  <dt><dfn>
+  C-x o<br>
+  M-x other-window</dfn></dt>
+  <dd>
+<p>Switch windows.</p>
+
+<p><code>C-x o</code> cycles through the windows generally top to bottom and left to right. When the minibuffer is active, the minibuffer is the last window in the cycle.</p>
+
+<p><code>M-x windmove-default-keybindings</code> makes it much easier for you to move to the window you want by binding some convenience commands to <code>S-&lt;left&gt;</code>, <code>S-&lt;right&gt;</code>, <code>S-&lt;up&gt;</code>, and <code>S-&lt;down&gt;</code> (you only need to run <code>M-x windmove-default-keybindings</code> once). Unfortunately, those key bindings will break shift selection. If you want shift selection and a convenient way to select windows, then you should bind the <code>windmove-left</code>, <code>windmove-right</code>, <code>windmove-up</code>, and <code>windmove-down</code> commands to keys that won't conflict with anything else.</p>
+  </dd>
+
+  <dt><dfn>
+  C-x 0<br>
+  M-x delete-window</dfn></dt>
+  <dd>Delete the selected window, but not its buffer.</dd>
+
+  <dt><dfn>
+  C-x 4 0<br>
+  M-x kill-buffer-and-window</dfn></dt>
+  <dd>Delete the selected window and its buffer.</dd>
+
+  <dt><dfn>
+  C-x 1<br>
+  M-x delete-other-windows</dfn></dt>
+  <dd>
+<p>Delete all the windows (but not their buffers) in the selected frame except for the selected window.</p>
+
+<p>You cannot use the command while in the minibuffer.</p>
   </dd>
 </dl>
 
@@ -1386,7 +1416,7 @@ A dribble file is a file into which Emacs writes all the characters that you typ
 
 <p>In graphical Emacs, if you visit an image, the image will be displayed in Emacs. You can type <code>C-c C-c</code> to toggle between viewing the image and viewing the image's file contents. If the image is animated, then <code>&lt;RET&gt;</code> can toggle animation on and off.</p>
 
-<p>In graphical Emacs, if you visit a PDF, the PDF will be displayed in Emacs. You can type <code>C-c C-c</code> to toggle between viewing the PDF and viewing the PDF's file contents.</p>
+<p>In graphical Emacs, if you visit a PDF, the PDF will be displayed in Emacs. You can type <code>C-c C-c</code> to toggle between viewing the PDF and viewing the PDF's file contents. Press <code>h</code> for help and press <code>q</code> to close the PDF.</p>
   </dd>
 
   <dt><dfn>
@@ -1900,10 +1930,22 @@ Widening is the opposite of narrowing. When a buffer is widened, all its text is
 
 ## Rectangles
 
-TODO
+A given combination of point and mark values can be interpreted either as a region or as a rectangle, depending on the command that uses them. A rectangle is a subset of a region; when you make a region, the rectangle is considered to be the area from point in one corner to mark in the diagonally opposite corner. If point and mark are in the same column, the region-rectangle is empty. If they are in the same line, the region-rectangle is one line high. It's important to remember that the cursor is not the same thing as point.
+
+<dl>
+  <dt><dfn>
+  C-x r o<br>
+  M-x open-rectangle</dfn></dt>
+  <dd>Fill the entire rectangle with blank space, pushing the previous contents outside to the right of the rectangle.</dd>
+
+  <dt><dfn>
+  C-x r N<br>
+  M-x rectangle-number-lines</dfn></dt>
+  <dd>Prepend line numbers to the lines in the rectangle. By default, the first line number in the rectangle is line 1, the second line number in the rectangle is line 2, and so on. The line numbers have nothing to do with the line numbers in the rest of the buffer. With a prefix argument, the command prompts for a number to begin from and for a format string with which to print the numbers.</dd>
+</dl>
 
 
-# Killing and Yanking
+# Killing, Deleting, Copying, and Yanking
 
 TODO
 
