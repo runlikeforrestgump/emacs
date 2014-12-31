@@ -2069,8 +2069,6 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
 
 # Calendar (Dates and Times)
 
-It's easy to 
-
 <dl>
   <dt><dfn>
   M-x calendar</dfn></dt>
@@ -2316,7 +2314,409 @@ It's easy to
 
 # Calculator
 
-TODO
+Emacs comes with a powerful calculator called Calc.
+
+By default, Calc uses Reverse Polish Notation (RPN) (also known as postfix notation), where you enter operands first, and then the operator (1 2 +). The central component of an RPN calculator is the stack. Each time you enter a number, it gets pushed onto the top of the stack. When you enter an operator, the appropriate number of operands are popped from the top of the stack, the operator is applied to them, and finally the result of the operation is pushed onto the top of the stack.
+
+Infix notation (also known as algebraic notation) is probably the notation you're most used to. It's where an operator is surrounded by its operands (1 + 2). Calc lets you use infix notation if you're not comfortable using RPN.
+
+Polish notation (also known as prefix notation) may be familiar to you if you've programmed in a language such as Lisp. It's where an operator comes before its operands (+ 1 2).
+
+Calc's standard interface shows two windows side-by-side. The one on the left is the stack window; the one on the right is the trail window. The stack window shows you the contents of the calculator's stack. The stack is actually shown with the top of the stack at the bottom of the window and the bottom of the stack at the top of the window. Each line is preceded by a number (a stack level number), which indicates that line's position in the stack (1: is the top, 2: is the second from the top, and so on). Some commands can be told what stack levels to work with. The trail window shows you the history of all the operands and operators you've entered. A number that isn't preceded by anything indicates an operand. A number that is preceded by an operator indicates the result of applying that operator to the previous operands. When the operator is followed by <code>&gt;</code>, it indicates the most recent result. Since the stack and trail are Emacs buffers, you can scroll them and such like you normally would an ordinary buffer.
+
+Calc has a few different modes. You can run it in standard mode (<code>M-x calc</code>), which shows two side-by-side windows; <code>M-x full-calc</code> shows standard mode in a full screen; <code>M-x calc-keypad</code> provides a keypad for mouse input (like a typical GUI calculator); <code>M-x full-calc-keypad</code> shows the keypad in a full screen; and <code>M-x quick-calc</code> uses the minibuffer to prompt for a formula, which should be entered in algebraic notation, and displays the result in the echo area; <code>M-x calc-embedded</code> enables Calc to be used directly inside a typical Emacs buffer; <code>M-x calc-grab-rectangle</code> can be used for grabbing a rectangle from a buffer and pushing it onto Calc's stack; <code>M-x calc-grab-region</code> can be used for grabbing a region from a buffer and pushing it onto Calc's stack.
+
+If you just want to use Calc, but not Emacs, then you could do something like <code>emacs -f full-calc</code> or <code>emacs -f full-calc-keypad</code> to launch Emacs.
+
+<dl>
+  <dt><dfn>
+  C-x * i</dfn></dt>
+  <dd>Go to the Calc manual.</dd>
+
+  <dt><dfn>
+  C-x * t</dfn></dt>
+  <dd>Go to the Calc tutorial.</dd>
+
+  <dt><dfn>
+  C-x * s</dfn></dt>
+  <dd>Go to the Calc summary, which lists all the Calc commands that are bound to keys.</dd>
+
+  <dt><dfn>
+  C-x * c<br>
+  C-x * *<br>
+  M-x calc<br>
+  M-x full-calc</dfn></dt>
+  <dd>Start Calc if it's closed; close Calc if it's open. When closing, the Calc windows will simply be hidden, not destroyed. This way, you don't lose your calculations (you'll get them back when you reopen Calc).</dd>
+
+  <dt><dfn>
+  C-x * x<br>
+  q</dfn></dt>
+  <dd>Exit Calc. If you want to close Calc without losing your calculations, then you should toggle Calc with <code>C-x * c</code> or <code>C-x * *</code> instead of exiting.</dd>
+
+  <dt><dfn>
+  C-x * 0</dfn></dt>
+  <dd>Empty Calc's stack and reset Calc's initial mode settings.</dd>
+
+  <dt><dfn>
+  C-x * b</dfn></dt>
+  <dd>Toggle between full screen Calc and standard size Calc.</dd>
+
+  <dt><dfn>
+  C-x * k<br>
+  M-x calc-keypad<br>
+  M-x full-calc-keypad</dfn></dt>
+  <dd>Start Calc in keypad mode if it's closed; close it if it's open.</dd>
+
+  <dt><dfn>
+  C-x * q<br>
+  M-x quick-calc</dfn></dt>
+  <dd>Start Calc in quick mode, which uses the minibuffer to prompt for a formula, which should be entered in algebraic notation. The result will appear in the echo area.</dd>
+
+  <dt><dfn>
+  C-x * e<br>
+  M-x calc-embedded</dfn></dt>
+  <dd>Toggle Calc's embedded mode.</dd>
+
+  <dt><dfn>
+  &lt;TAB&gt;</dfn></dt>
+  <dd>Swap the top two elements on the stack.</dd>
+
+  <dt><dfn>
+  M-&lt;TAB&gt;</dfn></dt>
+  <dd>Cycle the top three elements on the stack upward (the top becomes the second element, the second element becomes the third element, and the third element becomes the new top).</dd>
+
+  <dt><dfn>
+  &lt;DEL&gt;</dfn></dt>
+  <dd>Delete the top element from the stack.</dd>
+
+  <dt><dfn>
+  U</dfn></dt>
+  <dd>Undo.</dd>
+
+  <dt><dfn>
+  C-x * g<br>
+  M-x calc-grab-region</dfn></dt>
+  <dd>Place the contents of the region into a vector (list) of numbers on top of the stack. The order of the numbers is based on their left-to-right, top-to-bottom order in the region. To unpack the vector, so that each number is a separate operand on the stack, type <code>v u</code>.</dd>
+
+  <dt><dfn>
+  C-x * r<br>
+  M-x calc-grab-rectangle</dfn></dt>
+  <dd>Place the contents of the rectangle into a matrix (list of lists) of numbers on top of the stack. The matrix consists of a vector for each row in the rectangle.</dd>
+
+  <dt><dfn>
+  C-x * y</dfn></dt>
+  <dd>Yank the top of the stack into a buffer.</dd>
+
+  <dt><dfn>
+  C-x * :</dfn></dt>
+  <dd>Grab the rectangular region and compute the sums of its columns.</dd>
+
+  <dt><dfn>
+  C-x * _</dfn></dt>
+  <dd>Grab the rectangular region and compute the sums of its rows.</dd>
+
+  <dt><dfn>
+  n</dfn></dt>
+  <dd>Change the sign of the number at the top of the stack. You can also input negative numbers directly using an underscore ('_') as the negative sign.</dd>
+
+  <dt><dfn>
+  &lt;RET&gt;<br>
+  &lt;SPC&gt;</dfn></dt>
+  <dd>
+<p>If you press &lt;RET&gt; or &lt;SPC&gt; after entering a number, then the number will be pushed onto the top of the stack. Note that you can enter an operator instead of &lt;RET&gt; or &lt;SPC&gt; after a number; in that case, the operand will be pushed and the operator will be applied immediately, saving you a keystroke.</p>
+
+<p>If you press &lt;RET&gt; or &lt;SPC&gt; when you're not entering a number, then the top of the stack will be duplicated.</p>
+  </dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+</dl>
 
 
 # Editing
