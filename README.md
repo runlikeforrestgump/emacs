@@ -2069,7 +2069,249 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
 
 # Calendar (Dates and Times)
 
-TODO
+It's easy to 
+
+<dl>
+  <dt><dfn>
+  M-x calendar</dfn></dt>
+  <dd>
+<p>Display a three-month calendar centred on the current month, with point on the current date.</p>
+
+<p>With a numeric argument, prompt for the month and year to be the centre of the three-month calendar.</p>
+</dd>
+
+  <dt><dfn>
+  q<br>
+  M-x calendar-exit</dfn></dt>
+  <dd>Close the calendar.</dd>
+
+  <dt><dfn>
+  C-f<br>
+  M-x calendar-forward-day</dfn></dt>
+  <dd>Move point one day forward.</dd>
+
+  <dt><dfn>
+  C-b<br>
+  M-x calendar-backward-day</dfn></dt>
+  <dd>Move point one day backward.</dd>
+
+  <dt><dfn>
+  C-n<br>
+  M-x calendar-forward-week</dfn></dt>
+  <dd>Move point one week forward.</dd>
+
+  <dt><dfn>
+  C-p<br>
+  M-x calendar-backward-week</dfn></dt>
+  <dd>Move point one week backward.</dd>
+
+  <dt><dfn>
+  M-}<br>
+  M-x calendar-forward-month</dfn></dt>
+  <dd>Move point one month forward.</dd>
+
+  <dt><dfn>
+  M-{<br>
+  M-x calendar-backward-month</dfn></dt>
+  <dd>Move point one month backward.</dd>
+
+  <dt><dfn>
+  C-x ]<br>
+  M-x calendar-forward-year</dfn></dt>
+  <dd>Move point one year forward.</dd>
+
+  <dt><dfn>
+  C-x [<br>
+  M-x calendar-backward-year</dfn></dt>
+  <dd>Move point one year backward.</dd>
+
+  <dt><dfn>
+  &gt;<br>
+  M-x calendar-scroll-left</dfn></dt>
+  <dd>Scroll one month forward.</dd>
+
+  <dt><dfn>
+  &lt;<br>
+  M-x calendar-scroll-right</dfn></dt>
+  <dd>Scroll one month backward.</dd>
+
+  <dt><dfn>
+  C-v<br>
+  M-x calendar-scroll-left-three-months</dfn></dt>
+  <dd>Scroll three months forward.</dd>
+
+  <dt><dfn>
+  M-v<br>
+  M-x calendar-scroll-right-three-months</dfn></dt>
+  <dd>Scroll three months backward.</dd>
+
+  <dt><dfn>
+  C-u C-v<br>
+  C-u M-x calendar-scroll-left-three-months</dfn></dt>
+  <dd>Scroll one year forward (C-u multiplies the following command by 4, thus 4 * 3 months, which is one year).</dd>
+
+  <dt><dfn>
+  C-u M-v<br>
+  C-u M-x calendar-scroll-right-three-months</dfn></dt>
+  <dd>Scroll one year backward (C-u multiplies the following command by 4, thus 4 * 3 months, which is one year).</dd>
+
+  <dt><dfn>
+  C-a<br>
+  M-x calendar-beginning-of-week</dfn></dt>
+  <dd>Move point to the start of the week.</dd>
+
+  <dt><dfn>
+  C-e<br>
+  M-x calendar-end-of-week</dfn></dt>
+  <dd>Move point to the end of the week.</dd>
+
+  <dt><dfn>
+  M-a<br>
+  M-x calendar-beginning-of-month</dfn></dt>
+  <dd>Move point to the start of the month.</dd>
+
+  <dt><dfn>
+  M-e<br>
+  M-x calendar-end-of-month</dfn></dt>
+  <dd>Move point to the end of the month.</dd>
+
+  <dt><dfn>
+  M-&lt;<br>
+  M-x calendar-beginning-of-year</dfn></dt>
+  <dd>Move point to the start of the year.</dd>
+
+  <dt><dfn>
+  M-&gt;<br>
+  M-x calendar-end-of-year</dfn></dt>
+  <dd>Move point to the end of the year.</dd>
+
+  <dt><dfn>
+  g d<br>
+  M-x calendar-goto-date</dfn></dt>
+  <dd>Move point to the specified date (year, month, day).</dd>
+
+  <dt><dfn>
+  g D<br>
+  M-x calendar-goto-day-of-year</dfn></dt>
+  <dd>Move point to the specified day (a number between 1 and 365 inclusive) of the specified year.</dd>
+
+  <dt><dfn>
+  g w<br>
+  M-x calendar-iso-goto-week</dfn></dt>
+  <dd>Move point to the specified week (a number between 1 and 52 inclusive) of the specified year.</dd>
+
+  <dt><dfn>
+  o<br>
+  M-x calendar-other-month</dfn></dt>
+  <dd>Centre calendar around the specified month of the specified year.</dd>
+
+  <dt><dfn>
+  .<br>
+  M-x calendar-goto-today</dfn></dt>
+  <dd>Move point to today's date.</dd>
+
+  <dt><dfn>
+  C-&lt;SPC&gt;<br>
+  C-@<br>
+  M-x calendar-set-mark</dfn></dt>
+  <dd>Mark the date under the cursor.</dd>
+
+  <dt><dfn>
+  C-x C-x<br>
+  M-x calendar-exchange-point-and-mark</dfn></dt>
+  <dd>Exchange the current cursor position with the mark date.</dd>
+
+  <dt><dfn>
+  M-=<br>
+  M-x calendar-count-days-region</dfn></dt>
+  <dd>Display the number of days in the current region. If you haven't set a region, then you will see "No mark set in this buffer" in the echo area.</dd>
+
+  <dt><dfn>
+  p d<br>
+  M-x calendar-print-day-of-year</dfn></dt>
+  <dd>Display the day of the year (a number between 1 and 365 inclusive) for the selected day, and display how many days are left in the year from that day.</dd>
+
+  <dt><dfn>
+  &lt;SPC&gt;<br>
+  M-x scroll-other-window</dfn></dt>
+  <dd>Scroll the other window's text up.</dd>
+
+  <dt><dfn>
+  &lt;DEL&gt;<br>
+  M-x scroll-other-window-down</dfn></dt>
+  <dd>Scroll the other window's text down.</dd>
+
+  <dt><dfn>
+  h<br>
+  M-x calendar-cursor-holidays</dfn></dt>
+  <dd>Display the holidays for the selected date.</dd>
+
+  <dt><dfn>
+  x<br>
+  M-x calendar-mark-holidays</dfn></dt>
+  <dd>Highlight all the days that contain holidays, regardless if they're currently visible in the calendar or not.</dd>
+
+  <dt><dfn>
+  u<br>
+  M-x calendar-unmark</dfn></dt>
+  <dd>Remove all highlights from the calendar.</dd>
+
+  <dt><dfn>
+  a<br>
+  M-x calendar-list-holidays</dfn></dt>
+  <dd>List all the holidays in another window for the displayed three months.</dd>
+
+  <dt><dfn>
+  M-x holidays</dfn></dt>
+  <dd>
+<p>List all the holidays in another window for the three months around today's date (i.e., the previous, current, and next months relative to today's date).</p>
+
+<p>With a numeric argument, you can specify a different month to centre on.</p>
+  </dd>
+
+  <dt><dfn>
+  M-x list-holidays</dfn></dt>
+  <dd>List all the holidays in another window for a specified range of years.</dd>
+
+  <dt><dfn>
+  M-x sunrise-sunset</dfn></dt>
+  <dd>Display the local times of sunrise and sunset for today's date.</dd>
+
+  <dt><dfn>
+  S<br>
+  M-x calendar-sunrise-sunset</dfn></dt>
+  <dd>Display the local times of sunrise and sunset for the selected date.</dd>
+
+  <dt><dfn>
+  C-u M-x sunrise-sunset</dfn></dt>
+  <dd>Display the local times of sunrise and sunset for a specified date.</dd>
+
+  <dt><dfn>
+  M-x calendar-sunrise-sunet-month</dfn></dt>
+  <dd>Display the local times of sunrise and sunset for the selected month.</dd>
+
+  <dt><dfn>
+  M<br>
+  M-x calendar-lunar-phases</dfn></dt>
+  <dd>Display the dates and times for all the quarters of the moon for the selected three-month period.</dd>
+
+  <dt><dfn>
+  M-x lunar-phases</dfn></dt>
+  <dd>
+<p>Display the dates and times for all the quarters of the moon for the three months around today's date (i.e., the previous, current, and next months relative to today's date).</p>
+
+<p>With a numeric argument, you can specify a different month and year to centre on.</p>
+  </dd>
+
+  <dt><dfn>
+  p o<br>
+  M-x calendar-print-other-dates</dfn></dt>
+  <dd>Display the selected date in various other calendar systems.</dd>
+
+  <dt><dfn>
+  M-x european-calendar</dfn></dt>
+  <dd>Set the interpretation and display of dates to the European style.</dd>
+</dl>
 
 
 # Calculator
