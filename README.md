@@ -1945,27 +1945,12 @@ A given combination of point and mark values can be interpreted either as a regi
 </dl>
 
 
-# Killing, Deleting, Copying, and Yanking
+# Killing (Cutting), Deleting, Copying, and Yanking
 
 TODO
 
 
 # Searching and Replacing
-
-TODO
-
-
-# Bookmarks
-
-TODO
-
-
-# Registers
-
-TODO
-
-
-# Saving Emacs's State
 
 TODO
 
@@ -1983,6 +1968,173 @@ TODO
 # Rings
 
 TODO
+
+
+# Registers
+
+Registers can store positions, pieces of text, rectangles, numbers, window configurations, or file names, but each register can only store one thing at any given time. Whatever you store in a register remains there until you store something else in that register.
+
+Each register has a case-sensitive name (register 'r' is different from register 'R') that consists of a single character (a letter or a number).
+
+When a register stores a position, you can think of that position as a named mark.
+
+Registers don't persist across Emacs sessions.
+
+<dl>
+  <dt><dfn>
+  M-x view-register &lt;RET&gt; REGISTER_NAME</dfn></dt>
+  <dd>Display a description of what the specified register contains.</dd>
+
+  <dt><dfn>
+  M-x list-registers</dfn></dt>
+  <dd>Display a list of nonempty registers saying briefly what they contain.</dd>
+
+  <dt><dfn>
+  C-x r &lt;SPC&gt; REGISTER_NAME<br>
+  C-x r C-&lt;SPC&gt; REGISTER_NAME<br>
+  C-x r C-@ REGISTER_NAME<br>
+  M-x point-to-register</dfn></dt>
+  <dd>Record the position of point and the current buffer in the specified register.</dd>
+
+  <dt><dfn>
+  C-x r j REGISTER_NAME<br>
+  M-x jump-to-register</dfn></dt>
+  <dd>Jump to the register and buffer or restore the window or frame configuration, depending on whether a position or a window configuration is stored in the register.</dd>
+
+  <dt><dfn>
+  C-x r s REGISTER_NAME<br>
+  C-x r x REGISTER_NAME<br>
+  M-x copy-to-register</dfn></dt>
+  <dd>Copy the region into the specified register. With a prefix argument, delete the region from the buffer after copying it to the register.</dd>
+
+  <dt><dfn>
+  C-x r i REGISTER_NAME<br>
+  C-x r g REGISTER_NAME<br>
+  M-x insert-register</dfn></dt>
+  <dd>Copy the text, rectangle, or number from the specified register into the current buffer.</dd>
+
+  <dt><dfn>
+  M-x append-to-register &lt;RET&gt; REGISTER_NAME</dfn></dt>
+  <dd>Append the region to the existing text in the specified register. With a prefix argument, delete the region from the buffer after appending it to the register.</dd>
+
+  <dt><dfn>
+  M-x prepend-to-register &lt;RET&gt; REGISTER_NAME</dfn></dt>
+  <dd>Prepend the region to the existing text in the specified register. With a prefix argument, delete the region from the buffer after prepending it to the register.</dd>
+
+  <dt><dfn>
+  C-x r r REGISTER_NAME<br>
+  M-x copy-rectangle-to-register</dfn></dt>
+  <dd>Copy the region-rectangle into the specified register. With a prefix argument, delete the region-rectangle from the buffer after copying it to the register.</dd>
+
+  <dt><dfn>
+  C-x r w REGISTER_NAME<br>
+  M-x window-configuration-to-register</dfn></dt>
+  <dd>Save the state of the selected frame's windows in the specified register.</dd>
+
+  <dt><dfn>
+  C-x r f REGISTER_NAME<br>
+  M-x frame-configuration-to-register</dfn></dt>
+  <dd>Save the state of all frames, including all their windows, in the specified register.</dd>
+
+  <dt><dfn>
+  C-u NUMBER C-x r n REGISTER_NAME<br>
+  C-u NUMBER M-x number-to-register</dfn></dt>
+  <dd>Store the specified number in the specified register. With no prefix argument (i.e., no <code>C-u NUMBER</code>), store a 0.</dd>
+
+  <dt><dfn>
+  C-u NUMBER C-x r + REGISTER_NAME<br>
+  C-u NUMBER M-x increment-register</dfn></dt>
+  <dd>If the specified register contains a number, increment that number by the specified amount. With no prefix argument (i.e., no <code>C-u NUMBER</code>), increment by 1.</dd>
+</dl>
+
+
+# Bookmarks
+
+Bookmarks are somewhat like registers in that they can record positions in buffers you can jump to. Unlike registers, they have long names and they persist automatically from one Emacs session to the next (your bookmarks are automatically saved when you kill Emacs). By default, bookmarks are saved to ~/.emacs.d/bookmarks or to ~/.emacs.bmk. The bookmark commands load your default bookmark file automatically. This saving and loading is how bookmarks persist from one Emacs session to the next.
+
+<dl>
+  <dt><dfn>
+  C-x r m BOOKMARK_NAME<br>
+  M-x bookmark-set</dfn></dt>
+  <dd>Set a bookmark named BOOKMARK at point. If you don't specify a bookmark name, then the name will be taken from the name of the file.</dd>
+
+  <dt><dfn>
+  C-x r b BOOKMARK_NAME<br>
+  M-x bookmark-jump</dfn></dt>
+  <dd>Jump to the bookmark named BOOKMARK.</dd>
+
+  <dt><dfn>
+  C-x r l<br>
+  M-x list-bookmarks</dfn></dt>
+  <dd>List all the bookmarks.</dd>
+
+  <dt><dfn>
+  M-x bookmark-save</dfn></dt>
+  <dd>Explicitly save the current bookmark values in the default bookmark file.</dd>
+
+  <dt><dfn>
+  M-x bookmark-load &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>Load the specified bookmark file.</dd>
+
+  <dt><dfn>
+  M-x bookmark-write &lt;RET&gt; FILENAME</dfn></dt>
+  <dd>Save all the current bookmark values in the specified file.</dd>
+
+  <dt><dfn>
+  M-x bookmark-delete &lt;RET&gt; BOOKMARK_NAME</dfn></dt>
+  <dd>Delete the specified bookmark.</dd>
+
+  <dt><dfn>
+  M-x bookmark-insert-location &lt;RET&gt; BOOKMARK_NAME</dfn></dt>
+  <dd>Insert in the buffer the name of the file that the specified bookmark points to.</dd>
+
+  <dt><dfn>
+  M-x bookmark-insert &lt;RET&gt; BOOKMARK_NAME</dfn></dt>
+  <dd>Insert in the buffer the contents of the file that the specified bookmark points to.</dd>
+
+  <dt><dfn>
+  M-x bookmark-rename</dfn></dt>
+  <dd>Rename a bookmark from OLD_NAME to NEW_NAME.</dd>
+</dl>
+
+
+# Saving Emacs's State
+
+You can save the Emacs desktop (the buffers, their file names, major modes, buffer positions, and some other things), so that you can persist that state across Emacs sessions.
+
+You can save the desktop manually with the command <code>M-x desktop-save</code>. You can also enable automatic saving of the desktop when you exit Emacs, and automatic restoration of the last saved desktop when Emacs starts; add the following to your ~/.emacs.d/init.el for automatic saving and restoration: <code>(desktop-save-mode 1)</code>.
+
+When Emacs loads a saved desktop, it looks for saved desktops in the directories specified by DESKTOP-PATH and then loads the first desktop it finds.
+
+<dl>
+  <dt><dfn>
+  M-x desktop-change-dir</dfn></dt>
+  <dd>Load the first desktop found in the specified directory.</dd>
+
+  <dt><dfn>
+  M-x desktop-clear</dfn></dt>
+  <dd>Empty the current desktop.</dd>
+
+  <dt><dfn>
+  M-x desktop-remove</dfn></dt>
+  <dd>Delete a desktop file.</dd>
+
+  <dt><dfn>
+  M-x desktop-revert</dfn></dt>
+  <dd>Revert to the last loaded desktop.</dd>
+
+  <dt><dfn>
+  M-x desktop-save</dfn></dt>
+  <dd>Save the current desktop in a desktop file.</dd>
+
+  <dt><dfn>
+  M-x desktop-save-in-desktop-dir</dfn></dt>
+  <dd>Save the current desktop in a desktop file in the specified directory.</dd>
+
+  <dt><dfn>
+  M-x desktop-save-mode</dfn></dt>
+  <dd>Toggle desktop saving.</dd>
+</dl>
 
 
 # Spell Checking
@@ -2312,6 +2464,35 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
 </dl>
 
 
+# Editing
+
+TODO
+
+
+# Customisation
+
+
+## Mode Line
+
+In your ~/.emacs/init.el:
+
+* Show the size of the buffer: <code>(size-indication-mode t)</code>.
+* Show the column number of point: <code>(column-number-mode t)</code>.
+* Show the current time: <code>(display-time-mode t)</code>.
+* Show your computer's battery charge: <code>(display-battery-mode t)</code>.
+
+If you're using display-time-mode, then you can have the word "Mail" appear when you have unread email. Set <code>display-time-mail-directory</code> to the directory to check for unread email (any nonempty regular file in the directory is considered as unread email); for example, I use [mutt](http://www.mutt.org) and would add the following to my ~/.emacs.d/init.el: <code>(setq display-time-mail-directory "~/.mutt/mail/INBOX/new")</code>.
+
+You should use 24-hour time format (don't you dare call this military time; 24-hour time is the most commonly used time format in the world and it makes a lot of sense and is heavily used outside the military and didn't even originate with the military). Add the following to your ~/.emacs.d/init.el: <code>(setq display-time-24hr-format t)</code>.
+
+You can customise the format of the mode line by modifying the <code>mode-line-format</code> variable. Read its documentation (<code>C-h v mode-line-format</code>) for help on modifying it.
+
+
+## Minibuffer
+
+Delete duplicates from the minibuffer history list: <code>(setq history-delete-duplicates t)</code>.
+
+
 # Calculator
 
 Emacs comes with a powerful calculator called Calc.
@@ -2329,6 +2510,8 @@ Calc has a few different modes. You can run it in standard mode (<code>M-x calc<
 If you just want to use Calc, but not Emacs, then you could do something like <code>emacs -f full-calc</code> or <code>emacs -f full-calc-keypad</code> to launch Emacs.
 
 All Calc commands begin with the word "calc-". Since it's tedious to have to type "M-x calc-" for every command, Calc provides an 'x' key, which is shorthand for "M-x calc-"; for example, instead of typing <code>M-x calc-hypot</code>, you can simply type <code>x hypot</code>.
+
+As in normal mathematical notation, the <code>*</code> symbol can often be omitted: <code>2a</code> and <code>2 a</code> are the same thing as <code>2 * a</code>.
 
 To enter negative numbers into Calc, use an underscore as the negative sign, or enter the number as a positive, and then press <code>n</code> to negate the number.
 
@@ -3236,32 +3419,3 @@ A variable name should consist of one or more letters or digits, beginning with 
   M-x calc-rotate-binary</dfn></dt>
   <dd>Rotate a number one bit to the left. The leftmost bit is dropped off the left and shifted in on the right.</dd>
 </dl>
-
-
-# Editing
-
-TODO
-
-
-# Customisation
-
-
-## Mode Line
-
-In your ~/.emacs/init.el:
-
-* Show the size of the buffer: <code>(size-indication-mode t)</code>.
-* Show the column number of point: <code>(column-number-mode t)</code>.
-* Show the current time: <code>(display-time-mode t)</code>.
-* Show your computer's battery charge: <code>(display-battery-mode t)</code>.
-
-If you're using display-time-mode, then you can have the word "Mail" appear when you have unread email. Set <code>display-time-mail-directory</code> to the directory to check for unread email (any nonempty regular file in the directory is considered as unread email); for example, I use [mutt](http://www.mutt.org) and would add the following to my ~/.emacs.d/init.el: <code>(setq display-time-mail-directory "~/.mutt/mail/INBOX/new")</code>.
-
-You should use 24-hour time format (don't you dare call this military time; 24-hour time is the most commonly used time format in the world and it makes a lot of sense and is heavily used outside the military and didn't even originate with the military). Add the following to your ~/.emacs.d/init.el: <code>(setq display-time-24hr-format t)</code>.
-
-You can customise the format of the mode line by modifying the <code>mode-line-format</code> variable. Read its documentation (<code>C-h v mode-line-format</code>) for help on modifying it.
-
-
-## Minibuffer
-
-Delete duplicates from the minibuffer history list: <code>(setq history-delete-duplicates t)</code>.
