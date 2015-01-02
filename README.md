@@ -2318,27 +2318,53 @@ Emacs comes with a powerful calculator called Calc.
 
 By default, Calc uses Reverse Polish Notation (RPN) (also known as postfix notation), where you enter operands first, and then the operator (1 2 +). The central component of an RPN calculator is the stack. Each time you enter a number, it gets pushed onto the top of the stack. When you enter an operator, the appropriate number of operands are popped from the top of the stack, the operator is applied to them, and finally the result of the operation is pushed onto the top of the stack.
 
-Infix notation (also known as algebraic notation) is probably the notation you're most used to. It's where an operator is surrounded by its operands (1 + 2). Calc lets you use infix notation if you're not comfortable using RPN.
+Infix notation (also known as algebraic notation) is probably the notation you're most used to. It's where an operator is surrounded by its operands (1 + 2). Calc lets you use infix notation if you're not comfortable using RPN. To enter a formula using infix notation, press <code>'</code> (apostrophe) followed by the formula. You can also enter Algebraic mode by typing <code>m a</code>, so that you don't have to keep prefixing all your formulas with an apostrophe; however, if your formula begins with a function name, then you still need to prefix the formula with an apostrophe, even when you're in Algebraic mode.
 
 Polish notation (also known as prefix notation) may be familiar to you if you've programmed in a language such as Lisp. It's where an operator comes before its operands (+ 1 2).
 
-Calc's standard interface shows two windows side-by-side. The one on the left is the stack window; the one on the right is the trail window. The stack window shows you the contents of the calculator's stack. The stack is actually shown with the top of the stack at the bottom of the window and the bottom of the stack at the top of the window. Each line is preceded by a number (a stack level number), which indicates that line's position in the stack (1: is the top, 2: is the second from the top, and so on). Some commands can be told what stack levels to work with. The trail window shows you the history of all the operands and operators you've entered. A number that isn't preceded by anything indicates an operand. A number that is preceded by an operator indicates the result of applying that operator to the previous operands. When the operator is followed by <code>&gt;</code>, it indicates the most recent result. Since the stack and trail are Emacs buffers, you can scroll them and such like you normally would an ordinary buffer.
+Calc's standard interface shows two windows side-by-side. The one on the left is the stack window; the one on the right is the trail window. The stack window shows you the contents of the calculator's stack. The stack is actually shown with the top of the stack at the bottom of the window and the bottom of the stack at the top of the window. Each line is preceded by a number (a stack level number), which indicates that line's position in the stack (1: is the top, 2: is the second from the top, and so on). Some commands can be told what stack levels to work with. The trail window shows you the history of all the operands and operators you've entered. A number that isn't preceded by anything indicates an operand. A number that is preceded by an operator indicates the result of applying that operator to the previous operands. When the operator is followed by <code>&gt;</code> (the trail pointer), it indicates the most recent result. Since the stack and trail are Emacs buffers, you can scroll them and such like you normally would an ordinary buffer.
 
 Calc has a few different modes. You can run it in standard mode (<code>M-x calc</code>), which shows two side-by-side windows; <code>M-x full-calc</code> shows standard mode in a full screen; <code>M-x calc-keypad</code> provides a keypad for mouse input (like a typical GUI calculator); <code>M-x full-calc-keypad</code> shows the keypad in a full screen; and <code>M-x quick-calc</code> uses the minibuffer to prompt for a formula, which should be entered in algebraic notation, and displays the result in the echo area; <code>M-x calc-embedded</code> enables Calc to be used directly inside a typical Emacs buffer; <code>M-x calc-grab-rectangle</code> can be used for grabbing a rectangle from a buffer and pushing it onto Calc's stack; <code>M-x calc-grab-region</code> can be used for grabbing a region from a buffer and pushing it onto Calc's stack.
 
 If you just want to use Calc, but not Emacs, then you could do something like <code>emacs -f full-calc</code> or <code>emacs -f full-calc-keypad</code> to launch Emacs.
 
+All Calc commands begin with the word "calc-". Since it's tedious to have to type "M-x calc-" for every command, Calc provides an 'x' key, which is shorthand for "M-x calc-"; for example, instead of typing <code>M-x calc-hypot</code>, you can simply type <code>x hypot</code>.
+
+To enter negative numbers into Calc, use an underscore as the negative sign, or enter the number as a positive, and then press <code>n</code> to negate the number.
+
+To enter fractions into Calc, use a colon (<code>:</code>), since the forward slash and backslash are both reserved for division; for example, to enter two thirds (2/3), write <code>2:3</code>.
+
+To enter a percentage into Calc, type <code>M-%</code> after the number; for example, to enter 50%, write <code>50 M-%</code>.
+
+To enter a vector (a list of numbers) into Calc, press <code>[</code>, and then for each number you want to include in the vector, type the number followed by either <code>&lt;RET&gt;</code> or <code>,</code> (a comma). When you're done, press <code>]</code> to complete the vector. If you used <code>&lt;RET&gt;</code> instead of a comma, then the commas will be added for you when you press <code>]</code>. You can also enter vectors in algebraic mode using the same square bracket notation with comma delimited items.
+
+To enter units into Calc, you need to use algebraic mode. To see a list of units, type <code>u v</code>. To enter composite units (a value that consists of more than one unit, such as 1 hr 30 min), use algebraic mode and use a plus between sets of units; for example, to enter 1 hr 30 min, you would type <code>' 1 hr + 30 min</code>. If you want to enter one unit per another unit, use the division (<code>/</code>) operator; for example to enter 20 metres per second, type <code>' 20 m / s</code>. If you want to also use composite units in that case, either use parentheses (<code>' (3 km + 200 m) / hr</code>) or enter each part separately with a plus (<code>+</code>) in between: <code>' 3 km / hr + 200 m / hr</code>.
+
+To enter times into Calc, type <code>@</code> or <code>h</code> after the hours; type <code>'</code> or <code>m</code> after the minutes; and type <code>"</code> or <code>s</code> after the seconds.
+
+To enter dates and times into Calc, you need to use algebraic mode and enter the date and/or time surrounded by <code>&lt;</code> and <code>&gt;</code>. To enter a date: <code>&lt;YYYY-MM-DD&gt;</code> (for example, <code>&lt;1932-09-25</code> for 25 September 1932). To enter a time: <code>HH:mm:SS</code> (for example, <code>&lt;17:30:05&gt;</code>). To change the date format to something sensible: <code>d d YYYY-MM-DD HH:mm:SS</code>; for a list of date formatting codes, go to the "Date Formatting Codes" section in the Calc manual.
+
+You can use the <code>+</code> and <code>-</code> operators with dates and times. For dates, if you push a simple number onto the stack and then invoke <code>+</code> or <code>-</code>, then that many days will be added or subtracted from the date. For times, if you push a simple number onto the stack and then invoke <code>+</code> or <code>-</code>, then that many hours will be added or subtracted. In both cases, you can also use floats; for example, 1.5 means one and a half days (36 hours) or one and a half hours (90 minutes). You can also enter another date or time and then do arithmetic based on the two dates on the top of the stack. To add a month to a date, you can use <code>t I</code> and to subtract a month use <code>M-- t I</code> or <code>C-u - t I</code>. To add a second, use <code>f ]</code>. To subtract a second, use <code>f [</code>. Note that Emacs's calendar (<code>M-x calendar</code>) is also capable of doing date arithmetic; it can tell you how many days there are between two dates (move to a date, set mark, move to another date, type <code>M-=</code>); you can move forward or backward from a selected date (and you can use prefix arguments to move in larger jumps); etc. In other words, you don't need to rely on Calc in order to do some basic date arithmetic.
+
+A variable name should consist of one or more letters or digits, beginning with a letter. Any variables in an algebraic formula for which you have not stored values are left alone, even when you evaluate the formula.
+
 <dl>
   <dt><dfn>
-  C-x * i</dfn></dt>
+  C-x * i<br>
+  x info<br>
+  M-x calc-info</dfn></dt>
   <dd>Go to the Calc manual.</dd>
 
   <dt><dfn>
-  C-x * t</dfn></dt>
+  C-x * t<br>
+  x tutorial<br>
+  M-x calc-tutorial</dfn></dt>
   <dd>Go to the Calc tutorial.</dd>
 
   <dt><dfn>
-  C-x * s</dfn></dt>
+  C-x * s<br>
+  x info-summary<br>
+  M-x calc-info-summary</dfn></dt>
   <dd>Go to the Calc summary, which lists all the Calc commands that are bound to keys.</dd>
 
   <dt><dfn>
@@ -2346,16 +2372,14 @@ If you just want to use Calc, but not Emacs, then you could do something like <c
   C-x * *<br>
   M-x calc<br>
   M-x full-calc</dfn></dt>
-  <dd>Start Calc if it's closed; close Calc if it's open. When closing, the Calc windows will simply be hidden, not destroyed. This way, you don't lose your calculations (you'll get them back when you reopen Calc).</dd>
+  <dd>Toggle Calc. When closing, the Calc windows will simply be hidden, not destroyed. This way, you don't lose your calculations (you'll get them back when you toggle Calc back on).</dd>
 
   <dt><dfn>
   C-x * x<br>
-  q</dfn></dt>
+  q<br>
+  x quit<br>
+  M-x calc-quit</dfn></dt>
   <dd>Exit Calc. If you want to close Calc without losing your calculations, then you should toggle Calc with <code>C-x * c</code> or <code>C-x * *</code> instead of exiting.</dd>
-
-  <dt><dfn>
-  C-x * 0</dfn></dt>
-  <dd>Empty Calc's stack and reset Calc's initial mode settings.</dd>
 
   <dt><dfn>
   C-x * b</dfn></dt>
@@ -2365,47 +2389,47 @@ If you just want to use Calc, but not Emacs, then you could do something like <c
   C-x * k<br>
   M-x calc-keypad<br>
   M-x full-calc-keypad</dfn></dt>
-  <dd>Start Calc in keypad mode if it's closed; close it if it's open.</dd>
+  <dd>Toggle Calc's keypad mode.</dd>
 
   <dt><dfn>
   C-x * q<br>
   M-x quick-calc</dfn></dt>
-  <dd>Start Calc in quick mode, which uses the minibuffer to prompt for a formula, which should be entered in algebraic notation. The result will appear in the echo area.</dd>
+  <dd>Start Calc in quick mode, which uses the minibuffer to prompt for a formula, which should be entered using infix notation. The result will appear in the echo area.</dd>
 
   <dt><dfn>
   C-x * e<br>
   M-x calc-embedded</dfn></dt>
-  <dd>Toggle Calc's embedded mode.</dd>
+  <dd>Toggle Calc's embedded mode; this lets you use Calc in a normal Emacs buffer by making Calc's commands available in the buffer.</dd>
 
   <dt><dfn>
-  &lt;TAB&gt;</dfn></dt>
-  <dd>Swap the top two elements on the stack.</dd>
+  '</dfn></dt>
+  <dd>Use the minibuffer to prompt for a formula, which should be entered using infix notation.</dd>
 
   <dt><dfn>
-  M-&lt;TAB&gt;</dfn></dt>
-  <dd>Cycle the top three elements on the stack upward (the top becomes the second element, the second element becomes the third element, and the third element becomes the new top).</dd>
+  m a<br>
+  x algebraic-mode<br>
+  M-x calc-algebraic-mode</dfn></dt>
+  <dd>Toggle Algebraic mode.</dd>
 
   <dt><dfn>
-  &lt;DEL&gt;</dfn></dt>
-  <dd>Delete the top element from the stack.</dd>
+  M-x another-calc</dfn></dt>
+  <dd>Open a new, independent Calc window, so that you can have multiple calculators.</dd>
 
   <dt><dfn>
-  U</dfn></dt>
-  <dd>Undo.</dd>
+  m O<br>
+  x no-simplify-mode<br>
+  M-x calc-no-simplify-mode</dfn></dt>
+  <dd>Turn simplification mode off; this is useful to do when you want to pull something from or push something onto the stack as is.</dd>
 
   <dt><dfn>
   C-x * g<br>
   M-x calc-grab-region</dfn></dt>
-  <dd>Place the contents of the region into a vector (list) of numbers on top of the stack. The order of the numbers is based on their left-to-right, top-to-bottom order in the region. To unpack the vector, so that each number is a separate operand on the stack, type <code>v u</code>.</dd>
+  <dd>Place the contents of the region into a vector (list) of numbers on top of the stack. The order of the numbers is based on their left-to-right, top-to-bottom order in the region. To unpack the vector, so that each number is a separate operand on the stack, type <code>v u</code>. If you want to grab a region that contains units, then you need to use parentheses to surround each set of numbers with their units; otherwise, the whole region is treated as one element in the vector. Also, if you're grabbing units, you should probably disable simplification mode, so that they're copied over as is: <code>m O</code>.</dd>
 
   <dt><dfn>
   C-x * r<br>
   M-x calc-grab-rectangle</dfn></dt>
   <dd>Place the contents of the rectangle into a matrix (list of lists) of numbers on top of the stack. The matrix consists of a vector for each row in the rectangle.</dd>
-
-  <dt><dfn>
-  C-x * y</dfn></dt>
-  <dd>Yank the top of the stack into a buffer.</dd>
 
   <dt><dfn>
   C-x * :</dfn></dt>
@@ -2414,10 +2438,6 @@ If you just want to use Calc, but not Emacs, then you could do something like <c
   <dt><dfn>
   C-x * _</dfn></dt>
   <dd>Grab the rectangular region and compute the sums of its rows.</dd>
-
-  <dt><dfn>
-  n</dfn></dt>
-  <dd>Change the sign of the number at the top of the stack. You can also input negative numbers directly using an underscore ('_') as the negative sign.</dd>
 
   <dt><dfn>
   &lt;RET&gt;<br>
@@ -2429,293 +2449,792 @@ If you just want to use Calc, but not Emacs, then you could do something like <c
   </dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  &lt;DEL&gt;</dfn></dt>
+  <dd>Delete the top element from the stack.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  M-0 &lt;DEL&gt;<br>
+  C-u 0 &lt;DEL&gt;</dfn></dt>
+  <dd>Empty the entire stack.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-x * 0</dfn></dt>
+  <dd>Empty Calc's stack and reset Calc's initial mode settings.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  &lt;TAB&gt;</dfn></dt>
+  <dd>Swap the top two elements on the stack.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  M-&lt;TAB&gt;</dfn></dt>
+  <dd>Cycle the top three elements on the stack upward (the top becomes the second element, the second element becomes the third element, and the third element becomes the new top).</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  U<br>
+  C-/<br>
+  C-_<br>
+  x undo<br>
+  M-x calc-undo</dfn></dt>
+  <dd>Undo.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  D<br>
+  x redo<br>
+  M-x calc-redo</dfn></dt>
+  <dd>Redo.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  M-&lt;RET&gt;<br>
+  x last-args<br>
+  M-x calc-last-args</dfn></dt>
+  <dd>Push the arguments of the most recent command back onto the stack (without removing the result of the previous command), so that you can perform another operation with the same arguments.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  `</dfn></dt>
+  <dd>Edit the top of the stack. With a positive prefix argument, edit the past N stack entries. With 0 as the prefix argument, edit the entire stack. With a negative prefix argument, edit a specific stack entry.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  C-x * y</dfn></dt>
+  <dd>Yank the top of the stack into a buffer.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  p PRECISION<br>
+  x precision<br>
+  M-x calc-precision</dfn></dt>
+  <dd>Set the precision of the calculator to the specified number.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d g<br>
+  x group-digits<br>
+  M-x calc-group-digits</dfn></dt>
+  <dd>Group digits together in the integer part of a number. With a prefix argument, you can specify how many digits should belong to each group (with no prefix argument, the default is 3 or 4, depending on the radix).</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  M-- d g<br>
+  M-- x group-digits<br>
+  M-- M-x calc-group-digits<br>
+  C-u - d g<br>
+  C-u - x group-digits<br>
+  C-u - M-x calc-group-digits</dfn></dt>
+  <dd>Group digits together in the fractional part of a number. With a prefix argument, you can specify how many digits should belong to each group (with no prefix argument, the default is 3 or 4, depending on the radix).</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d , GROUP_SEPARATOR<br>
+  x group-char<br>
+  M-x calc-group-char</dfn></dt>
+  <dd>Change the group separator (a comma by default) to the specified character.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d . DECIMAL_CHARACTER<br>
+  x point-char<br>
+  M-x calc-point-char</dfn></dt>
+  <dd>Change the decimal separator (a period by default) to the specified character.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d d<br>
+  x date-notation<br>
+  M-x calc-date-notation</dfn></dt>
+  <dd>Change the display format of dates.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d n<br>
+  x normal-notation<br>
+  M-x calc-normal-notation</dfn></dt>
+  <dd>Display all floating point numbers on the stack in normal format. With a prefix argument, you can specify how many digits should be displayed.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d f<br>
+  x fix-notation<br>
+  M-x calc-fix-notation</dfn></dt>
+  <dd>Display all floating point numbers on the stack in fixed-point format. With a prefix argument, you can specify how many digits should be displayed.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d s<br>
+  x sci-notation<br>
+  M-x calc-sci-notation</dfn></dt>
+  <dd>Display all floating point numbers on the stack in scientific notation. With a prefix argument, you can specify how many digits should be displayed.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d e<br>
+  x eng-notation<br>
+  M-x calc-eng-notation</dfn></dt>
+  <dd>Display all floating point numbers on the stack in engineering notation. With a prefix argument, you can specify how many digits should be displayed.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d r RADIX<br>
+  x radix<br>
+  M-x calc-radix</dfn></dt>
+  <dd>Display the numbers on the stack in the specified radix (2 for binary, 8 for octal, 10 for decimal, 16 for hexadecimal, etc.).</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  m r<br>
+  x radians-mode<br>
+  M-x calc-radians-mode</dfn></dt>
+  <dd>Use radians for angles.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  m d<br>
+  x degrees-mode<br>
+  M-x calc-degrees-mode</dfn></dt>
+  <dd>Use degrees for angles.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  m f<br>
+  x frac-mode<br>
+  M-x calc-frac-mode</dfn></dt>
+  <dd>Display the results of integer division as fractions instead of decimals.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d t<br>
+  x truncate-stack<br>
+  M-x calc-truncate-stack</dfn></dt>
+  <dd>Move the stack pointer (the '.') to the current line.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d [<br>
+  x truncate-up<br>
+  M-x calc-truncate-up</dfn></dt>
+  <dd>Move the stack pointer one line up.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  d ]<br>
+  x truncate-down<br>
+  M-x calc-truncate-down</dfn></dt>
+  <dd>Move the stack pointer one line down.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  t h<br>
+  x trail-here<br>
+  M-x calc-trail-here</dfn></dt>
+  <dd>Move the trail pointer to the current line.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  t n<br>
+  x trail-next<br>
+  M-x calc-trail-next</dfn></dt>
+  <dd>Move the trail pointer one line down.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  t p<br>
+  x trail-previous<br>
+  M-x calc-trail-previous</dfn></dt>
+  <dd>Move the trail pointer one line up.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  t ]<br>
+  x trail-last<br>
+  M-x calc-trail-last</dfn></dt>
+  <dd>Reset the trail pointer (move the trail pointer to the last line in the trail window).</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  t [<br>
+  x trail-first<br>
+  M-x calc-trail-first</dfn></dt>
+  <dd>Move the trail pointer to the first line in the trail window.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  t y<br>
+  x trail-yank<br>
+  M-x calc-trail-yank</dfn></dt>
+  <dd>Yank the trail pointer's value onto the top of the stack.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  t r<br>
+  x search-reverse<br>
+  M-x trail-search-reverse</dfn></dt>
+  <dd>Search the trail window. You can use <code>C-s</code> or <code>C-r</code> to continue the search forwards or backwards, just like you would in an ordinary Emacs buffer.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  t d<br>
+  x trail-display<br>
+  M-x calc-trail-display</dfn></dt>
+  <dd>Toggle the display of the trail window.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  t i<br>
+  x trail-in<br>
+  M-x calc-trail-in</dfn></dt>
+  <dd>Move the cursor into the trail window.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  t o<br>
+  x trail-out<br>
+  M-x calc-trail-out</dfn></dt>
+  <dd>Move the cursor out of the trail window.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  n<br>
+  x change-sign<br>
+  M-x calc-change-sign<br>
+  'neg(NUMBER)<br>
+  '-NUMBER</dfn></dt>
+  <dd>Negate a number (change negative to positive; change positive to negative). You can also input negative numbers directly using an underscore ('_') as the negative sign.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  P</dfn></dt>
+  <dd>Insert Pi.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  H P</dfn></dt>
+  <dd>Insert e.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  I H P</dfn></dt>
+  <dd>Insert Phi.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  RADIX#NUMBER</dfn></dt>
+  <dd>Enter a number in the specified radix.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  +<br>
+  x plus<br>
+  M-x calc-plus<br>
+  'add(NUMBER1, NUMBER2)<br>
+  'NUMBER1 + NUMBER2</dfn></dt>
+  <dd>Add two numbers.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  -<br>
+  x minus<br>
+  M-x calc-minus<br>
+  'sub(NUMBER1, NUMBER2)<br>
+  'NUMBER1 - NUMBER2</dfn></dt>
+  <dd>Subtract two numbers.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  *<br>
+  x times<br>
+  M-x calc-times<br>
+  'mul(NUMBER1, NUMBER2)<br>
+  'NUMBER1 * NUMBER2<br>
+  'NUMBER1 NUMBER2</dfn></dt>
+  <dd>Multiply two numbers.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  /<br>
+  x divide<br>
+  M-x calc-divide<br>
+  'div(NUMBER1, NUMBER2)<br>
+  'NUMBER1 / NUMBER2</dfn></dt>
+  <dd>Divide two numbers.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  \<br>
+  x idiv<br>
+  M-x calc-idiv<br>
+  'idiv(NUMBER1, NUMBER2)<br>
+  'NUMBER1 \ NUMBER2</dfn></dt>
+  <dd>Divide two numbers and then floor the result.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  %<br>
+  x mod<br>
+  M-x calc-mod<br>
+  'mod(NUMBER1, NUMBER2)<br>
+  'NUMBER1 % NUMBER2</dfn></dt>
+  <dd>Divide two numbers, floor the result, and then return the remainder (in other words, perform a modulo operation).</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  NUMBER M MODULUS</dfn></dt>
+  <dd>Compute the value of NUMBER mod MODULUS; for example, <code>33 M 24</code> results in 9 mod 24.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  :<br>
+  x fdiv<br>
+  M-x calc-fdiv<br>
+  'fdiv(NUMBER1, NUMBER2)</dfn></dt>
+  <dd>Divide two numbers and display the result as a fraction.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  ^<br>
+  x power<br>
+  M-x calc-power<br>
+  'pow(NUMBER1, NUMBER2)<br>
+  'NUMBER1^NUMBER2</dfn></dt>
+  <dd>Raise a number to the power of another number.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  I ^<br>
+  'nroot(NUMBER1, NUMBER2)<br>
+  'NUMBER1^(1/NUMBER2)</dfn></dt>
+  <dd>Compute the nth root of a number.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  Q<br>
+  x sqrt<br>
+  M-x calc-sqrt<br>
+  'sqrt(NUMBER)</dfn></dt>
+  <dd>Take the square root of a number.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  I Q<br>
+  'sqr(NUMBER)<br>
+  'NUMBER^2</dfn></dt>
+  <dd>Compute the square of a number.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  A<br>
+  x abs<br>
+  M-x calc-abs<br>
+  'abs(NUMBER)</dfn></dt>
+  <dd>Compute the absolute value of a number.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  &<br>
+  x inv<br>
+  M-x calc-inv<br>
+  'inv(NUMBER)<br>
+  '1 / NUMBER</dfn></dt>
+  <dd>Compute the reciprocal of a number.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  !<br>
+  x factorial<br>
+  M-x calc-factorial<br>
+  'fact(NUMBER)<br>
+  'NUMBER!</dfn></dt>
+  <dd>Compute the factorial of a number.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  f [<br>
+  x decrement<br>
+  M-x calc-decrement<br>
+  'decr(NUMBER)<br>
+  'decr(NUMBER, AMOUNT)</dfn></dt>
+  <dd>Decrement the given number by the optionally specified amount (1 by default).</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  f ]<br>
+  x increment<br>
+  M-x calc-increment<br>
+  'incr(NUMBER)<br>
+  'incr(NUMBER, AMOUNT)</dfn></dt>
+  <dd>Increment the given number by the optionally specified amount (1 by default).</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  L<br>
+  x ln<br>
+  M-x calc-ln<br>
+  'ln(NUMBER)</dfn></dt>
+  <dd>Compute the natural logarithm of a number.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  E<br>
+  x exp<br>
+  M-x calc-exp<br>
+  'exp(NUMBER)</dfn></dt>
+  <dd>Compute e to the specified power.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  H E<br>
+  'exp10(NUMBER)<br>
+  '10^NUMBER</dfn></dt>
+  <dd>Compute 10 to the specified power.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  H L<br>
+  x log10<br>
+  M-x calc-log10<br>
+  'log10(NUMBER)</dfn></dt>
+  <dd>Compute the common (base-10) logarithm of a number.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  B<br>
+  x log<br>
+  M-x calc-log<br>
+  'log(NUMBER, BASE)</dfn></dt>
+  <dd>Compute the logarithm of a number using the specified base.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  I B<br>
+  'alog(LOG, BASE)<br>
+  'BASE^LOG</dfn></dt>
+  <dd>Compute the anti-logarithm of a number using the specified base.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  k g<br>
+  x gcd<br>
+  M-x calc-gcd<br>
+  'gcd(NUMBER1, NUMBER2)</dfn></dt>
+  <dd>Compute the GCD of two numbers.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  k l<br>
+  x lcm<br>
+  M-x calc-lcm<br>
+  'lcm(NUMBER1, NUMBER2)</dfn></dt>
+  <dd>Compute the LCM of two numbers.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  k c<br>
+  x choose<br>
+  M-x calc-choose<br>
+  'choose(NUMBER1, NUMBER2)</dfn></dt>
+  <dd>Compute a binomial coefficient given two numbers.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  H k c<br>
+  x perm<br>
+  M-x calc-perm<br>
+  'perm(NUMBER1, NUMBER2)</dfn></dt>
+  <dd>Compute the number of permutations given two numbers.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  k p<br>
+  x prime-test<br>
+  M-x calc-prime-test</dfn></dt>
+  <dd>Check if a number is prime.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  k f<br>
+  x prime-factors<br>
+  M-x calc-prime-factors<br>
+  'prfac(NUMBER)</dfn></dt>
+  <dd>Decompose an integer into its prime factors.</dd>
 
   <dt><dfn>
-  </dfn></dt>
-  <dd></dd>
+  a +<br>
+  x summation<br>
+  M-x calc-summation<br>
+  'sum(FORMULA, SUMMATION_VARIABLE, FROM, TO)</dfn></dt>
+  <dd>Sum the values from FROM to TO using the specified formula and increment the specified variable; for example, to sum the numbers from 1 to 4: <code>'x &lt;RET&gt; a + x &lt;RET&gt; 1 &lt;RET&gt; 4 &lt;RET&gt;</code>.</dd>
 
+  <dt><dfn>
+  a *<br>
+  x product<br>
+  M-x calc-product<br>
+  'prod(FORMULA, PRODUCT_VARIABLE, FROM, TO)</dfn></dt>
+  <dd>Multiply the values from FROM to TO using the specified formula and increment the specified variable; for example, to multiply the numbers from 1 to 4: <code>'x &lt;RET&gt; a * x &lt;RET&gt; 1 &lt;RET&gt; 4 &lt;RET&gt;</code>.</dd>
+
+  <dt><dfn>
+  S<br>
+  x sin<br>
+  M-x calc-sin<br>
+  'sin(NUMBER)</dfn></dt>
+  <dd>Sine.</dd>
+
+  <dt><dfn>
+  I S<br>
+  x arcsin<br>
+  M-x calc-arcsin<br>
+  'arcsin(NUMBER)</dfn></dt>
+  <dd>Arcsine.</dd>
+
+  <dt><dfn>
+  C<br>
+  x cos<br>
+  M-x calc-cos<br>
+  'cos(NUMBER)</dfn></dt>
+  <dd>Cosine.</dd>
+
+  <dt><dfn>
+  I C<br>
+  x arccos<br>
+  M-x calc-arccos<br>
+  'arccos(NUMBER)</dfn></dt>
+  <dd>Arccosine.</dd>
+
+  <dt><dfn>
+  T<br>
+  x tan<br>
+  M-x calc-tan<br>
+  'tan(NUMBER)</dfn></dt>
+  <dd>Tangent.</dd>
+
+  <dt><dfn>
+  I T<br>
+  x arctan<br>
+  M-x calc-arctan<br>
+  'arctan(NUMBER)</dfn></dt>
+  <dd>Arctangent.</dd>
+
+  <dt><dfn>
+  I F<br>
+  x ceiling<br>
+  M-x calc-ceiling<br>
+  'ceil(NUMBER)</dfn></dt>
+  <dd>Take the ceiling of a number.</dd>
+
+  <dt><dfn>
+  R<br>
+  x round<br>
+  M-x calc-round<br>
+  'round(NUMBER)</dfn></dt>
+  <dd>Round a number to the nearest integer.</dd>
+
+  <dt><dfn>
+  c f<br>
+  x float<br>
+  M-x calc-float<br>
+  'pfloat(NUMBER)</dfn></dt>
+  <dd>Convert a number from an integer to a float.</dd>
+
+  <dt><dfn>
+  F<br>
+  x floor<br>
+  M-x calc-floor<br>
+  'floor(NUMBER)</dfn></dt>
+  <dd>Convert a number from a float to an integer (take the floor of it).</dd>
+
+  <dt><dfn>
+  c r<br>
+  x to-radians<br>
+  M-x calc-to-radians<br>
+  'rad(DEGREES)</dfn></dt>
+  <dd>Convert a number from degrees to radians.</dd>
+
+  <dt><dfn>
+  c d<br>
+  x to-degrees<br>
+  M-x calc-to-degrees<br>
+  'deg(RADIANS)</dfn></dt>
+  <dd>Convert a number from radians to degrees.</dd>
+
+  <dt><dfn>
+  u b<br>
+  x base-units<br>
+  M-x calc-base-units</dfn></dt>
+  <dd>Convert a number into its base units.</dd>
+
+  <dt><dfn>
+  u c<br>
+  x convert-units<br>
+  M-x calc-convert-units</dfn></dt>
+  <dd>Convert a number into different units. If the number isn't associated with any units, you'll be prompted for its units. Then, you'll be prompted for the units to convert to. You can use composite units for the conversion; for example, subtract two dates (the result will be in days), and then type <code>u c day &lt;RET&gt; day + hr + min + sec &lt;RET&gt;</dd>.
+
+  <dt><dfn>
+  u e<br>
+  x explain-units<br>
+  M-x calc-explain-units</dfn></dt>
+  <dd>Display the full name of the units for a number.</dd>
+
+  <dt><dfn>
+  u r<br>
+  x remove-units<br>
+  M-x calc-remove-units</dfn></dt>
+  <dd>Remove the units from a number.</dd>
+
+  <dt><dfn>
+  t C<br>
+  x convert-time-zones<br>
+  M-x convert-time-zones<br>
+  'tzconv(TIME, OLD_TIME_ZONE, NEW_TIME_ZONE)</dfn></dt>
+  <dd>Convert from one time zone into another.</dd>
+
+  <dt><dfn>
+  v x SIZE<br>
+  x index<br>
+  M-x calc-index<br>
+  'index(SIZE)</dfn></dt>
+  <dd>Create a vector of the specified size using consecutive integers from 1 to SIZE; for example, to create a vector of size 6, type <code>v x 6</code>, which results in the vector [1, 2, 3, 4, 5, 6].</dd>
+
+  <dt><dfn>
+  v l<br>
+  x vlength<br>
+  M-x calc-vlength<br>
+  'vlen(VECTOR)</dfn></dt>
+  <dd>Compute the length of a vector.</dd>
+
+  <dt><dfn>
+  | =<br>
+  x concat =<br>
+  M-x calc-concat =</dfn></dt>
+  <dd>Merge two vectors together.</dd>
+
+  <dt><dfn>
+  V S<br>
+  x sort<br>
+  M-x calc-sort<br>
+  'sort(VECTOR)</dfn></dt>
+  <dd>Sort the elements of a vector into increasing order.</dd>
+
+  <dt><dfn>
+  I V S<br>
+  'rsort(VECTOR)</dfn></dt>
+  <dd>Reverse sort a vector (sort the elements of a vector into decreasing order).</dd>
+
+  <dt><dfn>
+  V M OPERATOR<br>
+  x map<br>
+  M-x calc-map<br>
+  'map(OPERATOR, VECTOR)</dfn></dt>
+  <dd>Apply the specified operator to every element of a vector. For operators that take more than one argument, you need to have enough operands on the stack; for example, if you wanted to double all the elements in a vector, you would push a vector onto the stack, push a 2 onto the stack, and then type <code>V M *</code>.</dd>
+
+  <dt><dfn>
+  V R OPERATOR<br>
+  x reduce<br>
+  M-x calc-reduce<br>
+  'reduce(OPERATOR, VECTOR)</dfn></dt>
+  <dd>Apply the specified operator across a vector, reducing it to a single value; for example, if you wanted to sum the elements of [1, 2, 3, 4], you would push that vector onto the stack, and then type <code>V R +</code>, which would result in 10 (because 1 + 2 + 3 + 4 = 10).</dd>
+
+  <dt><dfn>
+  u +<br>
+  x vector-sum<br>
+  M-x calc-vector-sum<br>
+  'vsum(VECTOR)</dfn></dt>
+  <dd>Compute the sum of the values in a vector (similar to <code>V R +</code>).</dd>
+
+  <dt><dfn>
+  u *<br>
+  x vector-prod<br>
+  M-x calc-vector-prod<br>
+  'vprod(VECTOR)</dfn></dt>
+  <dd>Compute the product of the values in a vector (similar to <code>V R *</code>).</dd>
+
+  <dt><dfn>
+  u X<br>
+  x vector-max<br>
+  M-x calc-vector-max<br>
+  'vmax(VECTOR)</dfn></dt>
+  <dd>Find the maximum value in a vector.</dd>
+
+  <dt><dfn>
+  u N<br>
+  x vector-min<br>
+  M-x calc-vector-min<br>
+  'vmin(VECTOR)</dfn></dt>
+  <dd>Find the minimum value in a vector.</dd>
+
+  <dt><dfn>
+  u M<br>
+  x vector-mean<br>
+  M-x calc-vector-mean<br>
+  'vmean(VECTOR)</dfn></dt>
+  <dd>Compute the arithmetic mean of a vector.</dd>
+
+  <dt><dfn>
+  H u M<br>
+  x vector-median<br>
+  M-x calc-vector-median<br>
+  'vmedian(VECTOR)</dfn></dt>
+  <dd>Compute the median of a vector.</dd>
+
+  <dt><dfn>
+  u S<br>
+  x vector-sdev<br>
+  M-x calc-vector-sdev<br>
+  'vsdev(VECTOR)</dfn></dt>
+  <dd>Compute the sample standard deviation of a vector.</dd>
+
+  <dt><dfn>
+  I u S<br>
+  x vector-pop-sdev<br>
+  M-x calc-vector-pop-sdev<br>
+  'vpsdev(VECTOR)</dfn></dt>
+  <dd>Compute the population standard deviation of a vector.</dd>
+
+  <dt><dfn>
+  H u S<br>
+  x vector-variance<br>
+  M-x calc-vector-variance<br>
+  'vvar(VECTOR)</dfn></dt>
+  <dd>Compute the sample variance of a vector.</dd>
+
+  <dt><dfn>
+  I H u S<br>
+  x vector-pop-variance<br>
+  M-x calc-vector-pop-variance<br>
+  'vpvar(VECTOR)</dfn></dt>
+  <dd>Compute the population variance of a vector.</dd>
+
+  <dt><dfn>
+  t N<br>
+  x now<br>
+  M-x calc-now<br>
+  'now()</dfn></dt>
+  <dd>Push the current date and time onto the top of the stack.</dd>
+
+  <dt><dfn>
+  x time<br>
+  M-x calc-time</dfn></dt>
+  <dd>Push the current time onto the top of the stack.</dd>
+
+  <dt><dfn>
+  t I<br>
+  x inc-month<br>
+  M-x calc-inc-month<br>
+  'incmonth(DATE)<br>
+  'incmonth(DATE, AMOUNT)</dfn></dt>
+  <dd>Increment a date by the optionally specified number of months (1 by default).</dd>
+
+  <dt><dfn>
+  M-%<br>
+  x percent<br>
+  M-x calc-percent<br>
+  'percent(NUMBER)<br>
+  'NUMBER%</dfn></dt>
+  <dd>Input a percentage.</dd>
+
+  <dt><dfn>
+  c %<br>
+  x convert-percent<br>
+  M-x calc-convert-percent<br>
+  'percent(NUMBER * 100)</dfn></dt>
+  <dd>Convert a number to a percentage. To convert back to decimal, press <code>=</code>.</dd>
+
+  <dt><dfn>
+  M-% *</dfn></dt>
+  <dd>Compute the number that is the percent of another number; for example, <code>68 &lt;RET&gt; 25 M-% *</code> computes 17 because 17 is 25% of 68.</dd>
+
+  <dt><dfn>
+  / c %</dfn></dt>
+  <dd>Compute the percentage one number is of another number; for example, <code>17 &lt;RET&gt; 68 / c %</code> computes 25% because 17 is 25% of 68.</dd>
+
+  <dt><dfn>
+  b %<br>
+  x percent-change<br>
+  M-x calc-percent-change<br>
+  'relch(NUMBER1, NUMBER2) &lt;RET&gt; c %</dfn></dt>
+  <dd>Compute the percentage change from one number to another; for example, <code>17 &lt;RET&gt; 68 b %</code> computes 300% because in order to get from 17% to 68%, you need to add 300% of 17 to 17. Percentage change is calculated as (NUMBER2 - NUMBER1) / NUMBER2.</dd>
+
+  <dt><dfn>
+  b a<br>
+  x and<br>
+  M-x calc-and</dfn></dt>
+  <dd>Compute the bitwise AND of two numbers.</dd>
+
+  <dt><dfn>
+  b o<br>
+  x or<br>
+  M-x calc-or</dfn></dt>
+  <dd>Compute the bitwise OR of two numbers.</dd>
+
+  <dt><dfn>
+  b x<br>
+  x xor<br>
+  M-x calc-xor</dfn></dt>
+  <dd>Compute the bitwise XOR of two numbers.</dd>
+
+  <dt><dfn>
+  b n<br>
+  x not<br>
+  M-x calc-not</dfn></dt>
+  <dd>Compute the bitwise NOT of two numbers.</dd>
+
+  <dt><dfn>
+  b d<br>
+  x diff<br>
+  M-x calc-diff</dfn></dt>
+  <dd>Compute the bitwise difference of two numbers.</dd>
+
+  <dt><dfn>
+  b l<br>
+  x lshift-binary<br>
+  M-x calc-lshift-binary</dfn></dt>
+  <dd>Shift a number left by one bit.</dd>
+
+  <dt><dfn>
+  b r<br>
+  x rshift-binary<br>
+  M-x calc-rshift-binary</dfn></dt>
+  <dd>Shift a number right by one bit.</dd>
+
+  <dt><dfn>
+  b t<br>
+  x rotate-binary<br>
+  M-x calc-rotate-binary</dfn></dt>
+  <dd>Rotate a number one bit to the left. The leftmost bit is dropped off the left and shifted in on the right.</dd>
 </dl>
 
 
