@@ -1945,12 +1945,326 @@ A given combination of point and mark values can be interpreted either as a regi
 </dl>
 
 
-# Killing (Cutting), Deleting, Copying, and Yanking
-
-TODO
-
-
 # Searching and Replacing
+
+
+## Search
+
+Incremental searching (Isearch or I-search) begins searching as soon as you type the first character of the search string. As you type in the search string, Emacs shows you where the string (as you have typed it so far) would be found by highlighting all the matches.
+
+A nonincremental search requires you to type the entire search string before searching begins.
+
+A word search finds a sequence of words without regard to the type of punctuation between them; for example, if you enter a search string that consists of two words separated by a single space, the search matches any sequence of those two words separated by one or more spaces, newlines, or other punctuation characters. Incremental and nonincremental word searches differ slightly in the way they find a match. In a nonincremental word search, the last word in the search string must exactly match a whole word. In an incremental word search, the matching is more lax: the last word in the search string can match part of a word, so that the matching proceeds incrementally as you type.
+
+A symbol search is much like an ordinary search, except that the boundaries of the search must match the boundaries of a symbol. The meaning of "symbol" in this context depends on the major mode and usually refers to a source code token. Symbol search is useful for searching source code. In incremental symbol search, only the beginning of the search string is required to match the beginning of a symbol. In nonincremental symbol search, the beginning and end of the search string are required to match the beginning and end of a symbol.
+
+Emacs supports incremental and nonincremental regular expression (regexp) searches. The annoying thing about GNU's regular expressions is that some characters need to be escaped in order for them to have special meaning (this is backwards because usually you would escape something to remove its special meaning); pipes ('|') and parentheses both need to be escaped for them to have their special meaning (if they're not escaped, then they're matched literally). In most other cases, the regular expression syntax is pretty standard. If you need help with regular expressions, then consult the "Syntax of Regular Expressions" section in the Emacs manual or the "Regular Expressions" section in the Elisp manual.
+
+If a search string contains only lowercase letters, the search is case-insensitive. If a search string contains any uppercase letters, then the search is case-sensitive. If you delete all the uppercase characters from the search string, then it becomes case-insensitive again. This behaviour also applies to incremental regexp searches; for example "[ab]" matches 'a', 'A', 'b', or 'B', but "[AB]" only matches 'A' or 'B'.
+
+To search for a newline character, type <code>C-j</code>. To search for other control characters, quote it by typing <code>C-q</code> first. To search for non-ASCII characters, you can either use <code>C-q</code> and enter its octal code, or use an input method. If an input method is enabled in the current buffer when you begin the search, you can use it in the search string also. While typing the search string, you can toggle the input method with the command <code>C-\</code>. You can also turn on a non-default input method with <code>C-^</code>, which prompts for the name of the input method. When an input method is active during incremental search, the search prompt includes the input method mnemonic. Any input method you enable during incremental search remains enabled in the current buffer afterwards.
+
+If you begin an incremental search while the minibuffer is active, Emacs searches the contents of the minibuffer. Unlike searching an ordinary buffer, the search string is not shown in the echo area, because that is used to display the minibuffer. If an incremental search fails in the minibuffer, it tries searching the minibuffer history. You can visualise the minibuffer and its history as a series of "pages", with the earliest history element on the first page and the current minibuffer on the last page. A forward search, <code>C-s</code>, searches forward to later pages; a reverse search, <code>C-r</code>, searches backwards to earlier pages. Like in ordinary buffer search, a failing search can wrap around, going from the last page to the first page or vice versa. When the current match is on a history element, that history element is pulled into the minibuffer. If you exit the incremental search normally (for example, by typing <code>&lt;RET&gt;</code>), it remains in the minibuffer afterwards. Canceling the search, with <code>C-g</code>, restores the contents of the minibuffer when you began the search.
+
+<dl>
+  <dt><dfn>
+  &lt;RET&gt;</dfn></dt>
+  <dd>
+<p>Terminate a search and leave the cursor where it is. Actually, any command not specially meaningful in searches will also terminate the search. When you exit the incremental search, it adds the original value of point to the mark ring, without activating the mark; you can thus use <code>C-u C-&lt;SPC&gt;</code> to return to where you were before beginning the search. It only does this if the mark was not already active.</p>
+
+<p>If the search string is empty, then <code>&lt;RET&gt;</code> will launch a nonincremental search.</p>
+  </dd>
+
+  <dt><dfn>
+  C-g</dfn></dt>
+  <dd>Cancel a search and move the cursor back to where it was before the search began. If the search prompt says "Failing I-search", then <code>C-g</code> will remove all the characters from the search string that are causing the search to fail, so in the case of a failing I-search, you need to press <code>C-g</code> twice in order to cancel the search.</dd>
+
+  <dt><dfn>
+  C-s<br>
+  M-x isearch-forward<br>
+  C-u C-M-s</dfn></dt>
+  <dd>
+<p>Begin an incremental search forward, or if already in a forward incremental search, then move to the next occurrence of the search string. If you're at the last match in the buffer, then typing <code>C-s</code> will begin the search again from the beginning of the buffer. This is called wrapping around, and "Wrapped" appears in the search prompt once this has happened. If you wrap more than once, then "Overwrapped" appears in the search prompt, which means that you are revisiting matches that you have already seen.</p>
+
+<p>On the first match, you can press <code>&lt;DEL&gt;</code> to edit the search string. If you type <code>C-s</code> or <code>C-r</code> to move to the next or previous occurrence, then pressing <code>&lt;DEL&gt;</code> will move you one match closer to the first match. When you press &lt;DEL&gt; enough times to get back to the first match, then &lt;DEL&gt; can be used again to edit the search string. An easier way to edit the search string is to press <code>M-e</code> followed by <code>C-s</code> or <code>C-r</code> to resume the search.</p>
+
+<p><code>C-r</code> in a forward search switches to a backward search.</p>
+
+<p>After exiting a search, you can search for the same string again by typing just <code>C-s C-s</code>. The first <code>C-s</code> is the key that invokes incremental search, and the second <code>C-s</code> means "search again". It doesn't matter if the last search string was searched for with <code>C-s</code> or <code>C-r</code>.</p>
+  </dd>
+
+  <dt><dfn>
+  C-r<br>
+  M-x isearch-backward<br>
+  C-u C-M-r</dfn></dt>
+  <dd>
+<p>Begin an incremental search backward, or if already in a backward incremental search, then move to the next occurrence of the search string. If you're at the first match in the buffer, then typing <code>C-r</code> will begin the search again from the end of the buffer. This is called wrapping around, and "Wrapped" appears in the search prompt once this has happened. If you wrap more than once, then "Overwrapped" appears in the search prompt, which means that you are revisiting matches that you have already seen.</p>
+
+<p>On the first match, you can press <code>&lt;DEL&gt;</code> to edit the search string. If you type <code>C-s</code> or <code>C-r</code> to move to the previous or next occurrence, then pressing <code>&lt;DEL&gt;</code> will move you one match closer to the first match. When you press &lt;DEL&gt; enough times to get back to the first match, then &lt;DEL&gt; can be used again to edit the search string. An easier way to edit the search string is to press <code>M-e</code> followed by <code>C-s</code> or <code>C-r</code> to resume the search.</p>
+
+<p><code>C-s</code> in a backward search switches to a forward search.</p>
+
+<p>After exiting a search, you can search for the same string again by typing just <code>C-r C-r</code>. The first <code>C-r</code> is the key that invokes incremental search, and the second <code>C-r</code> means "search again". It doesn't matter if the last search string was searched for with <code>C-s</code> or <code>C-r</code>.</p>
+  </dd>
+
+  <dt><dfn>
+  M-e</dfn></dt>
+  <dd>Edit a search string. To resume searching, press <code>C-s</code> or <code>C-r</code> after you're done editing.</dd>
+
+  <dt><dfn>
+  M-s &lt;SPC&gt;<br>
+  M-x isearch-toggle-lax-whitespace</dfn></dt>
+  <dd>
+<p>Toggle lax space matching.</p>
+
+<p>By default, incremental search performs "lax space matching": each space, or sequence of spaces, matches any sequence of one or more spaces in the text. When lax space matching is disabled, then each space in the search string matches exactly one space. This applies to regexp and non-regexp searches.</p>
+  </dd>
+
+  <dt><dfn>
+  M-c</dfn></dt>
+  <dd>Within an incremental search, <code>M-c</code> toggles the case-sensitivity of that search.</dd>
+
+  <dt><dfn>
+  C-s &lt;RET&gt; SEARCH_STRING &lt;RET&gt;<br>
+  M-x search-forward</dfn></dt>
+  <dd>Begin a nonincremental search forward, which will simply jump to the first match and then terminate the search. I guess if you want to move to the next match, then type <code>C-s C-s</code> to begin an incremental search forward using the previous search string. If you want to move to the next match, then type <code>C-r C-r</code> to begin an incremental search backward using the previous search string.</dd>
+
+  <dt><dfn>
+  C-r &lt;RET&gt; SEARCH_STRING &lt;RET&gt;<br>
+  M-x search-backward</dfn></dt>
+  <dd>Begin a nonincremental search backward, which will simply jump to the first match and then terminate the search. I guess if you want to move to the next match, then type <code>C-r C-r</code> to begin an incremental search backward using the previous search string. If you want to move to the previous match, then type <code>C-s C-s</code> to begin an incremental search forward using the previous search string.</dd>
+
+  <dt><dfn>
+  M-s w<br>
+  M-x isearch-toggle-word<br>
+  M-x isearch-forward-word</dfn></dt>
+  <dd>If incremental search is active, toggle word search mode (keeping the same direction of the search); otherwise, begin an incremental forward word search. To disable word search, type <code>M-s w</code> again.</dd>
+
+  <dt><dfn>
+  M-s w C-r<br>
+  C-r M-s w</dfn></dt>
+  <dd>Begin an incremental backward word search.</dd>
+
+  <dt><dfn>
+  M-s w &lt;RET&gt; SEARCH_WORDS &lt;RET&gt;<br>
+  M-x word-search-forward</dfn></dt>
+  <dd>Begin a nonincremental word search forward, which will simply jump to the first match and then terminate the search.</dd>
+
+  <dt><dfn>
+  M-s w C-r &lt;RET&gt; SEARCH_WORDS &lt;RET&gt;<br>
+  M-x word-search-backward</dfn></dt>
+  <dd>Begin a nonincremental word search backward, which will simply jump to the first match and then terminate the search.</dd>
+
+  <dt><dfn>
+  M-s _<br>
+  M-x isearch-toggle-symbol<br>
+  M-x isearch-forward-symbol</dfn></dt>
+  <dd>If incremental search is active, toggle symbol search mode (keeping the same direction of the search); otherwise, begin an incremental forward symbol search. To disable symbol search, type <code>M-s _</code> again.</dd>
+
+  <dt><dfn>
+  M-s _ C-r<br>
+  C-r M-s _</dfn></dt>
+  <dd>Begin an incremental backward symbol search.</dd>
+
+  <dt><dfn>
+  M-s _ &lt;RET&gt; SYMBOL &lt;RET&gt;</dfn></dt>
+  <dd>Begin a nonincremental symbol search forward, which will simply jump to the first match and then terminate the search.</dd>
+
+  <dt><dfn>
+  M-s _ C-r &lt;RET&gt; SYMBOL &lt;RET&gt;</dfn></dt>
+  <dd>Begin a nonincremental symbol search backward, which will simply jump to the first match and then terminate the search.</dd>
+
+  <dt><dfn>
+  C-M-s<br>
+  M-x isearch-forward-regexp<br>
+  C-u C-s<br>
+  C-s M-r</dfn></dt>
+  <dd>Begin an incremental regexp search forward. To search using the previous regexp search string, press <code>C-s</code> immediately.</dd>
+
+  <dt><dfn>
+  C-M-r<br>
+  M-x isearch-backward-regexp<br>
+  C-u C-r<br>
+  C-r M-r</dfn></dt>
+  <dd>Begin an incremental regexp search backward. To search using the previous regexp search string, press <code>C-r</code> immediately.</dd>
+
+  <dt><dfn>
+  C-M-s &lt;RET&gt;<br>
+  M-x re-search-forward</dfn></dt>
+  <dd>Begin a nonincremental regexp search forward.</dd>
+
+  <dt><dfn>
+  C-M-r &lt;RET&gt;<br>
+  M-x re-search-backward</dfn></dt>
+  <dd>Begin a nonincremental regexp search backward.</dd>
+
+  <dt><dfn>
+  M-x multi-isearch-buffers</dfn></dt>
+  <dd>Prompt for one ore more buffer names. Then, begin an incremental search forward in the first buffer specified. If the search fails in that buffer (or reaches the end of it), then the next <code>C-s</code> tries searching the next specified buffer, and so forth.</dd>
+
+  <dt><dfn>
+  M-x multi-isearch-files</dfn></dt>
+  <dd>Prompt for one ore more file names. Then, begin an incremental search forward in the first file specified. If the search fails in that file (or reaches the end of it), then the next <code>C-s</code> tries searching the next specified file, and so forth.</dd>
+
+  <dt><dfn>
+  M-x multi-isearch-buffers-regexp</dfn></dt>
+  <dd>Prompt for one ore more buffer names. Then, begin an incremental regexp search forward in the first buffer specified. If the search fails in that buffer (or reaches the end of it), then the next <code>C-s</code> tries searching the next specified buffer, and so forth.</dd>
+
+  <dt><dfn>
+  M-x multi-isearch-files-regexp</dfn></dt>
+  <dd>Prompt for one ore more file names. Then, begin an incremental regexp search forward in the first file specified. If the search fails in that file (or reaches the end of it), then the next <code>C-s</code> tries searching the next specified file, and so forth.</dd>
+
+  <dt><dfn>
+  M-x occur<br>
+  M-x list-matching-lines</dfn></dt>
+  <dd>
+<p>Prompt for a regexp, and display a list showing each line in the buffer that contains a match for it. A numeric argument N specifies that N lines of context are to be displayed before and after each matching line.</p>
+
+<p>In the *Occur* buffer, you can click on each entry, or move point there and type &lt;RET&gt;, to visit the corresponding position in the buffer that was search. <code>o</code> displays the match in another window; <code>C-o</code> opens the match in another window, but doesn't select that window. Alternatively, you can use the <code>C-x `</code> command to visit the occurrences one by one.</p>
+
+<p>Typing <code>e</code> in the *Occur* buffer switches to Occur Edit mode, in which edits made to the entries are also applied to the text in the originating buffer. Type <code>C-c C-c</code> to return to Occur mode.</p>
+  </dd>
+
+  <dt><dfn>
+  M-s o</dfn></dt>
+  <dd>Run <code>occur</code> using the search string of the last incremental string search. You can also run <code>M-s o</code> when an incrmental search is active; this uses the current search string.</dd>
+
+  <dt><dfn>
+  M-x multi-occur</dfn></dt>
+  <dd>This command is just like <code>occur</code>, except it is able to search through multiple buffers. It asks you to specify the buffer names one by one.</dd>
+
+  <dt><dfn>
+  M-x multi-occur-in-matching-buffers</dfn></dt>
+  <dd>This command is similar to <code>multi-occur</code>, except the buffers to search are specified by a regular expression that matches visited file names. With a prefix argument, it uses the regular expression to match buffer names instead.</dd>
+
+  <dt><dfn>
+  M-x how-many</dfn></dt>
+  <dd>Prompt for a regular expression and print the number of matches for it in the buffer after point. If the region is active, this operates on the region instead.</dd>
+
+  <dt><dfn>
+  M-x grep<br>
+  M-x lgrep</dfn></dt>
+  <dd>
+<p>Run <code>grep</code> asynchronously under Emacs, listing matching lines in the buffer named *grep*. Use the same arguments you would give grep when running it normally. Your command need not simply run <code>grep</code>; you can use any shell command that produces output in the same format as grep. You can also chain together <code>grep</code> commands.</p>
+
+<p>"lgrep" means "local grep."</p>
+
+<p>If you specify a prefix argument for <code>M-x grep</code>, it finds the tag in the buffer around point, and puts that into the default <code>grep</code> command.</p>
+  </dd>
+
+  <dt><dfn>
+  M-x grep-find<br>
+  M-x find-grep<br>
+  M-x rgrep</dfn></dt>
+  <dd>
+<p>Run <code>grep</code> via <code>find</code>, and collect output in the *grep* buffer.</p>
+
+<p>"rgrep" means "recursive grep."</p>
+  </dd>
+
+  <dt><dfn>
+  M-x zrgrep<br>
+  M-x rzgrep</dfn></dt>
+  <dd>
+<p>Run <code>zgrep</code> and collect output in the *grep* buffer.</p>
+
+<p>"zrgrep" and "rzgrep" both mean recursive grep for gzipped files.</p>
+  </dd>
+
+  <dt><dfn>
+  M-x kill-grep</dfn></dt>
+  <dd>Kill the running <code>grep</code> subprocess.</dd>
+
+  <dt><dfn>
+  M-.<br>
+  M-x find-tag</dfn></dt>
+  <dd>Prompt for a tag name and jump to its source definition. When you want to go back to where you jumped from, type <code>M-*</code> (<code>M-x pop-tag-mark</code>).</dd>
+
+  <dt><dfn>
+  M-x tags-search &lt;RET&gt; REGEXP &lt;RET&gt;</dfn></dt>
+  <dd>Search for the specified regular expression through the files in the selected tags table. As soon as it finds an occurrence, the search terminates. To find the next match, type <code>M-,</code> (<code>M-x tags-loop-continue</code>).</dd>
+
+  <dt><dfn>
+  M-x find-dired</dfn></dt>
+  <dd>Run <code>find</code> and then populate a Dired buffer with the output.</dd>
+
+  <dt><dfn>
+  M-x find-grep-dired</dfn></dt>
+  <dd>Find files in the specified directory that contain the specified regular expression, and then populate a Dired buffer with those files.</dd>
+
+  <dt><dfn>
+  M-x find-name-dired</dfn></dt>
+  <dd>Find file names recursively starting from the specified directory that match the specified globbing pattern, and then populate a Dired buffer with the matching files.</dd>
+
+  <dt><dfn>
+  M-x locate</dfn></dt>
+  <dd>Use the <code>locate</code> command to find files, and then populate a *Locate* buffer with the output of the command.</dd>
+</dl>
+
+
+## Replace
+
+The replace commands normally operate on the text from point to the end of the buffer. When the region is active, they operate on it instead.
+
+Unlike incremental search, the replacement commands do not use lax space matching by default.
+
+If the first argument of a replace command is all lowercase, the command ignores case while searching for occurrences to replace. When the NEW_STRING argument is all lowercase, replacement commands try to preserve the case pattern of each occurrence as long as the occurrence is all lowercase, all uppercase, or capitalised. If uppercase letters are used in the replacement string, they remain uppercase every time that text is inserted. If uppercase letters are used in the first argument, the second argument is always substituted exactly as given, with no case conversion.
+
+To restart a query replace once it is exited, use <code>C-x &lt;ESC&gt; &lt;ESC&gt;</code>.
+
+<dl>
+  <dt><dfn>
+  M-x replace-string &lt;RET&gt; OLD_STRING &lt;RET&gt; NEW_STRING &lt;RET&gt;</dfn></dt>
+  <dd>Unconditionally replace every occurrence of OLD_STRING after point with NEW_STRING. If you want to replace all occurrences in the buffer, then you need to go to the beginning of the buffer first. If you want to limit the replacement to part of the buffer, then activate the region around that part (when the region is active, replacement is limited to the region) or narrow the buffer to that part. When <code>replace-string</code> exits, it leaves point at the last occurrence replaced. It adds the prior position of point (where the <code>replace-string</code> command was issued) to the mark ring, without activating the mark; use <code>C-u C-&lt;SPC&gt;</code> to move back there.</dd>
+
+  <dt><dfn>
+  M-x replace-regexp &lt;RET&gt; REGEXP &lt;RET&gt; NEW_STRING &lt;RET&gt;</dfn></dt>
+  <dd>
+<p>Unconditionally replace every occurrence of REGEXP after point with NEW_STRING.</p>
+
+<p>\& in NEW_STRING stands for the entire match being replaced.</p>
+
+<p>\N in NEW_STRING, where N is a digit, stands for whatever matched the Nth parenthesized grouping in REGEXP. This is called a back reference.</p>
+
+<p>\# in NEW_STRING stands for the count of replacements already made in this command. In the first replacement, \# stands for 0; in the second, for 1; and so on.</p>
+
+<p>If you want to enter part of the replacement string by hand each time, use <code>\?</code> in the replacement string. Each replacement will ask you to edit the replacement string in the minibuffer, putting point where the <code>\?</code> was.</p>
+  </dd>
+
+  <dt><dfn>
+  M-% OLD_STRING &lt;RET&gt; NEW_STRING &lt;RET&gt;<br>
+  M-x query-replace</dfn></dt>
+  <dd>
+<p>Replace some occurrences of OLD_STRING after point with NEW_STRING. This command finds occurrences of OLD_STRING one by one, displaying the occurrence and asking you whether to replace it. Type <code>C-h</code> for help.</p>
+
+<p>If you're in an incremental search, you can type <code>M-%</code> to invoke <code>query-replace</code> or <code>query-replace-regexp</code> (depending on the search mode) with the search string used as the string to replace.</p>
+  </dd>
+
+  <dt><dfn>
+  C-M-% REGEXP &lt;RET&gt; NEW_STRING &lt;RET&gt;<br>
+  M-x query-replace-regexp</dfn></dt>
+  <dd>Replace some occurrences of REGEXP after point with NEW_STRING. This command finds occurrences of REGEXP one by one, displaying the occurrence and asking you whether to replace it. By default, query-replace-regexp will show the substituted replacement string for the current match in the minibuffer. Type <code>C-h</code> for help.</dd>
+
+  <dt><dfn>
+  M-x tags-query-replace &lt;RET&gt; REGEXP &lt;RET&gt; REPLACEMENT &lt;RET&gt;</dfn></dt>
+  <dd>Perform a <code>query-replace-regexp</code> on each file in the selected tags table.</dd>
+
+  <dt><dfn>
+  M-x isearch-query-replace</dfn></dt>
+  <dd>Begin <code>query-replace</code> with the string used in the last incremental search.</dd>
+
+  <dt><dfn>
+  M-x isearch-query-replace-regexp</dfn></dt>
+  <dd>Begin <code>query-replace-regexp</code> with the regular expression used in the last incremental regexp search. You can use back references and such, just like you normally could.</dd>
+
+  <dt><dfn>
+  C-x r t NEW_STRING<br>
+  M-x replace-rectangle</dfn></dt>
+  <dd>Replace the contents of the region-rectangle with the specified string. It doesn't matter if the string is smaller or bigger than the rectangle; the rectangle will be resized appropriately.</dd>
+</dl>
+
+
+# Killing (Cutting), Deleting, Copying, and Yanking
 
 TODO
 
