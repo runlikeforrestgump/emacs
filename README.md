@@ -3182,7 +3182,89 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
 
 # Editing
 
-TODO
+
+## Case Conversion
+
+<dl>
+  <dt><dfn>
+  M-l<br>
+  M-x downcase-word</dfn></dt>
+  <dd>Convert the following word to all lowercase.</dd>
+
+  <dt><dfn>
+  M-u<br>
+  M-x upcase-word</dfn></dt>
+  <dd>Convert the following word to all uppercase.</dd>
+
+  <dt><dfn>
+  M-c<br>
+  M-x capitalize-word</dfn></dt>
+  <dd>Capitalise the following word.</dd>
+
+  <dt><dfn>
+  C-x C-l<br>
+  M-x downcase-region</dfn></dt>
+  <dd>Convert the entire region to all lowercase.</dd>
+
+  <dt><dfn>
+  C-x C-u<br>
+  M-x upcase-region</dfn></dt>
+  <dd>Convert the entire region to all uppercase.</dd>
+
+  <dt><dfn>
+  M-x capitalize-region</dfn></dt>
+  <dd>Capitalise the entire region.</dd>
+</dl>
+
+
+## Filling
+
+Filling text means adjusting the positions of line-breaks to shift text between consecutive lines, so that all the lines are approximately the same length.
+
+Auto Fill mode is a buffer-local mind mode in which lines are broken automatically when they become too wide. Breaking only happens when you type a <code>&lt;SPC&gt;</code> or <code>&lt;RET&gt;</code>.
+
+By default, the fill commands will not break a line after a period followed by just one space.
+
+The fill prefix feature allows paragraphs to be filled so that each line starts with a special string of characters. You can specify a fill prefix explicitly, or you can let Emacs try to deduce on automatically (Adaptive Fill). To specify a fill prefix for the current buffer, move to a line that starts with the desired prefix, put point at the end of the prefix, and type <code>C-x .</code> (<code>M-x set-fill-prefix</code>). To turn off the fill prefix, specify an empty prefix by typing <code>C-x .</code> with point at the very beginning of a line.
+
+When a fill prefix is in effect, the fill commands remove the fill prefix from each line of the paragraph before filling, and insert it on each line after filling. The beginning of the first line of the paragraph is left unchanged, since often that is intentionally different. Auto Fill mode also inserts the fill prefix automatically when it makes a new line. The <code>C-o</code> command inserts the fill prefix on new lines it creates, when you use it at the beginning of a line. Conversely, the command <code>M-^</code> deletes the prefix (if it occurs) after the newline that it deletes.
+
+<dl>
+  <dt><dfn>
+  M-x auto-fill-mode</dfn></dt>
+  <dd>Toggle Auto Fill mode.</dd>
+
+  <dt><dfn>
+  &lt;SPC&gt;<br>
+  &lt;RET&gt;</dfn></dt>
+  <dd>In Auto Fill mode, break lines when appropriate. If you want to insert a space or newline without permitting line-breaking, type <code>C-q &lt;SPC&gt;</code> for a space or type <code>C-q C-j</code> or <code>C-o</code> for a newline.</dd>
+
+  <dt><dfn>
+  M-q<br>
+  M-x fill-paragraph</dfn></dt>
+  <dd>Fill the current paragraph using the current fill prefix. If the region is active, then fill each paragraph in the region.</dd>
+
+  <dt><dfn>
+  M-x fill-region</dfn></dt>
+  <dd>Fill each paragraph in the region.</dd>
+
+  <dt><dfn>
+  M-x fill-region-as-paragraph</dfn></dt>
+  <dd>Fill the region, considering it as one paragraph.</dd>
+
+  <dt><dfn>
+  C-x f<br>
+  M-x set-fill-column</dfn></dt>
+  <dd>Set the maximum line width for filling. With a prefix argument of <code>C-u</code>, set <code>fill-column</code> to the current column of point.</dd>
+
+  <dt><dfn>
+  M-x fill-individual-paragraphs</dfn></dt>
+  <dd>Fill the region, considering each change of identation as starting a new paragraph.</dd>
+
+  <dt><dfn>
+  M-x fill-nonuniform-paragraphs</dfn></dt>
+  <dd>Fill the region, considering only paragraph-separator lines as starting a new paragraph.</dd>
+</dl>
 
 
 # Customisation
