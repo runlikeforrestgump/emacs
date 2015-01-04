@@ -3189,17 +3189,17 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
   <dt><dfn>
   M-l<br>
   M-x downcase-word</dfn></dt>
-  <dd>Convert the following word to all lowercase.</dd>
+  <dd>Convert the following word to all lowercase. With a negative prefix argument, convert the previous word to all lowercase.</dd>
 
   <dt><dfn>
   M-u<br>
   M-x upcase-word</dfn></dt>
-  <dd>Convert the following word to all uppercase.</dd>
+  <dd>Convert the following word to all uppercase. With a negative prefix argument, convert the previous word to all uppercase.</dd>
 
   <dt><dfn>
   M-c<br>
   M-x capitalize-word</dfn></dt>
-  <dd>Capitalise the following word.</dd>
+  <dd>Capitalise the following word. With a negative prefix argument, capitalise the previous word.</dd>
 
   <dt><dfn>
   C-x C-l<br>
@@ -3264,6 +3264,104 @@ When a fill prefix is in effect, the fill commands remove the fill prefix from e
   <dt><dfn>
   M-x fill-nonuniform-paragraphs</dfn></dt>
   <dd>Fill the region, considering only paragraph-separator lines as starting a new paragraph.</dd>
+</dl>
+
+
+# Transposing
+
+Transposing two units (characters, words, expressions, lines, etc.) of text means putting each unit into the place formerly occupied by the other. You can also think of it as "swapping".
+
+<dl>
+  <dt><dfn>
+  C-t<br>
+  M-x transpose-chars</dfn></dt>
+  <dd>Transpose the characters before and after point (the character before the cursor and the character on the cursor). When point is at the end of the line, then transpose the last two characters on the line before the newline. With a numeric argument of zero, transpose the character ending after point with the one ending after mark.</dd>
+
+  <dt><dfn>
+  M-t<br>
+  M-x transpose-words</dfn></dt>
+  <dd>Transpose the word before or containing point with the word after point. The punctuation characters between the words do not move; for example, "foo, bar" transposes into "bar, foo" rather than "bar foo,". With a numeric argument of zero, transpose the word ending after point with the one ending after mark.</dd>
+
+  <dt><dfn>
+  C-M-t<br>
+  M-x transpose-sexps</dfn></dt>
+  <dd>Transpose the expression (could be an identifier, literal, keyword, or whatever) before or containing point with the expression after point. With a numeric argument of zero, transpose the expression ending after point with the one ending after mark.</dd>
+
+  <dt><dfn>
+  C-x C-t<br>
+  M-x tranpose-lines</dfn></dt>
+  <dd>Transpose the current line with the previous line. With a numeric argument of zero, transpose the current line with the line containing mark.</dd>
+
+  <dt><dfn>
+  M-x transpose-sentences</dfn></dt>
+  <dd>Transpose the current sentence with the next one. With a numeric argument of zero, transpose the current sentence with the sentence containing mark.</dd>
+
+  <dt><dfn>
+  M-x transpose-paragraphs</dfn></dt>
+  <dd>Transpose the current paragraph with the next one. With a numeric argument of zero, transpose the current paragraph with the paragraph containing mark.</dd>
+</dl>
+
+
+# Sorting
+
+Emacs provides several commands for sorting text in the buffer. All operate on the contents of the region. They divide the text of the region into many "sort records", identify a "sork key" for each record, and then reorder the records into the order determined by the sort keys. The records are ordered so that their keys are in alphabetical order, or, for numeric sorting, in numeric order. In alphabetic sorting, all uppercase letters 'A' through 'Z' come before lowercase 'a', in accord with the ASCII character sequence.
+
+The various sort commands differ in how they divide the text into sort records and in which part of each record is used as the sort key. Most of the sort commands use each entire sort record as its own sort key, but some use only a portion of the record as the sort key.
+
+<dl>
+  <dt><dfn>
+  M-x sort-lines</dfn></dt>
+  <dd>Divide the region into lines, and sort by comparing the entire text of a line. A numeric argument means sort into descending order.</dd>
+
+  <dt><dfn>
+  M-x sort-paragraphs</dfn></dt>
+  <dd>Divide the region into paragraphs, and sort by comparing the entire text of a paragraph (except for leading blank lines). A numeric argument means sort into descending order.</dd>
+
+  <dt><dfn>
+  M-x sort-pages</dfn></dt>
+  <dd>Divide the region into pages, and sort by comparing the entire text of a page (except for leading blank lines). A numeric argument means sort into descending order.</dd>
+
+  <dt><dfn>
+  M-x sort-fields</dfn></dt>
+  <dd>
+<p>Divide the region into lines, and sort by comparing the conents of one field in each line. Fields are defiend as separated by whitespace, so the first run of consecutive non-whitespace characters in a line constitutes field 1, the second such run constitutes field 2, etc.</p>
+
+<p>Specify which field to sort by with a numeric argument: 1 to sort by field 1, etc. A negative argument means count fields from the right instead of from the left; thus, minus 1 means sort by the last field. If several lines have identical contents in the field being sorted, they keep the same relative order that they had in the original buffer.</p>
+  </dd>
+
+  <dt><dfn>
+  M-x sort-numeric-fields</dfn></dt>
+  <dd>Like <code>M-x sort-fields</code>, except the specified field is converted to an integer for each line, and the numbers are compared (rather than their string representations). By default, numbers are interpreted according to <code>sort-numeric-base</code>, but numbers beginning with "0x" or "0" are interpreted as hexadecimal and octal, respectively.</dd>
+
+  <dt><dfn>
+  M-x sort-columns</dfn></dt>
+  <dd>Like <code>M-x sort-fields</code>, except that the text within each line used for comparison comes from a fixed range of columns. You specify the columns by putting point at one of the columns and the mark at the other column. All of the line point is in is considered part of the region, and so is all of the line the mark is in, as well as all the lines in between. Sorting columns can be thought of as sorting the rectangle specified by point and the mark, except that the text on each line to the left or right of the rectangle moves along with the text inside the rectangle.</dd>
+
+  <dt><dfn>
+  M-x reverse-region</dfn></dt>
+  <dd>Reverse the order of the lines in the region. This is useful for sorting into descending order by fields or columns, since those sort commands do not have a feature for doing that. Basically, you would sort by fields or columns (<code>M-x sort-fields</code>, <code>M-x sort-numeric-fields</code>, or <code>M-x sort-columns</code>), and then you would reverse the order of the lines (<code>M-x reverse-region</code>).</dd>
+</dl>
+
+
+# Describing a Buffer or Region
+
+TODO
+
+
+# Syntax Highlighting (Font Lock)
+
+Font Lock mode is a minor mode, always local to a particular buffer, which assigns faces to the text in the buffer. Each buffer's major mode tells Font Lock mode which text to fontify; for instance, programming language modes fontify syntactically relevant constructs like comments, strings, and function names. Most other editors for to this as syntax highlighting. Font Lock mode is enabled by default.
+
+In most cases, you'll find that syntax highlighting works out of the box.
+
+<dl>
+  <dt><dfn>
+  M-x font-lock-mode</dfn></dt>
+  <dd>Toggle Font Lock mode in the current buffer.</dd>
+
+  <dt><dfn>
+  M-x global-font-lock-mode</dfn></dt>
+  <dd>Toggle Font Lock mode in all buffers.</dd>
 </dl>
 
 
