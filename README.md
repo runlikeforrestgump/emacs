@@ -65,13 +65,16 @@ The recommended way to use Emacs is to start it just once and do all your editin
 Additionally, you can tell Emacs to load one or more specified files after launching:
 
 <dl>
-  <dt><dfn>emacs FILENAME</dfn></dt>
+  <dt><dfn>
+  emacs FILENAME</dfn></dt>
   <dd>Launch Emacs and then load the specified file.</dd>
 
-  <dt><dfn>emacs +LINE_NUMBER FILENAME</dfn></dt>
+  <dt><dfn>
+  emacs +LINE_NUMBER FILENAME</dfn></dt>
   <dd>Launch Emacs, load the specified file, and then move point to the specified line number in the specified file.</dd>
 
-  <dt><dfn>emacs +LINE_NUMBER:COLUMN_NUMBER FILENAME</dfn></dt>
+  <dt><dfn>
+  emacs +LINE_NUMBER:COLUMN_NUMBER FILENAME</dfn></dt>
   <dd>Launch Emacs, load the specified file, and then move the cursor to the specified column number on the specified line number in the specified file.</dd>
 </dl>
 
@@ -256,7 +259,8 @@ After you've defined a keyboard macro, you can optionally bind it to a name or a
 <p>To avoid problems caused by overriding existing bindings, the key sequences <code>C-x C-k 0</code> through <code>C-x C-k 9</code> and <code>C-x C-k A</code> through <code>C-x C-k Z</code> are reserved for your own keyboard macro bindings (or any other custom bindings). To bind to one of those key sequences, you only need to type the digit or letter rather than the whole key sequence; for example, <code>C-x C-k b 4</code> instead of <code>C-x C-k b C-x C-k 4</code>, although either way will work.</p>
   </dd>
 
-  <dt><dfn>M-x insert-kbd-macro &lt;RET&gt; MACRO-NAME</dfn></dt>
+  <dt><dfn>
+  M-x insert-kbd-macro &lt;RET&gt; MACRO-NAME</dfn></dt>
   <dd>If a macro is bound to the specified name (use <code>C-x C-k n</code> before you invoke <code>M-x insert-kbd-macro</code>), then insert its definition in Lisp code into the current buffer. If you use a prefix argument, then any key bindings for the macro will also be inserted into the buffer. The reason for being able to insert the macro's definition into the buffer, is so that you can persist the macro across Emacs sessions. You would typically insert the macro's definition and key bindings into your init file or into a Lisp file that you would then load with <code>M-x load-file</code>.</dd>
 
   <dt><dfn>
@@ -290,31 +294,40 @@ To insert a non-graphic character, type <code>C-q</code> and then the character.
 <code>C-q</code> (<code>M-x quoted-insert</code>) followed by a sequence of octal digits inserts the character with the specified octal character code. You can use any number of octal digits; any non-digit terminates the octal sequence. To use decimal or hexadecimal instead of octal, set the variable *read-quoted-char-radix* to 10 or 16. If the radix is 16, the letters 'a' to 'f' serve as part of the character code, just like digits. Case is ignored.
 
 <dl>
-  <dt><dfn>C-q C-S-2</dfn></dt>
+  <dt><dfn>
+  C-q C-S-2</dfn></dt>
   <dd>Null (caret notation: ^@; C escape code: \0).</dd>
 
-  <dt><dfn>C-q C-g</dfn></dt>
+  <dt><dfn>
+  C-q C-g</dfn></dt>
   <dd>Bell (caret notation: ^G; C escape code: \a).</dd>
 
-  <dt><dfn>C-q C-h</dfn></dt>
+  <dt><dfn>
+  C-q C-h</dfn></dt>
   <dd>Backspace (caret notation: ^H; C escape code: \b).</dd>
 
-  <dt><dfn>C-q C-i</dfn></dt>
+  <dt><dfn>
+  C-q C-i</dfn></dt>
   <dd>Horizontal tab (caret notation: ^I; C escape code: \t).</dd>
 
-  <dt><dfn>C-q C-j</dfn></dt>
+  <dt><dfn>
+  C-q C-j</dfn></dt>
   <dd>Line feed (caret notation: ^J; C escape code: \n).</dd>
 
-  <dt><dfn>C-q C-k</dfn></dt>
+  <dt><dfn>
+  C-q C-k</dfn></dt>
   <dd>Vertical tab (caret notation: ^K; C escape code: \v).</dd>
 
-  <dt><dfn>C-q C-l</dfn></dt>
+  <dt><dfn>
+  C-q C-l</dfn></dt>
   <dd>Form feed (caret notation: ^L; C escape code: \f).</dd>
 
-  <dt><dfn>C-q C-m</dfn></dt>
+  <dt><dfn>
+  C-q C-m</dfn></dt>
   <dd>Carriage return (caret notation: ^M; C escape code: \r).</dd>
 
-  <dt><dfn>C-q C-[</dfn></dt>
+  <dt><dfn>
+  C-q C-[</dfn></dt>
   <dd>Escape (caret notation: ^[; C escape code: \e).</dd>
 </dl>
 
@@ -330,7 +343,8 @@ Caret notation is used for the 33 ASCII control characters. The notation consist
 An input method is a system for entering non-ASCII text characters by typing sequences of ASCII characters; for example, typing pinyin (romanised Chinese) to enter Chinese characters. I haven't used an input method in Emacs before, so won't go into detail, but here's how you can get started:
 
 <dl>
-  <dt><dfn>M-x list-input-methods</dfn></dt>
+  <dt><dfn>
+  M-x list-input-methods</dfn></dt>
   <dd>Display a list of all the supported input methods.</dd>
 
   <dt><dfn>
@@ -402,7 +416,8 @@ An input method is a system for entering non-ASCII text characters by typing seq
 <p>Note that you can select a region and undo only the changes within that region. That is called a "selective undo".</p>
   </dd>
 
-  <dt><dfn>M-x revert-buffer</dfn></dt>
+  <dt><dfn>
+  M-x revert-buffer</dfn></dt>
   <dd>
 <p>Undo all changes in the current buffer.</p>
 
@@ -459,7 +474,8 @@ Emacs uses the term "quitting" for what you probably think of as "cancelling." E
 <p>All frames will be closed.</p>
   </dd>
 
-  <dt><dfn>M-x kill-emacs</dfn></dt>
+  <dt><dfn>
+  M-x kill-emacs</dfn></dt>
   <dd>Exit/quit/terminate/kill Emacs without being prompted about saving.</dd>
 
   <dt><dfn>
@@ -544,13 +560,16 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
 <p>An apropos pattern means either a word, a space-delimited list of words, or a regular expression. If a list of words is given, the apropos will match anything that contains at least two of the words.</p>
   </dd>
 
-  <dt><dfn>M-x apropos PATTERN</dfn></dt>
+  <dt><dfn>
+  M-x apropos PATTERN</dfn></dt>
   <dd>Display a list of commands and variables that match PATTERN.</dd>
 
-  <dt><dfn>M-x apropos-variable PATTERN</dfn></dt>
+  <dt><dfn>
+  M-x apropos-variable PATTERN</dfn></dt>
   <dd>Display a list of user-customisable variables that match PATTERN. With a prefix argument, search for non-customisable variables too.</dd>
 
-  <dt><dfn>M-x apropos-value</dfn></dt>
+  <dt><dfn>
+  M-x apropos-value</dfn></dt>
   <dd>Display a list of variables whose values match PATTERN.</dd>
 
   <dt><dfn>
@@ -698,10 +717,12 @@ Nodes can have parents or children or both.
 The top line of a node is its header. The header says what the next, previous, and parent nodes are. The header doesn't point to subnodes; it only points to nodes at the same level (in the case of next and previuos) or above (in the case of up), relative to the current node.
 
 <dl>
-  <dt><dfn>n</dfn></dt>
+  <dt><dfn>
+  n</dfn></dt>
   <dd>Move to the next node at the same level as the current node.</dd>
 
-  <dt><dfn>p</dfn></dt>
+  <dt><dfn>
+  p</dfn></dt>
   <dd>Move to the previous node at the same level as the current node.</dd>
 
   <dt><dfn>
@@ -709,40 +730,52 @@ The top line of a node is its header. The header says what the next, previous, a
   ^</dfn></dt>
   <dd>Move up to the parent node.</dd>
 
-  <dt><dfn>t</dfn></dt>
+  <dt><dfn>
+  t</dfn></dt>
   <dd>Move to the top node of the manual.</dd>
 
-  <dt><dfn>l</dfn></dt>
+  <dt><dfn>
+  l</dfn></dt>
   <dd>Retrace your steps. As you move from node to node, Info records the nodes where you have been in a special history list. The l command revisits nodes in the history list; each successive l command moves one step back through the history.</dd>
 
-  <dt><dfn>r</dfn></dt>
+  <dt><dfn>
+  r</dfn></dt>
   <dd>r is the opposite of l. It moves forward in the history list.</dd>
 
-  <dt><dfn>]</dfn></dt>
+  <dt><dfn>
+  ]</dfn></dt>
   <dd>Move to the next node regardless of level.</dd>
 
-  <dt><dfn>[</dfn></dt>
+  <dt><dfn>
+  [</dfn></dt>
   <dd>Move to the previous node regardless of level.</dd>
 
-  <dt><dfn>&lt;SPC&gt;</dfn></dt>
+  <dt><dfn>
+  &lt;SPC&gt;</dfn></dt>
   <dd>Scroll forward if there is still text to scroll forward to; otherwise, move to the next node regardless of level.</dd>
 
-  <dt><dfn>&lt;DEL&gt;</dfn></dt>
+  <dt><dfn>
+  &lt;DEL&gt;</dfn></dt>
   <dd>Scroll backward if there is still text to scroll back to; otherwise, move to the previous node regardless of level.</dd>
 
-  <dt><dfn>C-v</dfn></dt>
+  <dt><dfn>
+  C-v</dfn></dt>
   <dd>Scroll forward, but don't move to the next node if the bottom of the node has been reached.</dd>
 
-  <dt><dfn>M-v</dfn></dt>
+  <dt><dfn>
+  M-v</dfn></dt>
   <dd>Scroll backward, but don't move to the previous node if the top of the node has been reached.</dd>
 
-  <dt><dfn>b</dfn></dt>
+  <dt><dfn>
+  b</dfn></dt>
   <dd>Immediately scroll to the top of the current node.</dd>
 
-  <dt><dfn>?</dfn></dt>
+  <dt><dfn>
+  ?</dfn></dt>
   <dd>Display a list of Info commands.</dd>
 
-  <dt><dfn>m NODE_NAME</dfn></dt>
+  <dt><dfn>
+  m NODE_NAME</dfn></dt>
   <dd>
 <p>Go to the node that has the specified name.</p>
 
@@ -757,7 +790,8 @@ The top line of a node is its header. The header says what the next, previous, a
 <p>If you invoke <code>m</code> with a prefix argument (thus, <code>C-u m NODE_NAME</code>), then the node you specify will be opened in a new Info buffer.</p>
   </dd>
 
-  <dt><dfn>f CROSS_REFERENCE</dfn></dt>
+  <dt><dfn>
+  f CROSS_REFERENCE</dfn></dt>
   <dd>
 <p>Go to the cross reference that has the specified name.</p>
 
@@ -768,7 +802,8 @@ The top line of a node is its header. The header says what the next, previous, a
 <p>If you type <code>?</code> as the cross reference name, then a list of possible cross reference names will appear.</p>
   </dd>
 
-  <dt><dfn>g NODE_NAME</dfn></dt>
+  <dt><dfn>
+  g NODE_NAME</dfn></dt>
   <dd>
 <p>Go to the node that has the specified name. The difference between this and <code>m</code> is that <code>m</code> only accepts names of nodes that appear in the current node's menu; whereas, <code>g</code> accepts the name of any node whether it's in the menu or not.</p>
 
@@ -779,41 +814,52 @@ The top line of a node is its header. The header says what the next, previous, a
 <p>If you invoke <code>g</code> with a prefix argument (thus, <code>C-u g NODE_NAME</code>), then the node you specify will be opened in a new Info buffer.</p>
   </dd>
 
-  <dt><dfn>d</dfn></dt>
+  <dt><dfn>
+  d</dfn></dt>
   <dd>Go to the Directory node, which is a node that lists all the manuals and other Info documents that are installed on your system.</dd>
 
-  <dt><dfn>M-n</dfn></dt>
+  <dt><dfn>
+  M-n</dfn></dt>
   <dd>Clone the current Info buffer in another window.</dd>
 
-  <dt><dfn>i TOPIC</dfn></dt>
+  <dt><dfn>
+  i TOPIC</dfn></dt>
   <dd>
 <p>Search the index for a specified topic and go to the node which is listed in the index for that topic.</p>
 
 <p>To search for keys, use the notation that the Emacs documentation uses; for example, <code>i C-n</code>, where you literally spell out uppercase C, hyphen, lowercase n (rather than holding Ctrl and pressing n).</p>
   </dd>
 
-  <dt><dfn>s STRING</dfn></dt>
+  <dt><dfn>
+  s STRING</dfn></dt>
   <dd>Search the entire manual for the specified string.</dd>
 
-  <dt><dfn>L</dfn></dt>
+  <dt><dfn>
+  L</dfn></dt>
   <dd>Display a menu of all the nodes you've visited. You can jump to one of those nodes by selecting it from the menu.</dd>
 
-  <dt><dfn>T</dfn></dt>
+  <dt><dfn>
+  T</dfn></dt>
   <dd>Go to the table of contents of the current Info file.</dd>
 
-  <dt><dfn>&lt;</dfn></dt>
+  <dt><dfn>
+  &lt;</dfn></dt>
   <dd>Move to the top node of the current Info file.</dd>
 
-  <dt><dfn>&gt;</dfn></dt>
+  <dt><dfn>
+  &gt;</dfn></dt>
   <dd>Move to the last node of the current Info file.</dd>
 
-  <dt><dfn>q</dfn></dt>
+  <dt><dfn>
+  q</dfn></dt>
   <dd>Quit Info.</dd>
 
-  <dt><dfn>C-u C-h i</dfn></dt>
+  <dt><dfn>
+  C-u C-h i</dfn></dt>
   <dd>Open an Info file that isn't listed in the Directory node.</dd>
 
-  <dt><dfn>M-x info-apropos STRING</dfn></dt>
+  <dt><dfn>
+  M-x info-apropos STRING</dfn></dt>
   <dd>Search for the specified string in the indeces of all the Info files. The <code>i</code> command only searches the index of the current Info file.</dd>
 </dl>
 
@@ -1054,7 +1100,8 @@ If you edit the text inserted by <code>M-p</code> or <code>M-n</code>, this does
 Every command that uses the minibuffer is saved in a command history list, together with the value of its arguments, so that you can repeat the entire command. You won't see your previous incremental searches in the minibuffer, unless you set <code>isearch-resume-in-command-history</code> to true.
 
 <dl>
-  <dt><dfn>C-x &lt;ESC&gt; &lt;ESC&gt;</dfn></dt>
+  <dt><dfn>
+  C-x &lt;ESC&gt; &lt;ESC&gt;</dfn></dt>
   <dd>
 <p>Turn the previous command into a Lisp expression and then enter a minibuffer initialised with the text for that expression. If you type just &lt;RET&gt;, that repeats the command unchanged. You can also change the command by editing the Lisp expression before you execute it.</p>
 
@@ -1063,7 +1110,8 @@ Every command that uses the minibuffer is saved in a command history list, toget
 <p>Once inside the minibuffer for <code>C-x &lt;ESC&gt; &lt;ESC&gt;</code>, you can use the usual minibuffer history commands to move through the history list.</p>
   </dd>
 
-  <dt><dfn>M-x list-command-history</dfn></dt>
+  <dt><dfn>
+  M-x list-command-history</dfn></dt>
   <dd>Display a list of the entire command history.</dd>
 </dl>
 
@@ -1097,13 +1145,16 @@ If you don't give a frame a name, then the default name is of the form FN, where
   M-x delete-other-frames</dfn></dt>
   <dd>Delete all the frames except for the selected one.</dd>
   
-  <dt><dfn>M-x set-frame-name &lt;RET&gt; FRAME_NAME</dfn></dt>
+  <dt><dfn>
+  M-x set-frame-name &lt;RET&gt; FRAME_NAME</dfn></dt>
   <dd>Rename the selected frame.</dd>
 
-  <dt><dfn>M-x select-frame-by-name &lt;RET&gt; FRAME_NAME</dfn></dt>
+  <dt><dfn>
+  M-x select-frame-by-name &lt;RET&gt; FRAME_NAME</dfn></dt>
   <dd>Select the specified frame by its name.</dd>
 
-  <dt><dfn>M-x fit-frame-to-buffer</dfn></dt>
+  <dt><dfn>
+  M-x fit-frame-to-buffer</dfn></dt>
   <dd>Adjust the selected frame's height to display its buffer's contents exactly (if it can fit in the maximum height of the frame); otherwise, adjust the selected frame's height to the maximum height that your window manager will allow.</dd>
 
   <dt><dfn>
@@ -1215,10 +1266,12 @@ Remember, each window is associated with one buffer. Instead of switching window
 <p>If you supply a positive numeric argument, then make the selected window that many columns narrower. If you supply a negative argument, then make the selected window that many lines wider.</p>
   </dd>
 
-  <dt><dfn>M-x maximize-window</dfn></dt>
+  <dt><dfn>
+  M-x maximize-window</dfn></dt>
   <dd>Make the selected window as tall and wide as possible.</dd>
 
-  <dt><dfn>M-x minimize-window</dfn></dt>
+  <dt><dfn>
+  M-x minimize-window</dfn></dt>
   <dd>Make the selected window as short and narrow as possible.</dd>
 
   <dt><dfn>
@@ -1226,13 +1279,16 @@ Remember, each window is associated with one buffer. Instead of switching window
   M-x balance-windows</dfn></dt>
   <dd>Even out the heights of all the windows in the selected frame, making their sizes as similar as possible.</dd>
 
-  <dt><dfn>M-x balance-windows-area</dfn></dt>
+  <dt><dfn>
+  M-x balance-windows-area</dfn></dt>
   <dd>Adjust the area of all the windows in the selected frame, making their sizes as similar as possible.</dd>
 
-  <dt><dfn>M-x fit-window-to-buffer</dfn></dt>
+  <dt><dfn>
+  M-x fit-window-to-buffer</dfn></dt>
   <dd>Adjust the selected window's height to display its buffer's contents exactly (if it can fit in the height of the frame); otherwise, adjust the selected window's height to the height of the frame.</dd>
 
-  <dt><dfn>M-x delete-windows-on &lt;RET&gt; BUFFER_NAME</dfn></dt>
+  <dt><dfn>
+  M-x delete-windows-on &lt;RET&gt; BUFFER_NAME</dfn></dt>
   <dd>Delete all windows showing the specified buffer.</dd>
 </dl>
 
@@ -1312,7 +1368,8 @@ A split buffer is not the same thing as an indirect buffer. When you split a buf
 <p>What <code>C-x C-b</code> displays is actually an interactive menu. Switch to the menu and press <code>h</code> for help. Instead of opening the buffer menu and then manually switching to it, you can open the buffer menu and automatically switch to it: use <code>M-x buffer-menu</code> or <code>M-x buffer-menu-other-window</code>.</p>
   </dd>
 
-  <dt><dfn>C-u C-x C-b</dfn></dt>
+  <dt><dfn>
+  C-u C-x C-b</dfn></dt>
   <dd>Display only a list of the existing buffers that are visiting files.</dd>
 
   <dt><dfn>
@@ -1320,10 +1377,12 @@ A split buffer is not the same thing as an indirect buffer. When you split a buf
   M-x read-only-mode</dfn></dt>
   <dd>Toggle the read-only status of a buffer.</dd>
 
-  <dt><dfn>M-x rename-buffer &lt;RET&gt; BUFFER_NAME</dfn></dt>
+  <dt><dfn>
+  M-x rename-buffer &lt;RET&gt; BUFFER_NAME</dfn></dt>
   <dd>Rename the current buffer to BUFFER_NAME.</dd>
 
-  <dt><dfn>M-x rename-uniquely</dfn></dt>
+  <dt><dfn>
+  M-x rename-uniquely</dfn></dt>
   <dd>Rename the current buffer by appending a unique number to its current name.</dd>
 
   <dt><dfn>
@@ -1331,13 +1390,16 @@ A split buffer is not the same thing as an indirect buffer. When you split a buf
   M-x kill-buffer &lt;RET&gt; BUFFER_NAME</dfn></dt>
   <dd>Kill buffer BUFFER_NAME. If you don't specify a name and just immediately press <code>&lt;RET&gt;</code>, then the current buffer will be killed by default.</dd>
 
-  <dt><dfn>M-x kill-some-buffers</dfn></dt>
+  <dt><dfn>
+  M-x kill-some-buffers</dfn></dt>
   <dd>Offer to kill each buffer, one by one.</dd>
 
-  <dt><dfn>M-x kill-matching-buffers</dfn></dt>
+  <dt><dfn>
+  M-x kill-matching-buffers</dfn></dt>
   <dd>Offer to kill all buffers matching a regular expression.</dd>
 
-  <dt><dfn>M-x clean-buffer-list</dfn></dt>
+  <dt><dfn>
+  M-x clean-buffer-list</dfn></dt>
   <dd>
 <p>By default, kill any unmodified buffers that haven't been displayed in the past three days.</p>
 
@@ -1482,7 +1544,8 @@ A dribble file is a file into which Emacs writes all the characters that you typ
 <p>To mark a buffer as modified, type <code>C-u M-~</code>.</p>
   </dd>
 
-  <dt><dfn>M-x set-visited-file-name &lt;RET&gt; FILENAME</dfn></dt>
+  <dt><dfn>
+  M-x set-visited-file-name &lt;RET&gt; FILENAME</dfn></dt>
   <dd>Change the name of the file that the buffer is visiting; this doesn't visit the new file name and doesn't save the buffer changes to the new file name. If you want to save the buffer's contents to the new file name, then use <code>C-x C-s</code>.</dd>
 
   <dt><dfn>
@@ -1500,25 +1563,32 @@ A dribble file is a file into which Emacs writes all the characters that you typ
   C-u M-x list-directory &lt;RET&gt; DIR-OR-PATTERN</dfn></dt>
   <dd>Display a verbose directory listing (like <code>ls -l</code>).</dd>
 
-  <dt><dfn>M-x make-directory &lt;RET&gt; DIRNAME</dfn></dt>
+  <dt><dfn>
+  M-x make-directory &lt;RET&gt; DIRNAME</dfn></dt>
   <dd>Create a new directory using the specified name.</dd>
 
-  <dt><dfn>M-x delete-file &lt;RET&gt; FILENAME</dfn></dt>
+  <dt><dfn>
+  M-x delete-file &lt;RET&gt; FILENAME</dfn></dt>
   <dd>Delete the specified file.</dd>
 
-  <dt><dfn>M-x delete-directory &lt;RET&gt; DIRNAME</dfn></dt>
+  <dt><dfn>
+  M-x delete-directory &lt;RET&gt; DIRNAME</dfn></dt>
   <dd>Delete the specified directory.</dd>
 
-  <dt><dfn>M-x copy-file &lt;RET&gt; OLD &lt;RET&gt; NEW</dfn></dt>
+  <dt><dfn>
+  M-x copy-file &lt;RET&gt; OLD &lt;RET&gt; NEW</dfn></dt>
   <dd>Copy the specified file into a file named NEW.</dd>
 
-  <dt><dfn>M-x copy-directory &lt;RET&gt; OLD &lt;RET&gt; NEW</dfn></dt>
+  <dt><dfn>
+  M-x copy-directory &lt;RET&gt; OLD &lt;RET&gt; NEW</dfn></dt>
   <dd>Copy the specified directory into a directory named NEW.</dd>
 
-  <dt><dfn>M-x rename-file &lt;RET&gt; OLD &lt;RET&gt; NEW</dfn></dt>
+  <dt><dfn>
+  M-x rename-file &lt;RET&gt; OLD &lt;RET&gt; NEW</dfn></dt>
   <dd>Rename the specified file from OLD to NEW. If NEW is a directory name, then use that directory, and move OLD into it.</dd>
 
-  <dt><dfn>M-x make-symbolic-link &lt;RET&gt; TARGET &lt;RET&gt; LINKNAME</dfn></dt>
+  <dt><dfn>
+  M-x make-symbolic-link &lt;RET&gt; TARGET &lt;RET&gt; LINKNAME</dfn></dt>
   <dd>Create a symbolic link named LINKNAME, which points to TARGET.</dd>
 
   <dt><dfn>
@@ -1526,10 +1596,12 @@ A dribble file is a file into which Emacs writes all the characters that you typ
   M-x insert-file</dfn></dt>
   <dd>Insert a copy of the contents of the specified file into the current buffer at point, leaving point unchanged, but moving mark to the end of the inserted contents.</dd>
 
-  <dt><dfn>M-x write-region</dfn></dt>
+  <dt><dfn>
+  M-x write-region</dfn></dt>
   <dd>Copy the contents of region into the specified file.</dd>
 
-  <dt><dfn>M-x append-to-file</dfn></dt>
+  <dt><dfn>
+  M-x append-to-file</dfn></dt>
   <dd>Append the contents of region to the end of the specified file.</dd>
 
   <dt><dfn>
@@ -1623,7 +1695,11 @@ The sentence commands assume that you follow the convention of putting two space
   <dt><dfn>
   C-k<br>
   M-x kill-line</dfn></dt>
-  <dd>Kill forward from point to the end of one logical line. Press C-k again to kill the newline.</dd>
+  <dd>
+<p>If there are visible (non-whitespace) characters after point, kill forward from point to the end of the current logical line (not including the newline). Press C-k again to kill the newline.</p>
+
+<p>If point is after the last visible character in the line, <code>C-k</code> will kill all the whitespace (including the newline).</p>
+  </dd>
 
   <dt><dfn>
   C-a<br>
@@ -1688,7 +1764,8 @@ The sentence commands assume that you follow the convention of putting two space
   M-x forward-paragraph</dfn></dt>
   <dd>Move forward one paragraph.</dd>
 
-  <dt><dfn>M-x kill-paragraph</dfn></dt>
+  <dt><dfn>
+  M-x kill-paragraph</dfn></dt>
   <dd>Kill forward from point to the end of one paragraph.</dd>
 
   <dt><dfn>
@@ -1697,7 +1774,8 @@ The sentence commands assume that you follow the convention of putting two space
   M-x backward-paragraph</dfn></dt>
   <dd>Move backward one paragraph.</dd>
 
-  <dt><dfn>M-x backward-kill-paragraph</dfn></dt>
+  <dt><dfn>
+  M-x backward-kill-paragraph</dfn></dt>
   <dd>Kill backward from point to the beginning of one paragraph.</dd>
 
   <dt><dfn>
@@ -1769,7 +1847,8 @@ The sentence commands assume that you follow the convention of putting two space
   M-x down-list</dfn></dt>
   <dd>Move down into one nested balanced pair of delimiters (often "()", "[]", or "{}", but there could be more or less, depending on the buffer's mode).</dd>
 
-  <dt><dfn>M-x up-list</dfn></dt>
+  <dt><dfn>
+  M-x up-list</dfn></dt>
   <dd>Move forward up out of one nested balanced pair of delimiters (often "()", "[]", or "{}", but there could be more or less, depending on the buffer's mode).</dd>
 
   <dt><dfn>
@@ -1779,7 +1858,8 @@ The sentence commands assume that you follow the convention of putting two space
   M-x backward-up-list</dfn></dt>
   <dd>Move backward up out of one nested balanced pair of delimiters (often "()", "[]", or "{}", but there could be more or less, depending on the buffer's mode).</dd>
 
-  <dt><dfn>M-x kill-backward-up-list</dfn></dt>
+  <dt><dfn>
+  M-x kill-backward-up-list</dfn></dt>
   <dd>Kill any expression within a balanced pair of delimiters, other than the expression that point is on, and kill the balanced pair of delimiters; for example, if you have "(foo bar baz)" with point on "bar" and you invoke <code>M-x kill-backward-up-list</code>, then you will be left with "bar".</dd>
 
   <dt><dfn>
@@ -1796,7 +1876,8 @@ The sentence commands assume that you follow the convention of putting two space
   M-x beginning-of-defun</dfn></dt>
   <dd>Move backward to the beginning of the previous defun (function, class, template, struct, or any other major definition).</dd>
 
-  <dt><dfn>C-M-h &lt;DEL&gt;</dfn></dt>
+  <dt><dfn>
+  C-M-h &lt;DEL&gt;</dfn></dt>
   <dd>Delete the current defun (function, class, template, struct, or any other major definition).</dd>
 
   <dt><dfn>
@@ -1811,7 +1892,8 @@ The sentence commands assume that you follow the convention of putting two space
   M-x beginning-of-buffer</dfn></dt>
   <dd>Move backward to the beginning of the buffer.</dd>
 
-  <dt><dfn>M-x erase-buffer</dfn></dt>
+  <dt><dfn>
+  M-x erase-buffer</dfn></dt>
   <dd>Delete the entire contents of the current buffer.</dd>
 </dl>
 
@@ -1942,6 +2024,10 @@ A given combination of point and mark values can be interpreted either as a regi
   C-x r N<br>
   M-x rectangle-number-lines</dfn></dt>
   <dd>Prepend line numbers to the lines in the rectangle. By default, the first line number in the rectangle is line 1, the second line number in the rectangle is line 2, and so on. The line numbers have nothing to do with the line numbers in the rest of the buffer. With a prefix argument, the command prompts for a number to begin from and for a format string with which to print the numbers.</dd>
+
+  <dt><dfn>
+  M-x string-insert-rectangle &lt;RET&gt; STRING &lt;RET&gt;</dfn></dt>
+  <dd>Insert the specified string on each line of the rectangle.</dd>
 </dl>
 
 
@@ -2264,9 +2350,325 @@ To restart a query replace once it is exited, use <code>C-x &lt;ESC&gt; &lt;ESC&
 </dl>
 
 
-# Killing (Cutting), Deleting, Copying, and Yanking
+# Killing, Deleting, Copying, and Yanking
 
-TODO
+
+## Kill (Cut)
+
+"Killing" means erasing text and copying it into the kill ring; some applications use the term "cutting" for a similar operation. There are commands for killing many different types of syntactic units (words, sentences, lines, paragraphs, etc.). Commands that kill normally contain the word "kill" in their name.
+
+Normally, each kill command pushes a new entry onto the kill ring; however, any sequence of two or more kill commands in a row combine their text into a single entry, so that a single <code>C-y</code> yanks all the text as a unit. Any non-kill commands breaks the sequence; if you break the sequence, but you still want to append to the kill ring, then press <code>C-M-w</code> (<code>M-x append-next-kill</code>) before you kill. Commands that kill forward from point add onto the end of the previous killed text. Commands that kill backward from point add text onto the beginning. This way, any sequence of mixed forward and backward kill commands puts all the killed text into one entry without rearrangement. The text in the kill ring entry always has the same order that it had in the buffer before you killed it. A kill command following <code>M-w</code> (<code>M-x kill-ring-save</code>) does not append to the text that <code>M-w</code> copied into the kill ring.
+
+When you undo a kill command, that brings the killed text back into the buffer, but does not remove it from the kill ring.
+
+The kill commands work specially in a read-only buffer: they copy instead of cut.
+
+<dl>
+  <dt><dfn>
+  M-d<br>
+  C-&lt;Delete&gt;<br>
+  M-x kill-word</dfn></dt>
+  <dd>Kill forward one word.</dd>
+
+  <dt><dfn>
+  M-&lt;DEL&gt;<br>
+  C-&lt;DEL&gt;<br>
+  M-x backward-kill-word</dfn></dt>
+  <dd>Kill backward one word.</dd>
+
+  <dt><dfn>
+  M-k<br>
+  M-x kill-sentence</dfn></dt>
+  <dd>Kill forward from point to the end of one sentence.</dd>
+
+  <dt><dfn>
+  C-x &lt;DEL&gt;<br>
+  M-x backward-kill-sentence</dfn></dt>
+  <dd>Kill backward from point to the beginning of one sentence.</dd>
+
+  <dt><dfn>
+  C-k<br>
+  M-x kill-line</dfn></dt>
+  <dd>
+<p>If there are visible (non-whitespace) characters after point, kill forward from point to the end of the current logical line (not including the newline). Press C-k again to kill the newline.</p>
+
+<p>If point is after the last visible character in the line, <code>C-k</code> will kill all the whitespace (including the newline).</p>
+  </dd>
+
+  <dt><dfn>
+  M-0 C-k<br>
+  C-u 0 C-k<br>
+  C-u C-0 C-k</dfn></dt>
+  <dd>Kill backward from point to the beginning of one logical line.</dd>
+
+  <dt><dfn>
+  C-S-&lt;DEL&gt;<br>
+  C-a C-k C-k<br>
+  M-x kill-whole-line</dfn></dt>
+  <dd>Kill one whole logical line, regardless of where point is in it.</dd>
+
+  <dt><dfn>
+  M-x kill-paragraph</dfn></dt>
+  <dd>Kill forward from point to the end of one paragraph.</dd>
+
+  <dt><dfn>
+  M-x backward-kill-paragraph</dfn></dt>
+  <dd>Kill backward from point to the beginning of one paragraph.</dd>
+
+  <dt><dfn>
+  C-x C-p C-w<br>
+  C-x C-p S-&lt;DEL&gt;</dfn></dt>
+  <dd>Kill one whole page (up to and including ^L) regardless of where point is in the page. If you simply press <code>&lt;DEL&gt;</code> instead of <code>S-&lt;DEL&gt;</code> or <code>C-w</code>, then that will delete the text instead of killing it.</dd>
+
+  <dt><dfn>
+  C-M-k<br>
+  M-x kill-sexp</dfn></dt>
+  <dd>Kill forward from point to the end of one expression (could be an identifier, literal, keyword, or whatever) that is at the same nesting level as point.</dd>
+
+  <dt><dfn>
+  &lt;ESC&gt; C-&lt;Delete&gt;<br>
+  &lt;ESC&gt; C-&lt;DEL&gt;<br>
+  M-x backward-kill-sexp</dfn></dt>
+  <dd>Kill backward from point to the beginning of one expression (could be an identifier, literal, keyword, or whatever) that is at the same nesting level as point.</dd>
+
+  <dt><dfn>
+  M-x kill-backward-up-list</dfn></dt>
+  <dd>Kill any expression within a balanced pair of delimiters, other than the expression that point is on, and kill the balanced pair of delimiters; for example, if you have "(foo bar baz)" with point on "bar" and you invoke <code>M-x kill-backward-up-list</code>, then you will be left with "bar".</dd>
+
+  <dt><dfn>
+  C-w<br>
+  S-&lt;DEL&gt;<br>
+  M-x kill-region</dfn></dt>
+  <dd>Kill the region.</dd>
+
+  <dt><dfn>
+  M-z CHARACTER<br>
+  M-x zap-to-char</dfn></dt>
+  <dd>Kill forward from point to the next occurrence of CHARACTER. With a negative prefix argument (<code>C-u - M-z CHARACTER</code> or <code>M-- M-z CHARACTER), kill backward from point to the next occurrence of CHARACTER.</dd>
+
+  <dt><dfn>
+  C-x r k<br>
+  M-x kill-rectangle</dfn></dt>
+  <dd>Kill the text of the region-rectangle.</dd>
+
+  <dt><dfn>
+  M-x clipboard-kill-region</dfn></dt>
+  <dd>Kill the region, and save it in the X clipboard.</dd>
+</dl>
+
+
+## Delete
+
+"Deleting" means erasing text, but not copying it into the kill ring. Commands that can erase significant amounts of nontrivial data generally do a kill operation instead of a delete. For the most part, the Emacs commands that delete text are those that erase just one character or only whitespace. Commands that delete normally contain the word "delete" in their name.
+
+<dl>
+  <dt><dfn>
+  C-d<br>
+  M-x delete-char<br>
+  &lt;Delete&gt;<br>
+  M-x delete-forward-char</dfn></dt>
+  <dd>Delete forward one character. If you're at the end of a line, <code>C-d</code> will delete the newline. If a region is active, delete the text in the region instead of deleting a single character.</dd>
+
+  <dt><dfn>
+  &lt;DEL&gt;<br>
+  M-x delete-backward-char</dfn></dt>
+  <dd>Delete backward one character. If you're at the beginning of a line, <code>&lt;DEL&gt;</code> will delete the newline. If a region is active, delete the text in the region instead of deleting a single character.</dd>
+
+  <dt><dfn>
+  M-\<br>
+  M-x delete-horizontal-space</dfn></dt>
+  <dd>Delete spaces and tabs around point.</dd>
+
+  <dt><dfn>
+  M-&lt;SPC&gt;<br>
+  M-x just-one-space</dfn></dt>
+  <dd>Delete spaces and tabs around point, leaving one space.</dd>
+
+  <dt><dfn>
+  C-x C-o<br>
+  M-x delete-blank-lines</dfn></dt>
+  <dd>
+<p>If point is on a blank line that is surrounded by one or more blank lines on either side, then delete all the surrounding blank lines, leaving just one blank line.</p>
+
+<p>If point is on a blank line that is not surrounded by any blank lines on either side, then delete the current blank line.</p>
+
+<p>If point is on a nonblank line that precedes one or more blank lines, then delete all following blank lines up to the next nonblank line.</p>
+
+<p>If point is on a nonblank line that is not followed by any blank lines, then do nothing.</p>
+  </dd>
+
+  <dt><dfn>
+  M-^<br>
+  M-x delete-indentation</dfn></dt>
+  <dd>Join two lines by deleting the intervening newline, along with any indentation following it.</dd>
+
+  <dt><dfn>
+  C-M-h &lt;DEL&gt;</dfn></dt>
+  <dd>Delete the current defun (function, class, template, struct, or any other major definition).</dd>
+
+  <dt><dfn>
+  M-x erase-buffer</dfn></dt>
+  <dd>Delete the entire contents of the current buffer.</dd>
+
+  <dt><dfn>
+  M-x flush-lines<br>
+  M-x delete-matching-lines</dfn></dt>
+  <dd>Delete any line after point that contains a match for the specified regular expression.</dd>
+
+  <dt><dfn>
+  M-x keep-lines<br>
+  M-x delete-non-matching-lines</dfn></dt>
+  <dd>Delete any line after point that doesn't contain a match for the specified regular expression.</dd>
+
+  <dt><dfn>
+  M-x delete-pair</dfn></dt>
+  <dd>Delete a pair of characters enclosing the sexp that follows point.</dd>
+
+  <dt><dfn>
+  C-x r d<br>
+  M-x delete-rectangle</dfn></dt>
+  <dd>Delete the text in the region-rectangle.</dd>
+
+  <dt><dfn>
+  M-x delete-region</dfn></dt>
+  <dd>Delete the text in the region.</dd>
+
+  <dt><dfn>
+  M-x delete-trailing-whitespace</dfn></dt>
+  <dd>Delete trailing whitespace in the region.</dd>
+
+  <dt><dfn>
+  M-x delete-whitespace-rectangle</dfn></dt>
+  <dd>Delete all whitespace following a specified column in each line.</dd>
+
+  <dt><dfn>
+  C-M-w<br>
+  M-x isearch-del-char</dfn></dt>
+  <dd>Delete the last character from the search string.</dd>
+
+  <dt><dfn>
+  C-x r c<br>
+  M-x clear-rectangle</dfn></dt>
+  <dd>Black out the region-rectangle.</dd>
+
+  <dt><dfn>
+  C-e C-k<br>
+  C-e &lt;Delete&gt;</dfn></dt>
+  <dd>Merge the current line with the next line (delete the newline at the end of the current line).</dd>
+
+  <dt><dfn>
+  C-a &lt;DEL&gt;</dfn></dt>
+  <dd>Merge the current line with the previous line.</dd>
+</dl>
+
+
+## Copy
+
+<dl>
+  <dt><dfn>
+  M-w<br>
+  M-x kill-ring-save</dfn></dt>
+  <dd>Copy the region into the kill ring.</dd>
+
+  <dt><dfn>
+  M-x clipboard-kill-ring-save</dfn></dt>
+  <dd>Copy the region into the kill ring, and save it in the X clipboard.</dd>
+
+  <dt><dfn>
+  C-x r M-w<br>
+  M-x copy-rectangle-as-kill</dfn></dt>
+  <dd>Copy the region-rectangle and save it as the last killed one.</dd>
+
+  <dt><dfn>
+  M-x copy-region-as-kill</dfn></dt>
+  <dd>Copy the region and save it as the last killed one.</dd>
+</dl>
+
+
+## Yank (Paste)
+
+"Yanking" means reinserting text that was previously killed (you can think of it as yanking back, or pulling back, some text that was taken away); some applications use the term "pasting" for a similar operation. Note that Vim uses the term "yank" to mean "copy".
+
+<dl>
+  <dt><dfn>
+  C-y<br>
+  M-x yank</dfn></dt>
+  <dd>Yank (paste) the last kill into the buffer at point.</dd>
+
+  <dt><dfn>
+  M-x append-to-buffer</dfn></dt>
+  <dd>Append region to the contents of the specified buffer wherever point is in that buffer, and then place point after the appended region in that buffer. If you specify a nonexistent buffer, the buffer will be created.</dd>
+
+  <dt><dfn>
+  M-x prepend-to-buffer</dfn></dt>
+  <dd>Prepend region to the contents of the specified buffer wherever point is in that buffer, and tehn place point before the prepended region in that buffer. If you specify a nonexistent buffer, the buffer will be created.</dd>
+
+  <dt><dfn>
+  M-x copy-to-buffer</dfn></dt>
+  <dd>Copy region into the specified buffer, deleting that buffer's old contents.</dd>
+
+  <dt><dfn>
+  M-x insert-buffer</dfn></dt>
+  <dd>Insert the contents of the specified buffer into the current buffer at point, leaving point at the beginning of the inserted text. It also adds the position of the end of the inserted text to the mark ring, without activating the mark.</dd>
+
+  <dt><dfn>
+  M-x append-to-file</dfn></dt>
+  <dd>Append region to the contents of the specified file. The file is changed immediately on disk. You should use <code>append-to-file</code> only with files that are not being visited in Emacs.</dd>
+
+  <dt><dfn>
+  C-y<br>
+  M-x isearch-yank-kill</dfn></dt>
+  <dd>Yank into an incremental search.</dd>
+
+  <dt><dfn>
+  M-x clipboard-yank</dfn></dt>
+  <dd>Yank the clipboard contents.</dd>
+
+  <dt><dfn>
+  C-M-y<br>
+  M-x isearch-yank-char</dfn></dt>
+  <dd>Yank the next character from the buffer into the search string.</dd>
+
+  <dt><dfn>
+  M-s C-e<br>
+  M-x isearch-yank-line</dfn></dt>
+  <dd>Yank the rest of the line from the buffer into the search string.</dd>
+
+  <dt><dfn>
+  M-x isearch-yank-word</dfn></dt>
+  <dd>Yank the next word from the buffer into the search string.</dd>
+
+  <dt><dfn>
+  C-w<br>
+  M-x isearch-yank-word-or-char</dfn></dt>
+  <dd>Yank the next character, subword, or word from the buffer into the search string.</dd>
+
+  <dt><dfn>
+  M-x isearch-yank-x-selection</dfn></dt>
+  <dd>Yank the current X selection into the search string.</dd>
+
+  <dt><dfn>
+  C-x r y<br>
+  M-x yank-rectangle</dfn></dt>
+  <dd>Yank the last killed rectangle with upper left corner at point.</dd>
+</dl>
+
+
+## Clipboard
+
+In most grahpical desktop environments, you can transfer data (usually text) between different applications using a system facility called the "clipboard." On X, two other similar facilities are available: the primary selection and the secondary selection. In graphical Emacs, the kill and yank commands integrate with these facilities, so that you can easily transfer text between Emacs and other graphical applications.
+
+By default, Emacs uses UTF-8 as the coding system for inter-program text transfers.
+
+When you kill or copy something to the kill ring, that text is also put in the system clipboard.
+
+If another application "owns" the clipboard (i.e., if you cut or copied text there more recently than your last kill command in Emacs), then Emacs yanks from the clipboard instead of the kill ring.
+
+Many X desktop environments support a feature called the "clipboard manager." If you exit Emacs while it is the current "owner" of the clipboard data, and there is a clipboard manager running, Emacs transfers the clipboard data to the clipboard manager so that it is not lost. In some circumstances, this may cause a delay when exiting Emacs.
+
+Under the X Window System, there exists a "primary selection" containing the last stretch of text selected in an X application (usually by dragging the mouse). Typically, this text can be inserted into other X applications by mouse-2 clicks (middle clicks). The primary selection is separate from the clipboard. Its contents are more fragile; they are overwritten each time you select text with the mouse, whereas the clipboard is only overwritten by explicit cut or copy commands. Under X, whenever the region is active, the text in the region is saved in the primary selection. This applies regardless of whether the region was made by dragging or clicking the mouse, or by keyboard commands. To insert the primary selection into an Emacs buffer, click <code>mouse-2</code> (middle click) (<code>M-x mouse-yank-primary</code>) where you want to insert it.
+
+In addition to the primary selection, the X Window System provides a second similar facility known as the secondary selection. Nowadays, few X applications make use of the secondary selection. I assume the secondary selection is a lot like the primary selection, except it can be used for the cases where you don't want to overwrite the clipboard selection or the primary selection. To set the secondary selection, press and hold <code>Alt</code> (<code>M-</code>), drag mouse-1 (the left mouse button) to highlight the text you want, and then release <code>Alt</code> (<code>M-</code>). Alternatively, press <code>M-Mouse-1</code> (the left mouse button) (<code>M-x mouse-start-secondary</code>) at one end of the text and press <code>M-Mouse-3</code> (the right mouse button) (<code>M-x mouse-secondary-save-then-kill</code>) at the other end. To insert the secondary selection where you click, press <code>M-Mouse-2</code> (the middle mouse button) (<code>M-x mouse-yank-secondary</code>).
 
 
 # Completion
