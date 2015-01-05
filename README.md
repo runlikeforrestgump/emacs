@@ -3345,7 +3345,23 @@ The various sort commands differ in how they divide the text into sort records a
 
 # Describing a Buffer or Region
 
-TODO
+<dl>
+  <dt><dfn>
+  M-=<br>
+  M-x count-words-region<br>
+  M-x count-lines-region</dfn></dt>
+  <dd>Display a message in the echo area reporting the number of lines, words, and characters that are present in the region.</dd>
+
+  <dt><dfn>
+  C-u M-=<br>
+  M-x count-words</dfn></dt>
+  <dd>Display a message in the echo area reporting the number of lines, words, and characters that are present in the buffer. If the region is active, display the numbers for the region instead.</dd>
+
+  <dt><dfn>
+  C-x l<br>
+  M-x count-lines-page</dfn></dt>
+  <dd>Display a message in the echo area reporting the number of lines in the current page. The numbers in parentheses are the lines before point + the lines after point.</dd>
+</dl>
 
 
 # Syntax Highlighting (Font Lock)
@@ -3362,6 +3378,50 @@ In most cases, you'll find that syntax highlighting works out of the box.
   <dt><dfn>
   M-x global-font-lock-mode</dfn></dt>
   <dd>Toggle Font Lock mode in all buffers.</dd>
+</dl>
+
+
+# Documentation
+
+<dl>
+  <dt><dfn>
+  C-h S<br>
+  M-x info-lookup-symbol</dfn></dt>
+  <dd>For major modes that apply to languages that have documentation in Info, view the Info documentation for a symbol. You specify the symbol with the minibuffer; the default is the symbol appearing in the buffer at point. For example, in C mode, this looks for the symbol in the C Library Manual. The command only works if the appropriate manual's Info files are installed. The major mode determines where to look for documentation for the symbol--which Info files to look in, and which indices to search.</dd>
+
+  <dt><dfn>
+  M-x man</dfn></dt>
+  <dd>
+<p>Read the man page for the specified topic; the default topic is the symbol appearing in the buffer at point. You can specify <code>TOPIC</code>, <code>SECTION TOPIC</code>, or <code>TOPIC(SECTION)</code>. If you don't specify a section, then the first section found that contains the specified topic will be returned.</p>
+
+<p>The section numbers are often along the lines of:
+  <ul>
+    <li><b>1</b>: Executable programs or shell commands</li>
+    <li><b>2</b>: System calls (functions provided by the kernel)</li>
+    <li><b>3</b>: Library calls (functions within program libraries)</li>
+    <li><b>4</b>: Special files (usually found in /dev)</li>
+    <li><b>5</b>: File formats and conventions (e.g., /etc/passwd)</li>
+    <li><b>6</b>: Games</li>
+    <li><b>7</b>: Miscellaneous (including macro packages and conventions)</li>
+    <li><b>8</b>: System administration commands (usually only for root)</li>
+    <li><b>9</b>: Kernel routines</li>
+  </ul>
+</p>
+  </dd>
+
+  <dt><dfn>
+  C-h f<br>
+  M-x describe-function</dfn></dt>
+  <dd>When editing Emacs Lisp code, view the built-in documentation for the specified function.</dd>
+
+  <dt><dfn>
+  C-h v<br>
+  M-x describe-variable</dfn></dt>
+  <dd>When editing Emacs Lisp code, view the built-in documentation for the specified variable.</dd>
+
+  <dt><dfn>
+  M-x eldoc-mode</dfn></dt>
+  <dd>Eldoc is a buffer-local minor mode for Elisp code. When it is enabled, the echo area displays some useful information whenever there is a Lisp function or variable at point; for a function, it shows the argument list, and for a variable it shows the first line of the variable's documentation string.</dd>
 </dl>
 
 
