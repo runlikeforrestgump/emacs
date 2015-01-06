@@ -3180,7 +3180,7 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
 </dl>
 
 
-# Editing
+# Editing Plaintext
 
 
 ## Case Conversion
@@ -3378,6 +3378,63 @@ In most cases, you'll find that syntax highlighting works out of the box.
   <dt><dfn>
   M-x global-font-lock-mode</dfn></dt>
   <dd>Toggle Font Lock mode in all buffers.</dd>
+</dl>
+
+
+# Comments
+
+You can enable spell checking for comments by using Flyspell Prog mode (<code>M-x flyspell-prog-mode</code>).
+
+<dl>
+  <dt><dfn>
+  M-;<br>
+  M-x comment-dwim</dfn></dt>
+  <dd>
+<p>If the region is active, either add comment delimiters to the region (if there aren't any comment delimiters) or remove comment delimiters from the region (if there are comment delimiters).</p>
+
+<p>If the region is not active, either add a new comment to the current line (if there is no comment) or realign the existing comment on the current line to the conventional alignment (unless the comment starts in column 0, in which case it isn't moved at all). For blank lines, the comment is indented to the same position where &lt;TAB&gt; would indent to. For non-blank lines, the comment is placed after the last non-whitespace character on the line; normally, at the column specified by the variable <code>comment-column</code>, but if the line already extends beyond that column, then the comment is usually separated from the non-comment text by at least one space. When a comment is added or realigned, point is moved to one space after the opening delimiter, so that you can start typing a comment right away. Even if an existing comment is properly aligned, <code>M-;</code> is still useful for moving directly to the start of the comment text.</p>
+  </dd>
+
+  <dt><dfn>
+  C-u M-;<br>
+  M-x comment-kill<br>
+  M-x kill-comment</dfn></dt>
+  <dd>Kill any comment on the current line, along with the whitespace before it.</dd>
+
+  <dt><dfn>
+  M-x comment-region<br>
+  C-c C-c</dfn></dt>
+  <dd>Add comment delimiters to the region, whether the region is active or not.</dd>
+
+  <dt><dfn>
+  M-x uncomment-region</dfn></dt>
+  <dd>Remove comment delimiters from the region, whether the region is active or not.</dd>
+
+  <dt><dfn>
+  M-x comment-or-uncomment-region</dfn></dt>
+  <dd>Whether the region is active or not, add comment delimiters to the region if the region isn't fully commented; otherwise, remove the comment delimiters from the region.</dd>
+
+  <dt><dfn>
+  M-j<br>
+  C-M-j<br>
+  M-x comment-indent-new-line<br>
+  M-x indent-new-comment-line</dfn></dt>
+  <dd>Break the current line and insert the necessary comment delimiters and indentation to continue the comment on the next line. When Auto Fill mode is enabled, going past the fill column while typing a comment will have the same effect as the <code>comment-indent-new-line</code> command.</dd>
+
+  <dt><dfn>
+  M-x comment-indent<br>
+  M-x indent-for-comment</dfn></dt>
+  <dd>If there is a comment on the current line, indent it to <code>comment-column</code>; otherwise, add a new empty comment to the current line.</dd>
+
+  <dt><dfn>
+  C-x ;<br>
+  M-x comment-set-column<br>
+  M-x set-comment-column</dfn></dt>
+  <dd>Set the value of <code>comment-column</code> in the current buffer to the column where point is currently located. <code>C-u C-x ;</code> sets the comment column to match the last comment before point in the buffer, and then does a <code>M-;</code> to align the current line's comment under the previous one.</dd>
+
+  <dt><dfn>
+  M-x ispell-comments-and-strings</dfn></dt>
+  <dd>Check comments and strings in the current buffer for spelling errors.</dd>
 </dl>
 
 
