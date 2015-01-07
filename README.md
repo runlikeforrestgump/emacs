@@ -2048,6 +2048,10 @@ Widening is the opposite of narrowing. When a buffer is widened, all its text is
   C-x =<br>
   M-x what-cursor-position</dfn></dt>
   <dd>Display information about where point is relative to the entire buffer (not just the narrowed region). The numbers in angle brackets are the first line number in the narrowed region (relative to the entire buffer) and the last line number in the narrowed region (also relative to the entire buffer).</dd>
+
+  <dt><dfn>
+  M-x what-line</dfn></dt>
+  <dd>Display the line number of point relative to the entire buffer, and then in parentheses, display the line number of point relative to the narrowed region.</dd>
 </dl>
 
 
@@ -3224,6 +3228,14 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
 # Editing Plaintext
 
 
+<dl>
+  <dt><dfn>
+  C-o<br>
+  M-x open-line</dfn></dt>
+  <dd>Insert a newline at point, but don't move point. This command is most useful when point is at the beginning of a line, in which case, point will be left at the beginning of a blank line.</dd>
+</dl>
+
+
 ## Case Conversion
 
 <dl>
@@ -3384,7 +3396,7 @@ The various sort commands differ in how they divide the text into sort records a
 </dl>
 
 
-# Describing a Buffer or Region
+# Describing a Buffer, Region, or Character
 
 <dl>
   <dt><dfn>
@@ -3402,6 +3414,34 @@ The various sort commands differ in how they divide the text into sort records a
   C-x l<br>
   M-x count-lines-page</dfn></dt>
   <dd>Display a message in the echo area reporting the number of lines in the current page. The numbers in parentheses are the lines before point + the lines after point.</dd>
+
+  <dt><dfn>
+  C-x =<br>
+  M-x what-cursor-position</dfn></dt>
+  <dd>
+<p>Describe the character that's after point (i.e., on the cursor).</p>
+
+<p>
+  <ul>
+    <li>Char:</li>
+    <li>CHARACTER</li>
+    <li>(</li>
+    <li>DECIMAL_VALUE_OF_CHARACTER,</li>
+    <li>OCTAL_VALUE_OF_CHARACTER,</li>
+    <li>HEXADECIMAL_VALUE_OF_CHARACTER</li>
+    <li>)</li>
+    <li>point=</li>
+    <li>NUMBER_OF_CHARACTERS_ON_OR_BEFORE_CURSOR</li>
+    <li>of</li>
+    <li>TOTAL_NUMBER_OF_CHARACTERS_IN_BUFFER</li>
+    <li>(</li>
+    <li>POSITION_OF_POINT_IN_THE_BUFFER_REPRESENTED_AS_A_PERCENTAGE</li>
+    <li>)</li>
+    <li>column=</li>
+    <li>COLUMN_NUMBER_OF_CURSOR_ON_THE_CURRENT_LINE</li>
+  </ul>
+</p>
+  </dd>
 </dl>
 
 
