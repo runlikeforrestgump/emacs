@@ -1425,6 +1425,47 @@ Each mode is associated with a mode command, whose name consists of the mode nam
 The major mode is chosen for you automatically based on the contents of the buffer; for example, if Emacs sees that you are visiting a Java file, then Emacs will use the cc-mode major mode. If you'd like to use a different major mode, you can always switch it to whatever you want.
 
 
+# Reverting
+
+Reverting something means returning it to its original state.
+
+<dl>
+  <dt><dfn>
+  M-x revert-buffer<br>
+  g</dfn></dt>
+  <dd>
+<p>Replace the current buffer text with the text of the visited file on disk; mark the buffer as "not modified"; and clear the buffer's undo history (thus, the reversion cannot be undone).</p>
+
+<p>Some kinds of buffers that are not associated with files, such as Dired buffers, can also be reverted. For them, reverting means recalculating their contents.</p>
+
+<p>Some buffers map <code>g</code> to <code>M-x revert-buffer</code>.</p>
+  </dd>
+
+  <dt><dfn>
+  M-x auto-revert-mode<br>
+  M-x global-auto-revert-mode</dfn></dt>
+  <dd>
+<p>Auto-Revert mode is a minor mode that automatically reverts buffers every five seconds. <code>M-x auto-revert-mode</code> enables it in the current buffer; <code>M-x global-auto-revert-mode</code> enables it in all buffers.</p>
+
+<p>Global Auto Revert mode normally only reverts file buffers. To auto-revert certain non-file buffers, you can use <code>M-x auto-revert-mode</code> in that buffer, or you can set <code>global-auto-revert-non-file-buffers</code> to a non-nil value. The latter enables Auto Reverting for all types of buffers for which it is implemented.</p>
+
+<p>Buffers that are modified aren't auto-reverted.</p>
+
+<p>Auto-Revert mode won't revert remote files.</p>
+  </dd>
+
+  <dt><dfn>
+  M-x auto-revert-tail-mode</dfn></dt>
+  <dd>
+<p>Auto-Revert Tail mode is a variant of Auto-Revert mode that is tailored to reverting buffers that only grow at the end (such as log files). For files that only grow at the end, it's more efficient to use Auto-Revert Tail mode than it is to use Auto-Revert mode.</p>
+
+<p>Buffers that are modified aren't auto-reverted.</p>
+
+<p>Auto-Revert Tail mode can revert remote files.</p>
+  </dd>
+</dl>
+
+
 # Files
 
 When editing a file in Emacs, you're actually working with a copy of the file: Emacs inserts the contents of the file into a buffer, which is called "visiting the file." Your changes last only as long as the Emacs session. To keep your changes permanently, you must save the buffer back into the file.
