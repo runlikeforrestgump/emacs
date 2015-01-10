@@ -1424,6 +1424,8 @@ Each mode is associated with a mode command, whose name consists of the mode nam
 
 The major mode is chosen for you automatically based on the contents of the buffer; for example, if Emacs sees that you are visiting a Java file, then Emacs will use the cc-mode major mode. If you'd like to use a different major mode, you can always switch it to whatever you want.
 
+If you have changed the major mode of a buffer, you can return to the major mode Emacs would have chosen automatically, by typing <code>M-x normal-mode</code>.
+
 
 # Reverting
 
@@ -2753,6 +2755,10 @@ Normally, if there is more than one completion alternative for the text in the m
 
 Icomplete mode (<code>M-x icomplete-mode</code>) displays an indication of available completions when you are in the minibuffer and completion is active. The completion alternatives are listed in the minibuffer in curly braces after point.
 
+Filename completion works with TRAMP for completion of method names, of user names, and of machine names as well as for completion of file names on remote machines.
+
+Dynamic abbreviations allow the meanings of abbreviations to be determined automatically from the contents of the buffer, but dynamic abbrev expansion happens only when you request it explicitly. In this context, think of any abbreviation as any word-size unit of text that can expand into a longer string.
+
 <dl>
   <dt><dfn>
   &lt;TAB&gt;<br>
@@ -2834,6 +2840,16 @@ Icomplete mode (<code>M-x icomplete-mode</code>) displays an indication of avail
   M-?<br>
   M-x comint-dynamic-list-filename-completions</dfn></dt>
   <dd>In Shell mode, display temporarily a list of the possible completions of the file name before point.</dd>
+
+  <dt><dfn>
+  M-/<br>
+  M-x dabbrev-expand</dfn></dt>
+  <dd>Expand the word in the buffer before point by searching backward in the buffer for the first word that starts with the word before point as a prefix. Repeating <code>M-/</code> searches for an alternative expansion by looking farther back. After scanning all the text before point, the search continues after point. After scanning the current buffer, <code>M-/</code> normally searches other buffers.</dd>
+
+  <dt><dfn>
+  C-M-/<br>
+  M-x dabbrev-completion</dfn></dt>
+  <dd>Perform completion of a dynamic abbreviation. Instead of trying the possible expansions one by one, it finds all of them, then inserts the text that they have in common. If they have nothing in common, <code>C-M-/</code> displays a list of completions, from which you can select a choice in the usual manner.</dd>
 </dl>
 
 
