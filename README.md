@@ -2718,12 +2718,123 @@ In addition to the primary selection, the X Window System provides a second simi
 
 # Completion
 
-TODO
+"Completion" means that Emacs can fill in the rest of what you're typing, or some of it, based on what you've typed so far. Suggestions for possible completions are called "completion alternatives" or simply "completions."
 
+When a command reads an argument using the minibuffer with completion, it also controls what happens when you type <code>&lt;RET&gt;</code> (<code>M-x minibuffer-complete-and-exit</code>) to submit the argument. There are four types of behaviour:
 
-## Minibuffer
+<ol>
+  <li>"Strict completion" accepts only exact completion matches. Typing <code>&lt;RET&gt;</code> exits the minibuffer only if the minibuffer text is an exact match, or completes to one.</li>
+  <li>"Cautious completion" is like strict completion, except <code>&lt;RET&gt;</code> exits only if the text is already an exact match. If the text completes to an exact match, <code>&lt;RET&gt;</code> performs that completion but does not exit yet; you must type a second &lt;RET&gt; to exit.</li>
+  <li>"Permissive completion" allows any input; the completion candidates are just suggestions. Typing <code>&lt;RET&gt;</code> does not complete, it just submits the argument as you have entered it.</li>
+  <li>"Permissive completion with confirmation" is like permissive completion, with an exception: if you typed <code>&lt;TAB&gt;</code> and this completed the text up to some intermediate state (i.e., one that is not yet an exact completion match), typing <code>&lt;RET&gt;</code> right afterward does not submit the argument. Instead, Emacs asks for confirmation. Type <code>&lt;RET&gt;</code> again to confirm and submit the text. This catches a common mistake, in which one types <code>&lt;RET&gt;</code> before realising that <code>&lt;TAB&gt;</code> did not complete as far as desired.</li>
+</ol>
 
-TODO
+Completion commands work by narrowing a large list of possible completion alternatives to a smaller subset that matches what you have typed in the minibuffer. Emacs performs completion using one or more "completion styles"--sets of criteria for matching minibuffer text to completion alternatives. During completion, Emacs tries each completion style in turn. If a style yields one or more matches, that is used as the list of completion alternatives. If a style produces no matches, Emacs falls back to the next style.
+
+The default completion styles are (in order):
+
+<ol>
+  <li>"basic": A matching completion alternative must have the same beginning as the text in the minibuffer before point. Furthermore, if there is any text in the minibuffer after point, the rest of the completion alternative must contain that text as a substring.</li>
+  <li>"partial-completion": This aggressive completion style divides the minibuffer text into words separated by hyphens or spaces, and completes each word separately; for example, when completing command names, <code>em-l-m</code> completes to <code>emacs-lisp-mode</code>. furthermore, a <code>*</code> in the minibuffer text is treated as a wildcard--it matches any character at the corresponding position in the completion alternative.</li>
+  <li>"emacs22": This completion style is similar to "basic", except that is ignores the text in the minibuffer after point. It is so-named because it corresponds to the completion behaviour in Emacs 22.</li>
+</ol>
+
+The following additional completion styles are also defined, and you can add them to the <code>completion-styles</code> variable if you want to use them:
+
+<ol>
+  <li>"substring": A matching completion alternative must contain the text in the minibuffer before point, and the text in the minibuffer after point, as substrings (in that same order).</li>
+  <li>"initials": This very aggressive completion style attempts to complete acronyms and initialisms; for example, when completing command names, it matches <code>lch</code> to <code>list-command-history</code>.</li>
+  <li>"emacs21": A matching completion alternative must start with the text in the minibuffer.</li>
+</ol>
+
+Case is significant when completing case-sensitive arguments, such as command names. Case differences are ignored when completing arguments in which case does not matter.
+
+Normally, if there is more than one completion alternative for the text in the minibuffer, a completion command completes up to the longest common substring.
+
+Icomplete mode (<code>M-x icomplete-mode</code>) displays an indication of available completions when you are in the minibuffer and completion is active. The completion alternatives are listed in the minibuffer in curly braces after point.
+
+<dl>
+  <dt><dfn>
+  &lt;TAB&gt;<br>
+  M-x minibuffer-complete<br>
+  M-x gud-gdb-complete-command</dfn></dt>
+  <dd>
+<p>In the minibuffer, complete the text in the minibuffer as much as possible; if unable to complete, display a list of possible completions.</p>
+
+<p>In GDB, complete a symbol name.</p>
+  </dd>
+
+  <dt><dfn>
+  &lt;SPC&gt;<br>
+  M-x minibuffer-complete-word</dfn></dt>
+  <dd>Complete up to one word (up to the next hyphen or space) from the minibuffer text before point. This command is not available for arguments that often include spaces, such as file names.</dd>
+
+  <dt><dfn>
+  &lt;RET&gt;<br>
+  M-x minibuffer-complete-and-exit<br>
+  M-x choose-completion</dfn></dt>
+  <dd>
+<p>In the minibuffer, submit the text in the minibuffer as the argument, possibly completing first.</p>
+
+<p>In the completion list buffer, choose the completion at point.</p>
+  </dd>
+
+  <dt><dfn>
+  ?<br>
+  M-x minibuffer-completion-help</dfn></dt>
+  <dd>Display a list of completions.</dd>
+
+  <dt><dfn>
+  M-v<br>
+  &lt;PageUp&gt;<br>
+  M-x switch-to-completions</dfn></dt>
+  <dd>Typing <code>M-v</code>, while in the minibuffer, selects the window showing the completion list.</dd>
+
+  <dt><dfn>
+  &lt;right&gt;<br>
+  M-x next-completion</dfn></dt>
+  <dd>In the completion list buffer, move point to the next completion alternative.</dd>
+
+  <dt><dfn>
+  &lt;left&gt;<br>
+  M-x previous-completion</dfn></dt>
+  <dd>In the completion list buffer, move point to the previous completion alternative.</dd>
+
+  <dt><dfn>
+  M-&lt;TAB&gt;<br>
+  &lt;ESC&gt; &lt;TAB&gt;<br>
+  M-x isearch-complete<br>
+  M-x ispell-complete-word<br>
+  M-x completion-at-point<br>
+  M-x widget-complete</dfn></dt>
+  <dd>
+<p>In incremental search, attempt to complete the search string using the search ring as a list of completion alternatives.</p>
+
+<p>In a buffer, complete the word before point based on the spelling dictionary. You can also use <code>C-M-i</code>.</p>
+
+<p>In programming language modes, type <code>C-M-i</code>, <code>M-&lt;TAB&gt;</code>, or <code>&lt;ESC&gt; &lt;TAB&gt;</code> to complete the partial symbol before point. If Semantic mode is enabled, it tries to use the Semantic parser data for completion. If Semantic mode is not enabled or fails at performing completion, it tries to complete using the selected tags table. If in Emacs Lisp mode, it performs completion using the function, variable, or property names defined in the current Emacs session.</p>
+  </dd>
+
+  <dt><dfn>
+  C-&lt;TAB&gt;<br>
+  M-x file-cache-minibuffer-complete</dfn></dt>
+  <dd>You can use the file name cache to make it easy to locate a file by name, without having to remember exactly where it is located. When typing a file name in the minibuffer, <code>C-&lt;TAB&gt;</code> completes it using the file name cache. If you repeat <code>C-&lt;TAB&gt;</code>, that cycles through the possible completions of what you had originally typed. The file name cache does not fill up automatically. Also, the file name cache is not persistent: it is kept and maintained only for the duration of the Emacs session.</dd>
+
+  <dt><dfn>
+  C-c , &lt;SPC&gt;<br>
+  M-x semantic-complete-analyze-inline</dfn></dt>
+  <dd>In Semantic mode, display a list of possible completions for the symbol at point. This also activates a set of special key bindings for choosing a completion: <code>&lt;RET&gt;</code> accepts the current completion, <code>M-n</code> and <code>M-p</code> cycle through possible completions, <code>&lt;TAB&gt;</code> completes as far as possible and then cycles, and <code>C-g</code> or any other key aborts completion.</dd>
+
+  <dt><dfn>
+  C-c , l<br>
+  M-x semantic-analyze-possible-completions</dfn></dt>
+  <dd>Display a list of the possible completions of the symbol at point, in another window.</dd>
+
+  <dt><dfn>
+  M-?<br>
+  M-x comint-dynamic-list-filename-completions</dfn></dt>
+  <dd>In Shell mode, display temporarily a list of the possible completions of the file name before point.</dd>
+</dl>
 
 
 # Rings
@@ -2739,6 +2850,8 @@ The keyboard macro ring (or macro ring for short) stores all the keyboard macros
 The shell history ring (or shell ring for short) stores all the previously entered shell commands and their arguments. Outside Emacs, some shells store their command histories in files so that you can refer to commands from previous shell sessions. Emacs reads the command history file for your chosen shell, to initialise its own command history. The file name is usually "~/.bash_history" for bash, "~/.zsh_history" for zsh, "~/.sh_history" for ksh, and "~/.history" for other shells.
 
 The search ring stores all your previous searches. String-based searches and regexp-based searches have separate search rings.
+
+TODO: tag ring
 
 For each type of ring, you can think of moving through the ring as moving a pointer through it. If you move through a ring and then start doing other things, the pointer will still be pointing to the same position you were in the ring, so you can pick up from where you left off once you start moving through the ring again.
 
