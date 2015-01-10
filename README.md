@@ -2728,7 +2728,93 @@ TODO
 
 # Rings
 
-TODO
+A ring is so-named because it can be visualised as a set of things arranged in a ring, which you can access in cyclic order (when you're at the end and you access the next item, you go back to the beginning; when you're at the beginning and you access the previous item, you go back to the end). There are several types of rings.
+
+The mark ring is used to hold several recent previous locations of the mark, in case you want to move back to them. Each buffer has its own mark ring; in addition, there is a single global mark ring. The global mark ring records the series of buffers you have recently set a mark in. In many cases you can use this to backtrack through buffers you have been editing, or in which you have found tags. When you use a command that sets mark (such as <code>C-&lt;SPC&gt; C-&lt;SPC&gt;</code>), the command will push the old mark onto the mark ring. The mark will also be pushed onto the global mark ring, where the buffer associated with the mark is also pushed onto the ring. By default, a buffer's mark ring can only store 16 marks; when the mark ring is full, a subsequent push will cause the oldest mark to be discarded. By default, the global mark ring can only store 16 marks.
+
+The kill ring is where all text you have killed recently is saved. You can reinsert any of the killed text still in the ring; this is called yanking. There is only one kill ring, shared by all buffers, so you can kill text in one buffer and yank it in another buffer. By default, the kill ring can only store 60 kills; when the kill ring is full, a subsequent kill will cause the oldest kill to be discarded. The actual contents of the kill ring are stored in a variable named <code>kill-ring</code>; you can view the entire contents of the kill ring with <code>C-h v kill-ring</code>.
+
+The keyboard macro ring (or macro ring for short) stores all the keyboard macros you have defined. There is only one keyboard macro ring, shared by all buffers. By default, the keyboard macro ring can only store 8 keyboard macros; when the keyboard macro ring is full, a subsequent push will cause the oldest keyboard macro to be discarded. All commands that operate on the keyboard macro ring use the same <code>C-x C-k</code> prefix; these commands can be executed and repeated immediately after each other without needing you to type the <code>C-x C-k</code> prefix each time. When you move to the next or previous item in the keyboard macro ring, the definition of the new head macro is displayed in the echo area. Emacs treats the head of the macro ring as the last defined keyboard macro.
+
+The shell history ring (or shell ring for short) stores all the previously entered shell commands and their arguments. Outside Emacs, some shells store their command histories in files so that you can refer to commands from previous shell sessions. Emacs reads the command history file for your chosen shell, to initialise its own command history. The file name is usually "~/.bash_history" for bash, "~/.zsh_history" for zsh, "~/.sh_history" for ksh, and "~/.history" for other shells.
+
+The search ring stores all your previous searches. String-based searches and regexp-based searches have separate search rings.
+
+For each type of ring, you can think of moving through the ring as moving a pointer through it. If you move through a ring and then start doing other things, the pointer will still be pointing to the same position you were in the ring, so you can pick up from where you left off once you start moving through the ring again.
+
+<dl>
+  <dt><dfn>
+  C-u C-&lt;SPC&gt;<br>
+  C-u C-@<br>
+  C-u M-x set-mark-command</dfn></dt>
+  <dd>Move to the previous mark in the current buffer's mark ring.</dd>
+
+  <dt><dfn>
+  C-x C-&lt;SPC&gt;<br>
+  C-x C-@<br>
+  M-x pop-global-mark</dfn></dt>
+  <dd>Move to the previous mark in the global mark ring.</dd>
+
+  <dt><dfn>
+  M-y<br>
+  M-x yank-pop</dfn></dt>
+  <dd>
+<p>If the previous command was a yank command, <code>M-y</code> takes the text that was yanked and replaces it with the text from an earlier kill. <code>M-y</code> is allowed only after a <code>C-y</code> or another <code>M-y</code>; the first time you use <code>M-y</code>, you have to use <code>C-y</code> first.</p>
+
+<p>With a negative numeric argument, move forward through the kill ring instead of backward.</p>
+  </dd>
+
+  <dt><dfn>
+  C-x C-k C-k<br>
+  M-x kmacro-end-or-call-macro-repeat</dfn></dt>
+  <dd>Execute the keyboard macro at the head of the keyboard macro ring.</dd>
+
+  <dt><dfn>
+  C-x C-k C-n<br>
+  M-x kmacro-cycle-ring-next</dfn></dt>
+  <dd>Rotate the keyboard macro ring to the next macro.</dd>
+
+  <dt><dfn>
+  C-x C-k C-p<br>
+  M-x kmacro-cycle-ring-previous</dfn></dt>
+  <dd>Rotate the keyboard macro ring to the previous macro.</dd>
+
+  <dt><dfn>
+  M-p<br>
+  C-&lt;Up&gt;</dfn></dt>
+  <dd>
+<p>In a search, rotate the search ring to the previous search string.</p>
+
+<p>In a shell buffer, rotate the shell history ring to the previous shell command and its arguments.</p>
+  </dd>
+
+  <dt><dfn>
+  M-n<br>
+  C-&lt;Down&gt;</dfn></dt>
+  <dd>
+<p>In a search, rotate the search ring to the next search string.</p>
+
+<p>In a shell buffer, rotate the shell history ring to the next shell command and its arguments.</p>
+  </dd>
+
+  <dt><dfn>
+  M-r</dfn></dt>
+  <dd>In a shell buffer, begin an incremental regexp search of previous shell commands. Incremental search commands have their usual effects--for instance, <code>C-s</code> and <code>C-r</code> search forward and backward for the next match. <code>&lt;RET&gt; terminates the search.</dd>
+
+  <dt><dfn>
+  C-c C-x</dfn></dt>
+  <dd>In a shell buffer, fetch the next subsequent command from the history.</dd>
+
+  <dt><dfn>
+  C-c .<br>
+  M-x comint-input-previous-argument</dfn></dt>
+  <dd>In a shell buffer, fetch the last argument from the previous command. With a numeric prefix, fetch the Nth argument instead. Repeating <code>C-c .</code> fetches from an earlier shell command, always using the same value of N (if you used a prefix argument).</dd>
+
+  <dt><dfn>
+  C-c C-l<br>
+  M-x comint-dynamic-list-input-ring</dfn></dt>
+  <dd>In a shell buffer, display the buffer's history of shell commands in another window.</dd>
+</dl>
 
 
 # Registers
