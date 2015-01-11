@@ -3778,6 +3778,183 @@ You can enable spell checking for comments by using Flyspell Prog mode (<code>M-
 </dl>
 
 
+# Diff
+
+When differences are found between two or more things (files, buffers, regions, etc.), the output is called a "diff" or a "patch." When you do a diff in Emacs, the output is displayed in a "*diff*" buffer, which uses Diff mode.
+
+A diff consists of one or more hunks, which are contiguous chunks of text that contain one or more changed lines and possibly any number of unchanged lines to provide context for the changes. Each hunk is preceded by a hunk header, which specifies the old and new line numbers at which the hunk occurs. Whenever you change a hunk, Diff mode attempts to automatically correct the line numbers in the hunk headers, to ensure that the patch remains correct.
+
+Diff mode treats each hunk as an "error message", similar to Compilation mode. Thus, you can use commands such as <code>C-x '</code> to visit the corresponding source locations.
+
+Emacs has a few different ways to work with diffs: Diff, Emerge, and Ediff. Diff only handles a few things (comparing two files; comparing a file with its most recent backup; comparing a buffer with its corresponding file; and comparing the text in two windows). Emerge is mainly for doing merges. Ediff replaces and extends Emerge. Ediff can do cool stuff like diffing regions in a buffer.
+
+<dl>
+  <dt><dfn>
+  M-x diff</dfn></dt>
+  <dd>Prompt for two file names, and then display the differences between the two specified files in a buffer named "*diff*". The two files are compared using the diff program. By default, the diff will be a context diff.</dd>
+
+  <dt><dfn>
+  M-x diff-backup</dfn></dt>
+  <dd>Compare the specified file with its most recent backup.</dd>
+
+  <dt><dfn>
+  M-x diff-buffer-with-file</dfn></dt>
+  <dd>Compare the specified buffer with its corresponding file. This shows you what changes you would make to the file if you save the buffer.</dd>
+
+  <dt><dfn>
+  M-x compare-windows</dfn></dt>
+  <dd>Compare the text in the current window with that in the next window. Comparison starts at point in each window. The command sets mark at point in each buffer, then moves point forward in each window, one character at a time, until it reaches characters that don't match. Then the command exits. If point in the two windows is followed by non-matching text when the command starts, <code>M-x compare-windows</code> tries heuristically to advance up to matching text in the two windows, and then exits. With a numeric argument, changes in whitespace are ignored.</dd>
+
+  <dt><dfn>
+  M-x ediff<br>
+  M-x ediff-files</dfn></dt>
+  <dd>Compare two files.</dd>
+
+  <dt><dfn>
+  M-x ediff-backup</dfn></dt>
+  <dd>Compare a file with its backup. If there are several numerical backups, use the latest. If the file is itself a backup, then compare it with its original.</dd>
+
+  <dt><dfn>
+  M-x ediff-current-file</dfn></dt>
+  <dd>Compare the buffer with its file on disk.</dd>
+
+  <dt><dfn>
+  M-x ediff-buffers</dfn></dt>
+  <dd>Compare two buffers.</dd>
+
+  <dt><dfn>
+  M-x ediff3<br>
+  M-x ediff-files3</dfn></dt>
+  <dd>Compare three files.</dd>
+
+  <dt><dfn>
+  M-x ediff-buffers3</dfn></dt>
+  <dd>Compare three buffers.</dd>
+
+  <dt><dfn>
+  M-x ediff-windows-wordwise</dfn></dt>
+  <dd>Compare two windows word-by-word.</dd>
+
+  <dt><dfn>
+  M-x ediff-windows-linewise</dfn></dt>
+  <dd>Compare two windows line-by-line.</dd>
+
+  <dt><dfn>
+  M-x ediff-regions-wordwise</dfn></dt>
+  <dd>Compare two regions word-by-word. The regions can come from the same buffer and they can even overlap. You will be asked to specify the buffers that contain the regions, which you want to compare. For each buffer, you will also be asked to mark the regions to be compared. Pay attention to the messages that appear in the minibuffer.</dd>
+
+  <dt><dfn>
+  M-x ediff-regions-linewise</dfn></dt>
+  <dd>Similar to <code>ediff-windows-linewise</code>, but compares the regions line-by-line.</dd>
+
+  <dt><dfn>
+  M-x ediff-patch-buffer</dfn></dt>
+  <dd>Patch the specified buffer.</dd>
+
+  <dt><dfn>
+  M-x ediff-patch-file</dfn></dt>
+  <dd>Patch the specified file.</dd>
+</dl>
+
+Diff mode commands:
+
+<dl>
+  <dt><dfn>
+  M-n<br>
+  M-x diff-hunk-next</dfn></dt>
+  <dd>Move to the start of the next hunk.</dd>
+
+  <dt><dfn>
+  M-p<br>
+  M-x diff-hunk-prev</dfn></dt>
+  <dd>Move to the start of the previous hunk.</dd>
+
+  <dt><dfn>
+  M-}<br>
+  M-x diff-file-next</dfn></dt>
+  <dd>In a multi-file patch, move to the start of the next file.</dd>
+
+  <dt><dfn>
+  M-{<br>
+  M-x diff-file-prev</dfn></dt>
+  <dd>In a multi-file patch, move to the start of the previous file.</dd>
+
+  <dt><dfn>
+  M-k<br>
+  M-x diff-hunk-kill</dfn></dt>
+  <dd>Kill the hunk at point.</dd>
+
+  <dt><dfn>
+  M-K<br>
+  M-x diff-file-kill</dfn></dt>
+  <dd>In a multi-file patch, kill the current file.</dd>
+
+  <dt><dfn>
+  C-c C-a<br>
+  M-x diff-apply-hunk</dfn></dt>
+  <dd>Apply the current hunk to its target file. With a prefix argument of <code>C-u</code>, revert the current hunk.</dd>
+
+  <dt><dfn>
+  C-c C-b<br>
+  M-x diff-refine-hunk</dfn></dt>
+  <dd>Highlight the changes of the current hunk with finer granularity. This allows you to see exactly which parts of each change line were actually changed.</dd>
+
+  <dt><dfn>
+  C-c C-c<br>
+  M-x diff-goto-source</dfn></dt>
+  <dd>Go to the source file and line corresponding to the current hunk.</dd>
+
+  <dt><dfn>
+  C-c C-e<br>
+  M-x diff-ediff-patch</dfn></dt>
+  <dd>Start an Ediff session with the current patch.</dd>
+
+  <dt><dfn>
+  C-c C-n<br>
+  M-x diff-restrict-view</dfn></dt>
+  <dd>Restrict the view to the current hunk. With a prefix argument of <code>C-u</code>, restrict the view to the current file of a multi-file patch. To widen again, use <code>C-x n w</code> (<code>M-x widen</code>).</dd>
+
+  <dt><dfn>
+  C-c C-r<br>
+  M-x diff-reverse-direction</dfn></dt>
+  <dd>Reverse the direction of comparison for the entire buffer (<code>diff bar foo</code> instead of <code>diff foo bar</code>).</dd>
+
+  <dt><dfn>
+  C-c C-s<br>
+  M-x diff-split-hunk</dfn></dt>
+  <dd>Split the hunk at point. This is far manually editing patches, and only works with the unified diff format produced by the "-u" or "--unified" options to the diff program. If you need to split a hunk in the context diff format produced by the "-c" or "--context" options to diff, first convert the buffer to the unified diff format with <code>C-c C-u</code>.</dd>
+
+  <dt><dfn>
+  C-c C-d<br>
+  M-x diff-unified-&gt;context</dfn></dt>
+  <dd>Convert the entire buffer to the context diff format. With a prefix argument, convert only the text within the region.</dd>
+
+  <dt><dfn>
+  C-c C-u<br>
+  M-x diff-context-&gt;unified</dfn></dt>
+  <dd>Convert the entire buffer to the unified diff format. With a prefix argument, convert unified format to context format. When the mark is active, convert only the text within the region.</dd>
+
+  <dt><dfn>
+  C-c C-w<br>
+  M-x diff-refine-hunk</dfn></dt>
+  <dd>Refine the current hunk so that it disregards changes in whitespace.</dd>
+
+  <dt><dfn>
+  M-x diff-delete-trailing-whitespace</dfn></dt>
+  <dd>Search for trailing whitespace in the lines modified by the patch, and remove that whitespace in both the patch and the patched source file(s). This command does not save the modifications that it makes. With a prefix argument, it tries to modify the original source files rather than the patched source files.</dd>
+
+  <dt><dfn>
+  C-c C-t<br>
+  M-x diff-test-hunk</dfn></dt>
+  <dd>See whether it's possible to apply the current hunk.</dd>
+</dl>
+
+
+# Source Code Management (Version Control)
+
+TODO
+
+
 # Customisation
 
 
