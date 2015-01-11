@@ -4133,6 +4133,38 @@ Log commands:
   <dd>In the log buffer created by <code>C-x v L</code>, toggle the the display of the commit message for the revision at point.</dd>
 </dl>
 
+
+# Remote Collaboration (Collaborative Editing; Pair Programming)
+
+There are a few ways you can do remote collaboration. I'll describe two of them.
+
+One way is for one person to start a GNU Screen session that's running Emacs, and then have other people connect to that Screen session.
+
+The programmer hosting the session should do the following:
+
+1. <code>screen -S SESSION_NAME</code>.
+2. Start Emacs in terminal mode.
+
+The remote programmers should do the following:
+
+1. <code>ssh -t REMOTE_HOSTNAME screen -S SESSION_NAME -x</code>
+
+Another way is for one person to run an Emacs server, and then have other people connect to it with <code>emacsclient</code> over an SSH connection, and then use something like [lockstep](https://github.com/tjim/lockstep) to synchronise what everyone is seeing.
+
+The programmer hosting the session should do the following:
+
+1. If Emacs is already running, then type <code>M-x server-start</code>. If Emacs is not already running, then you can start an Emacs server by executing <code>emacs -f server-start</code> (<code>emacs --funcall server-start</code>) or <code>emacs --daemon</code>. If you start Emacs as a daemon, then you'll need to connect to the server with <code>emacsclient</code>; otherwise, when you use server-start, your Emacs session is both a client and a server.
+2. If you want to allow people to see what you see, then type <code>M-x lockstep</code>. Their session won't be synchronised with yours unless they also type <code>M-x lockstep</code> in their session.
+3. Optionally, you can give a name to your server: <code>M-x set-variable &lt;RET&gt; server-name &lt;RET&gt; SERVER_NAME &lt;RET&gt;</code>.
+
+The remote programmers should do the following:
+
+1. <code>ssh -X REMOTE_HOSTNAME -f emacsclient -c --display=$DISPLAY</code> for creating a new graphical frame on your local display (or <code>ssh -X REMOTE_HOSTNAME -f emacsclient -nw --display=$DISPLAY</code> for creating a new terminal frame on your local display). You could also do <code>ssh -X REMOTE_HOSTNAME -f emacsclient --eval '"(make-frame-on-display \"$DISPLAY\")"'</code>.
+2. If you want to synchronise your session with the host's session, type <code>M-x lockstep</code>.
+
+If you're the one hosting the pair programming session, you should probably set up a separate user account on your machine for the purpose of pair programming. Rather than sharing a password with everyone, ask each person for their public SSH key. Add each person's public SSH key to ~/.ssh/authorized_keys, so that they can connect to your machine. You might also want to create a chroot jail for SSH users, so that you can further restrict what people can do on your machine. Follow the principle of least privilege.
+
+
 # Customisation
 
 
