@@ -291,7 +291,7 @@ Only graphic characters can be inserted by typing the associated key; other keys
 
 To insert a non-graphic character, type <code>C-q</code> and then the character.
 
-<code>C-q</code> (<code>M-x quoted-insert</code>) followed by a sequence of octal digits inserts the character with the specified octal character code. You can use any number of octal digits; any non-digit terminates the octal sequence. To use decimal or hexadecimal instead of octal, set the variable *read-quoted-char-radix* to 10 or 16. If the radix is 16, the letters 'a' to 'f' serve as part of the character code, just like digits. Case is ignored.
+<code>C-q</code> (<code>M-x quoted-insert</code>) followed by a sequence of octal digits inserts the character with the specified octal character code. You can use any number of octal digits; any non-digit terminates the octal sequence. To use decimal or hexadecimal instead of octal, set the variable <code>read-quoted-char-radix</code> to 10 or 16. If the radix is 16, the letters 'a' to 'f' serve as part of the character code, just like digits. Case is ignored.
 
 <dl>
   <dt><dfn>
@@ -3780,7 +3780,7 @@ You can enable spell checking for comments by using Flyspell Prog mode (<code>M-
 
 # Diff
 
-When differences are found between two or more things (files, buffers, regions, etc.), the output is called a "diff" or a "patch." When you do a diff in Emacs, the output is displayed in a "*diff*" buffer, which uses Diff mode.
+When differences are found between two or more things (files, buffers, regions, etc.), the output is called a "diff" or a "patch." When you do a diff in Emacs, the output is displayed in a "\*diff\*" buffer, which uses Diff mode.
 
 A diff consists of one or more hunks, which are contiguous chunks of text that contain one or more changed lines and possibly any number of unchanged lines to provide context for the changes. Each hunk is preceded by a hunk header, which specifies the old and new line numbers at which the hunk occurs. Whenever you change a hunk, Diff mode attempts to automatically correct the line numbers in the hunk headers, to ensure that the patch remains correct.
 
@@ -3952,8 +3952,186 @@ Diff mode commands:
 
 # Source Code Management (Version Control)
 
-TODO
+The Emacs version control interface is called "VC". VC commands work with several different version control systems: GNU Arch, Bazaar, CVS, Git, Mercurial, Monotone, RCS, SCCS/CSSC, and Subversion. VC allows you to use a version control system from within Emacs, integrating the version control operations smoothly with editing.
 
+When you tell VC to commit a change, it pops up a buffer named "\*vc-log\*". In this buffer, you should write a commit message. You can use the <code>M-n</code> and <code>M-p</code> commands to cycle through previous commit messages.
+
+<dl>
+  <dt><dfn>
+  C-x v v<br>
+  M-x vc-next-action</dfn></dt>
+  <dd>Perform the next appropriate version control operation on the current file. If the file is not under version control, then register it with a version control system. If the file is under version control and there are changes to it, then commit it.</dd>
+
+  <dt><dfn>
+  C-c C-c<br>
+  M-x log-edit-done</dfn></dt>
+  <dd>Accept the current commit message.</dd>
+
+  <dt><dfn>
+  C-c C-f<br>
+  M-x log-edit-show-files</dfn></dt>
+  <dd>Show what files are being committed.</dd>
+
+  <dt><dfn>
+  C-c C-d<br>
+  M-x log-edit-show-diff</dfn></dt>
+  <dd>Show a diff for changes you are committing.</dd>
+
+  <dt><dfn>
+  C-x v i<br>
+  M-x vc-register</dfn></dt>
+  <dd>Place a file under version control.</dd>
+
+  <dt><dfn>
+  C-x v =<br>
+  M-x vc-diff</dfn></dt>
+  <dd>Display a diff between two file revisions.</dd>
+
+  <dt><dfn>
+  M-x vc-ediff</dfn></dt>
+  <dd>Display a diff between two file revisions using Ediff.</dd>
+
+  <dt><dfn>
+  C-x v D<br>
+  M-x vc-root-diff</dfn></dt>
+  <dd>Display diffs for the whole repository.</dd>
+
+  <dt><dfn>
+  C-x v ~<br>
+  M-x vc-revision-other-window</dfn></dt>
+  <dd>Visit the specified revision of the current file in another window.</dd>
+
+  <dt><dfn>
+  C-x v g<br>
+  M-x vc-annotate</dfn></dt>
+  <dd>Open the file in another buffer and annotate each line in the file with revision information (who last edited the line; when; what commit).</dd>
+
+  <dt><dfn>
+  C-x v l<br>
+  M-x vc-print-log</dfn></dt>
+  <dd>Display the log for the current file.</dd>
+
+  <dt><dfn>
+  C-x v L<br>
+  M-x vc-print-root-log</dfn></dt>
+  <dd>Display the log for the current repository.</dd>
+
+  <dt><dfn>
+  C-x v I<br>
+  M-x vc-log-incoming</dfn></dt>
+  <dd>Display the changes that a pull operation will retrieve.</dd>
+
+  <dt><dfn>
+  C-x v O<br>
+  M-x vc-log-outgoing</dfn></dt>
+  <dd>Display the changes that will be sent by the next push operation.</dd>
+
+  <dt><dfn>
+  C-x v u<br>
+  M-x vc-revert<br>
+  M-x vc-revert-buffer</dfn></dt>
+  <dd>Revert the current file.</dd>
+
+  <dt><dfn>
+  M-x vc-delete-file</dfn></dt>
+  <dd>Delete the current file and mark it as such in the version control system.</dd>
+
+  <dt><dfn>
+  C-x v d<br>
+  M-x vc-dir</dfn></dt>
+  <dd>Show the VC status for "interesting" files in and below the current directory.</dd>
+
+  <dt><dfn>
+  C-x v m<br>
+  M-x vc-merge</dfn></dt>
+  <dd>Perform a version control merge operation.</dd>
+
+  <dt><dfn>
+  C-x v +<br>
+  M-x vc-pull<br>
+  M-x vc-update</dfn></dt>
+  <dd>Update the current branch by pulling.</dd>
+
+  <dt><dfn>
+  M-x vc-rename-file</dfn></dt>
+  <dd>Rename a file under version control.</dd>
+</dl>
+
+Annotation commands:
+
+<dl>
+  <dt><dfn>
+  p</dfn></dt>
+  <dd>Annotate the revision before the one currently annotated.</dd>
+
+  <dt><dfn>
+  n</dfn></dt>
+  <dd>Annotate the revision after the one currently annotated.</dd>
+
+  <dt><dfn>
+  j</dfn></dt>
+  <dd>Annotate the revision indicated by the current line.</dd>
+
+  <dt><dfn>
+  a</dfn></dt>
+  <dd>Annotate the revision before the one indicated by the current line. This is useful to see the state the file was in before the change on the current line was made.</dd>
+
+  <dt><dfn>
+  f</dfn></dt>
+  <dd>Show in a buffer the file revision indicated by the current line.</dd>
+
+  <dt><dfn>
+  d</dfn></dt>
+  <dd>Display a diff between the current line's revision and the previous revision. This is useful to see what the current line's revision actually changed in the file.</dd>
+
+  <dt><dfn>
+  D</dfn></dt>
+  <dd>Display the diff between the current line's revision and the previous revision for all files in the commit. This is useful to see what the current line's revision actually changed in the repo.</dd>
+
+  <dt><dfn>
+  l</dfn></dt>
+  <dd>Show the log of the current line's revision.</dd>
+
+  <dt><dfn>
+  w</dfn></dt>
+  <dd>If you used <code>p</code> or <code>n</code> to browse to other revisions, use this key to return to your working revision.</dd>
+
+  <dt><dfn>
+  v</dfn></dt>
+  <dd>Toggle the annotation visibility.</dd>
+</dl>
+
+Log commands:
+
+<dl>
+  <dt><dfn>
+  p</dfn></dt>
+  <dd>Move point to the previous log entry.</dd>
+
+  <dt><dfn>
+  n</dfn></dt>
+  <dd>Move point to the next log entry.</dd>
+
+  <dt><dfn>
+  a</dfn></dt>
+  <dd>Annotate the revision on the current line.</dd>
+
+  <dt><dfn>
+  f</dfn></dt>
+  <dd>Visit the revision indicated at the current line.</dd>
+
+  <dt><dfn>
+  d</dfn></dt>
+  <dd>Display a diff between the revision at point and the next earlier revision, for the specific file.</dd>
+
+  <dt><dfn>
+  D</dfn></dt>
+  <dd>Display a diff between the revision at point and the next earlier revision, for all files in that revision.</dd>
+
+  <dt><dfn>
+  &lt;RET&gt;</dfn></dt>
+  <dd>In the log buffer created by <code>C-x v L</code>, toggle the the display of the commit message for the revision at point.</dd>
+</dl>
 
 # Customisation
 
