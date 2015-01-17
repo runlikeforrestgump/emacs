@@ -1945,6 +1945,8 @@ The sentence commands assume that you follow the convention of putting two space
 
 A lot of commands can operate on a block of text called a region. The region is the text between point and mark. The empty region is when mark and point refer to the same spot. The region always extends from the point to the mark, no matter which one comes earlier in the text; each time you move point, the region changes. To create a region, you set mark first, then point.
 
+In Vim, you might be used to working with ranges of lines. In Emacs, the convention is to work with regions instead of ranges of lines.
+
 When the mark is active, the region is active. When the region is active, it's highlighted. Some commands require the region to be active in order to work; other commands don't have that requirement (they can operate on an inactive region). To deactive the region, type <code>C-g</code>. Most commands will deactivate the region when they're done operating on it.
 
 When multiple windows show the same buffer, they can have different values of point, but they all share one common mark position.
@@ -3734,6 +3736,87 @@ You can enable spell checking for comments by using Flyspell Prog mode (<code>M-
 </dl>
 
 
+# Indentation
+
+Indentation refers to the whitespace added to the beginning of a line to indicate the structure of the text.
+
+By default, indentation commands insert (or remove) an optimal mix of space characters and tab characters to align to the desired column.
+
+<dl>
+  <dt><dfn>
+  C-x $<br>
+  M-x set-selective-display</dfn></dt>
+  <dd>Hide lines indented more than the specified number of columns. The only indication of their presence is that three dots ('...') appear at the end of each visible line that is followed by one or more hidden lines. To make all lines visible again, type <code>C-x $</code> with no argument.</dd>
+
+  <dt><dfn>
+  &lt;TAB&gt;<br>
+  M-x indent-for-tab-command</dfn></dt>
+  <dd>Indent the current line, in a mode-appropriate and context-aware way. If the region is active, indent all the lines within it. If you want to insert a literal tab, type <code>C-q &lt;TAB&gt;</code>.</dd>
+
+  <dt><dfn>
+  C-j<br>
+  M-x newline-and-indent</dfn></dt>
+  <dd>Perform &lt;RET&gt; followed by &lt;TAB&gt;.</dd>
+
+  <dt><dfn>
+  C-M-o<br>
+  M-x split-line</dfn></dt>
+  <dd>Insert a newline at point and indent the next line.</dd>
+
+  <dt><dfn>
+  M-m<br>
+  M-x back-to-indentation</dfn></dt>
+  <dd>Move to the first non-whitespace character on the current line.</dd>
+
+  <dt><dfn>
+  M-i<br>
+  M-x tab-to-tab-stop</dfn></dt>
+  <dd>Indent whitespace at point, up to the next tab stop.</dd>
+
+  <dt><dfn>
+  M-x indent-relative</dfn></dt>
+  <dd>Insert whitespace at point, until point is aligned with the first non-whitespace character on the previous non-blank line. If point is already farther right than that, run <code>tab-to-tab-stop</code> instead--unless called with a numeric argument, in which case do nothing.</dd>
+
+  <dt><dfn>
+  M-^<br>
+  M-x delete-indentation</dfn></dt>
+  <dd>Delete the indentation from the current line, and replace the newline from the end of the previous line with a space, thus merging the two lines.</dd>
+
+  <dt><dfn>
+  C-M-\<br>
+  M-x indent-region</dfn></dt>
+  <dd>Indent all the lines in the region, as though you had typed <code>&lt;TAB&gt;</code> at the beginning of each line, whether the region is active or not.</dd>
+
+  <dt><dfn>
+  C-x &lt;TAB&gt;<br>
+  M-x indent-rigidly</dfn></dt>
+  <dd>Shift each line in the region by a fixed distance to the right or left. The distance to move is determined by the numeric argument (positive to move rightward, negative to move leftware). This command can be used to remove all indentation from the lines in the region, by invoking it with a large negative argument.</dd>
+
+  <dt><dfn>
+  M-x tabify</dfn></dt>
+  <dd>Convert sequences of at least two spaces to tabs if that can be done without changing indentation.</dd>
+
+  <dt><dfn>
+  M-x untabify</dfn></dt>
+  <dd>Convert all tabs to the appropriate number of spaces.</dd>
+
+  <dt><dfn>
+  &lt;DEL&gt;<br>
+  M-x backward-delete-char-untabify</dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  M-j<br>
+  C-M-j<br>
+  M-x indent-new-comment-line</dfn></dt>
+  <dd>Break line at point and then indent the next line, continuing the comment if within one.</dd>
+
+  <dt><dfn>
+  C-x h C-M-\</dfn></dt>
+  <dd>Reindent the whole buffer.</dd>
+</dl>
+
+
 # Documentation
 
 <dl>
@@ -4165,7 +4248,160 @@ The remote programmers should do the following:
 If you're the one hosting the pair programming session, you should probably set up a separate user account on your machine for the purpose of pair programming. Rather than sharing a password with everyone, ask each person for their public SSH key. Add each person's public SSH key to ~/.ssh/authorized_keys, so that they can connect to your machine. You might also want to create a chroot jail for SSH users, so that you can further restrict what people can do on your machine. Follow the principle of least privilege.
 
 
+# Shells
+
+Thanks to TRAMP, you can open an interactive shell on a remote host and run commands from there.
+
+<dl>
+  <dt><dfn>
+  M-!<br>
+  M-x shell-command</dfn></dt>
+  <dd>Run the specified shell command.</dd>
+
+  <dt><dfn>
+  M-|<br>
+  M-x shell-command-on-region</dfn></dt>
+  <dd>Run the specified shell command with region contents as input; optionally replace the region with the output.</dd>
+
+  <dt><dfn>
+  M-&<br>
+  M-x async-shell-command</dfn></dt>
+  <dd>Run the specified shell command asynchronously, and display the output.</dd>
+
+  <dt><dfn>
+  M-x shell</dfn></dt>
+  <dd>Run a subshell with input and output through an Emacs buffer. You can then give commands interactively.</dd>
+
+  <dt><dfn>
+  M-x term</dfn></dt>
+  <dd>Run a subshell with input and output through an Emacs buffer. You can then give commands interactively. Full terminal emulation is available.</dd>
+
+  <dt><dfn>
+  M-x eshell</dfn></dt>
+  <dd>Invoke a shell implemented entirely in Emacs.</dd>
+
+  <dt><dfn>
+  C-g</dfn></dt>
+  <dd>Abort a long-running command (just like typing <code>C-c</code> in a normal shell).</dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
+</dl>
+
+Eshell is the Emacs Shell, which is a shell-like command interpreter implemented in Emacs Lisp. It invokes no external processes except for those requested by the user. It is intended to be a functional replacement for command shells, such as bash, zsh, rc, or 4dos; since Emacs itself is capable of handling the sort of tasks accomplished by those tools. Everything it does, it uses Emacs's facilities to do.
+
+Several commands are built-in in Eshell. In order to call the external variant of a built-in command <code>foo</code>, you could call <code>*foo</code>. Usually, this should not be necessary.
+
+Eshell's globbing syntax is very similar to that of Zsh.
+
+Since Eshell does not communicate with a terminal like most command shells, I/O is a little different. If you try to run programs from within Eshell that are not line-oriented, such as programs that use ncurses, you will just get garbage output, since the Eshell buffer is not a terminal emulator. Eshell solves this problem by running specified commands in Emacs's terminal emulator; to let Eshell know which commands need to be run in a terminal, add them to the list <code>ESHELL-VISUAL-COMMANDS</code>.
+
+
+# Emacs Lisp
+
+If you want to try out an expression for any of the below, but you don't know Emacs Lisp, then try a simple expression like <code>(* 2 3)</code>, which should evaluate to <code>6</code>.
+
+<dl>
+  <dt><dfn>
+  M-x eval-buffer<br>
+  M-x eval-current-buffer</dfn></dt>
+  <dd>Evaluate the current buffer as Emacs Lisp code.</dd>
+
+  <dt><dfn>
+  M-x eval-defun</dfn></dt>
+  <dd>Evaluate the top-level form containing point, or after point.</dd>
+
+  <dt><dfn>
+  M-:<br>
+  M-&lt;ESC&gt; :<br>
+  M-x eval-expression</dfn></dt>
+  <dd>Evaluate the specified expression and print its value in the echo area.</dd>
+
+  <dt><dfn>
+  C-x C-e<br>
+  M-x eval-last-sexp<br>
+  M-x eval-print-last-sexp</dfn></dt>
+  <dd>Evaluate the sexp before point and print its value in the minibuffer.</dd>
+
+  <dt><dfn>
+  M-x eval-region</dfn></dt>
+  <dd>Execute the region as Emacs Lisp code.</dd>
+
+  <dt><dfn>
+  M-x pp-eval-last-sexp</dfn></dt>
+  <dd>Evaluate the specified expression and pretty-print its value.</dd>
+
+  <dt><dfn>
+  M-x pp-eval-last-sexp</dfn></dt>
+  <dd>Evaluate the sexp before point and pretty-print its value.</dd>
+</dl>
+
+The <code>*scratch*</code> buffer is a special buffer that can be used to evaluate Emacs Lisp expression interactively. Its major mode is Lisp Interaction mode (<code>M-x lisp-interaction-mode</code>).
+
+<dl>
+  <dt><dfn>
+  C-j<br>
+  M-x eval-print-last-sexp</dfn></dt>
+  <dd>Evaluate the expression before point, and insert the value at point. Note that point doesn't have to appear immediately after the expression. You could have an expression followed by several blank lines, and then type <code>C-j</code> to insert the value of the expression on the current line.</dd>
+</dl>
+
+An alternative way of evaluating Emacs Lisp expressions interactively is to use Inferior Emacs Lisp mode, which provides an interface rather like Shell mode for evaluating Emacs Lisp expressions. To create an <code>*ielm*</code> buffer, which uses Inferior Emacs Lisp mode, type <code>M-x ielm</code>.
+
+
 # Customisation
+
+
+## Init File
+
+TODO
+
+If you run Emacs via the <code>su</code> command, Emacs tries to find your own init file, not that of the user you are currently pretending to be. The idea is that you should get your own editor customisations even if youa re running as the super user.
+
+
+## Easy Customisation
+
+TODO
+
+
+## Binding New Keys
+
+You can define a key binding in your init file (typically ~/.emacs): <code>(global-set-key (kbd "KEY_SEQUENCE") 'COMMAND)</code>, where KEY_SEQUENCE is written in the same notation that you see in all the Emacs documentation (C- for control, M- for alt, S- for shift, &lt;TAB&gt; for tab, etc.).
+
+<dl>
+  <dt><dfn>
+  M-x global-set-key</dfn></dt>
+  <dd>Define the specified key globally to run the specified command.</dd>
+
+  <dt><dfn>
+  M-x local-set-key</dfn></dt>
+  <dd>Define the specified key in the major mode now in effect to run the specified command.</dd>
+
+  <dt><dfn>
+  M-x global-unset-key</dfn></dt>
+  <dd>Make the specified key undefined in the global key map.</dd>
+
+  <dt><dfn>
+  M-x local-unset-key</dfn></dt>
+  <dd>Make the specified key undefined in the major mode now in effect.</dd>
+</dl>
+
+If you have redefined (or undefined) a key and you subsequently wish to revert the change, undefining the key will not do the job--you need to redefine the key with its standard definition. To find the name of the standard definition of a key, go to a Fundamental mode buffer in a fresh Emacs and use <code>C-h c</code>. The documentation of keys in the Emacs manual also lists their command names.
+
+
+## Hooks
+
+TODO
+
+
+## Packages
+
+TODO
 
 
 ## Mode Line
