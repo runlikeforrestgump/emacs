@@ -4356,22 +4356,119 @@ An alternative way of evaluating Emacs Lisp expressions interactively is to use 
 
 # Customisation
 
+Emacs has many settings which you can change. Most settings are customisable variables, which are also called user options. A separate class of settings are the faces, which determine the fonts, colours, and other attributes of text.
+
 
 ## Init File
 
-TODO
+An initialisation file is a file that gets loaded when Emacs starts. It's used to customise Emacs.
 
-If you run Emacs via the <code>su</code> command, Emacs tries to find your own init file, not that of the user you are currently pretending to be. The idea is that you should get your own editor customisations even if youa re running as the super user.
+Emacs looks for your personal init file using the filenames <code>~/.emacs</code>, <code>~/.emacs.el</code>, or <code>~/.emacs.d/init.el</code>. I recommend using <code>~/.emacs.d/init.el</code> because then you can split your init file into multiple files in ~/.emacs.d. Note that once Emacs finds an init file, it loads it, and then stops searching for any other personal init file.
+
+Before loading your personal init file, Emacs looks for a site startup file named <code>site-start.el</code> located in any of the directories listed in Emacs's <code>load-path</code> variable. The site startup file is useful for defining overridable customisations for all users. Note that users can ignore the site startup file altogether by starting Emacs with the <code>--no-site-file</code> option.
+
+After loading your personal init file, Emacs looks for a default init file named <code>default.el</code> located in any of the directories listed in Emacs's <code>load-path</code> variable. The default init file is useful for defining customisations that you want to apply to all users and that you don't want them to override. Note that users can still override default.el by adding the following to their personal init file: <code>(setq inhibit-default-init t)</code>.
+
+If you run Emacs via the <code>su</code> command, Emacs tries to find your own init file, not that of the user you are currently pretending to be. The idea is that you should get your own editor customisations even if you are running as the super user.
+
+If you run Emacs with the <code>--no-init-file</code> (<code>-q</code>) option, then Emacs won't load your personal init file or the default init file.
+
+If you want to start Emacs using another user's init file, then use the <code>--user USERNAME</code> (<code>-u USERNAME</code>) option when starting Emacs.
+
+If your init file has any problems, then start Emacs with the <code>--debug-init</code> option. Also, check the <code>*Messages*</code> buffer: <code>C-h e</code> (<code>M-x view-echo-area-messages</code>).
 
 
 ## Easy Customisation
 
-TODO
+Rather than manually editing an init file, Emacs provides a special buffer for browsing and editing settings; type <code>M-x customize</code>.
+
+Customisation settings are organised into customisation groups. These groups are collected into bigger groups, all the way up to a master group called "Emacs". <code>M-x customize</code> creates a customisation buffer that shows the top-level Emacs group. Each group may contain settings and other subgroups.
+
+Most of the customisation buffer is read-only, but it includes some editable fields, such as a field for searching for settings. There are also buttons and links, which you can activate by either clicking with the mouse, or moving point there and typing <code>&lt;RET&gt;</code>. In the customisation buffer, you can type <code>&lt;TAB&gt;</code> (<code>M-x widget-forward</code>) to move forward to the next button or editable field. <code>S-&lt;TAB&gt;</code> (<code>M-x widget-backward</code>) moves back to the previous button or editable field.
+
+If you are interested in customising a particular setting or customisation group, you can go straight there with the commands <code>M-x customize-option</code>, <code>M-x customize-face</code>, or <code>M-x customize-group</code>.
+
+The search field accepts one or more words separated by spaces, or a regular expression. Type <code>&lt;RET&gt;</code> in the field to submit the search. Note that this feature only finds groups and settings that are already loaded in the current Emacs session. The commad <code>M-x customize-apropos</code> is similar to using the search field, except that it reads the search term(s) using the minibuffer.
+
+<code>M-x customize-browse</code> is another way to browse the available settings. This command creates a special customisation buffer which shows only the names of groups and settings, in a structured layout.
+
+For each variable, you'll see its name, value, state, and description. The <code>STANDARD</code> state means that the variable is set to its default value. To edit the value of the variable, just move point to the value and edit it; the state will change to <code>EDITED</code>. Editing the value does not make it take effect right away. To do that, you must set the variable by activating the <code>[State]</code> button and choosing an appropriate option. You can set for the current session for save for future sessions.
+
+<code>C-c C-c</code> (<code>M-x Custom-set</code>) is equivalent to using the <code>[Set for Current Session]</code> button. The command <code>C-x C-s</code> (<code>M-x Custom-save</code>) is like using the <code>[Save for Future Sessions]</code> button.
+
+If Emacs was invoked with the <code>-q</code> or <code>--no-init-file</code> options, it will not let you save your customisations in your init file.
+
+Saving works by writing appropriate code to your init file. If you want to save to a different file, then you'll need to add a couple lines to your init file: <code>(setq custom-file "~/.emacs-custom.el")</code> (you don't have to use ~./emacs-custom.el as the file you want to save to; it's just a suggestion); followed by <code>(load custom-file)</code>.
+
+Typing <code>&lt;RET&gt;</code> on an editable value field moves point forward to the next field or button, like <code>&lt;TAB&gt;</code>.
+
+To insert a newline within an editable field, use <code>C-o</code> or <code>C-q C-j</code>.
+
+While editing certain kinds of values, such as file names, directory names, and Emacs command names, you can perform completion with <code>C-M-i</code> (<code>M-x widget-complete</code>), or the equivalent keys <code>M-&lt;TAB&gt;</code> or <code>&lt;ESC&gt; &lt;TAB&gt;</code>.
+
+For some variables, there is only a fixed set of legitimate values, and you are not allowed to edit the value directly. Instead, a <code>[Value Menu]</code> button appears before the value; activating this button presents a choice of values. For a boolean "on or off" value, the button says <code>[Toggle]</code> and flips the value.
+
+The State button has four reset operations: Undo Edits, Reset to Saved, Erase Customisation, and Set to Backup Value.
+
+<dl>
+  <dt><dfn>
+  M-x customize-option<br>
+  M-x customize-variable</dfn></dt>
+  <dd>Set up a customisation buffer for just the specified variable.</dd>
+
+  <dt><dfn>
+  M-x customize-face</dfn></dt>
+  <dd>Set up a customisation buffer for just the specified faced.</dd>
+
+  <dt><dfn>
+  M-x customize-group</dfn></dt>
+  <dd>Set up a customisation buffer for just the specified group.</dd>
+
+  <dt><dfn>
+  M-x customize-apropos</dfn></dt>
+  <dd>Set up a customisation buffer for all the settings and groups that match the specified search string.</dd>
+
+  <dt><dfn>
+  M-x customize-changed</dfn></dt>
+  <dd>Set up a customisation buffer with all the settings and groups whose meaning have changed since the specified Emacs version.</dd>
+
+  <dt><dfn>
+  M-x customize-saved</dfn></dt>
+  <dd>Set up a customisation buffer containing all settings that you have saved with customisation buffers.</dd>
+
+  <dt><dfn>
+  M-x customize-unsaved</dfn></dt>
+  <dd>Set up a customisation buffer containing all settings that you have set but not saved.</dd>
+</dl>
+
+
+## Variables
+
+A variable is a Lisp symbol that has a value.
+
+Setting a variable from within Emacs only affects the current Emacs session. The only way to alter the variable in future sessions is to put something in your init file.
+
+One way to set a variable in Emacs is to go to the <code>*scratch*</code> buffer, type the necessary Lisp expression, and then type <code>C-j</code>. An easier way to set a variable is to use <code>M-x set-variable</code> in any buffer.
+
+<dl>
+  <dt><dfn>
+  C-h v<br>
+  M-x describe-variable</dfn></dt>
+  <dd>Display the value and documentation of the specified variable.</dd>
+
+  <dt><dfn>
+  M-x set-variable</dfn></dt>
+  <dd>Change the value of the specified variable to the specified value.</dd>
+</dl>
 
 
 ## Binding New Keys
 
-You can define a key binding in your init file (typically ~/.emacs): <code>(global-set-key (kbd "KEY_SEQUENCE") 'COMMAND)</code>, where KEY_SEQUENCE is written in the same notation that you see in all the Emacs documentation (C- for control, M- for alt, S- for shift, &lt;TAB&gt; for tab, etc.).
+You can define a key binding in your init file (typically ~/.emacs): <code>(global-set-key (kbd "KEY_SEQUENCE") 'COMMAND)</code>, where KEY_SEQUENCE is written in the same notation that you see in all the Emacs documentation (C- for control, M- for alt, S- for shift, &lt;TAB&gt; for tab, etc.). You can also do <code>(define-key global-map (kbd "KEY_SEQUENCE") 'COMMAND)</code>.
+
+If you want to define a local key binding (local to a particular mode) in your init file, then you need to define the key in the mode's map in the mode's hook: <code>(add-hook 'FOOBAR-mode-hook (lambda() (define-key FOOBAR-mode-map (kbd "KEY_SEQUENCE") 'COMMAND)</code>.
+
+If you want to globally unset a key: <code>(global-unset-key (kbd "KEY_SEQUENCE"))</code>.
 
 <dl>
   <dt><dfn>
@@ -4394,14 +4491,103 @@ You can define a key binding in your init file (typically ~/.emacs): <code>(glob
 If you have redefined (or undefined) a key and you subsequently wish to revert the change, undefining the key will not do the job--you need to redefine the key with its standard definition. To find the name of the standard definition of a key, go to a Fundamental mode buffer in a fresh Emacs and use <code>C-h c</code>. The documentation of keys in the Emacs manual also lists their command names.
 
 
+## Disabling and Enabling Commands
+
+You can make a command disabled either by editing the initialization file directly, or with the command <code>M-x disable-command</code>, which edits the initialisation file for you. Likewise, <code>M-x enable-command</code> edits the initialisation file to enable a command permanently.
+
+To manually disable a command in your init file, you need to put a non-nil <code>disabled</code> property on the Lisp symbol for the command: <code>(put 'COMMAND 'disabled t)</code>. If the value of the <code>disabled</code> property is a string, that string is included in the message displayed when the command is used: <code>(put 'COMMAND 'disabled "MESSAGE")</code>.
+
+To manually enable a command in your init file, you need to put a nil <code>disabled</code> property on the Lisp symbol for the command: <code>(put 'COMMAND 'disabled nil)</code>.
+
+
 ## Hooks
 
-TODO
+A hook is a list of functions to be called on specific occassions, such as saving a file or enabling a mode.
+
+Most hooks are normal hooks. This means that when Emacs runs the hook, it calls each hook function in turn, with no arguments. Every variable whose name ends in "-hook" is a normal hook.
+
+A few hooks are abnormal hooks. Their names end in "-functions" (or sometimes "-hooks") instead of "-hook". What makes these hooks abnormal is that their functions accept arguments or their functions return a value that gets used.
+
+Most major modes run one or more mode hooks as the last step of initialisation.
+
+Major mode hooks also apply to other major modes derived from the original mode.
 
 
 ## Packages
 
-TODO
+A package is a collection of Lisp code that you download and automatically install from within Emacs. Packages provide a convenient way to add new features. In the past, if you liked some third party Lisp code, you would have to manually add it to your init file.
+
+Most optional features in Emacs are grouped into packages. Emacs contains several hundred built-in packages, and more can be installed over the network.
+
+The official Emacs package repository is [GNU ELPA](http://elpa.gnu.org) (Emacs Lisp Package Archive). Another popular Emacs package repository is [MELPA](http://melpa.org) (Milkpostman's Emacs Lisp Package Archive). The [Emacs Lisp List](http://www.damtp.cam.ac.uk/user/sje30/emacs/ell.html) (ELL) aims to provide one compact list of packages with links to all the current Emacs Lisp files on the Internet. The ELL can be browsed over the Web, or from Emacs with the [ell.el](http://www.damtp.cam.ac.uk/user/sje30/emacs/ell.el). As of 2013-06-07, the list is no longer maintained.
+
+<code>M-x list-packages</code> brings up a buffer named <code>*Packages*</code> with a list of all packages. You can install or uninstall packages via this buffer. The command accesses the network to retrieve the list of available packages from the package archive server. If the network is unavailable, it falls back on the most recently retrieved list.
+
+The command <code>C-h P</code> (<code>M-x describe-package</code>) prompts for the name of a package, and displays a help buffer describing the attributes of the package and the feaures that it implements.
+
+To make it easier to find packages related to a topic, most packages are associated with one or more keywords based on what they do. Type <code>C-h p</code> (<code>M-x finder-by-keyword</code>) to bring up a list of package keywords, together with a description of what the keywords mean. To view a list of packages for a given keyword, type <code>&lt;RET&gt;</code> on that line; this displays the list of packages in a Package Menu buffer.
+
+By default, Emacs downloads packages from a package archive maintained by the Emacs developers and hosted by the GNU Project. Optionally, you can also download packages from archives maintained by third parties.
+
+Each package is downloaded from the package archive in the form of a single package file--either an Emacs Lisp source file or a tar file containing multiple Emacs Lisp source and other files. Package files are automatically retrieved, processed, and disposed of by the Emacs commands that install packages.
+
+Packages are most conveniently installed using the package menu, but you can also use the commad <code>M-x package-install</code>, which prompts for the name of a package with the "available" status. Another way to install a package is to get the package file from somewhere and then type <code>M-x package-install-file</code>.
+
+Once installed, the contents of a package are placed in a subdirectory of ~/.emacs.d/elpa/.
+
+A package may require certain other packages to be installed, because it relies on functionality provided by them. When Emacs installs such a package, it also automatically downloads and installs any required package that is not already installed. If a required package is somehow unavailable, Emacs signals an error and stops installation. A package's requirements list is shown in its help buffer.
+
+By default, packages are downloaded from a single package archive maintained by the Emacs developers. This is controlled by the variable <code>package-archives</code>, whose value is a list of package archives known to Emacs. Each list element must have the form <code>(ID . LOCATION)</code>, wheere ID is the name of a package archive and LOCATION is the HTTP address or directory name of the package archive. You can alter this list if you wish to use third party package archives.
+
+Once a package is downloaded and installed, it is loaded into the current Emacs session. By default, Emacs also automatically loads all installed packages in subsequent Emacs sessions. For finer control over package loading, you can use the variable <code>package-load-list</code>. Its value should be a list. A list element of the form <code>(NAME VERSION)</code> tells Emacs to load version VERSION of the package named NAME. Here, VERSION should be a version string corresponding to a specific version of the package, or <code>t</code> to load any installed version, or <code>nil</code> to disable the package. A list element can also be the symbol <code>all</code>, which means to load the latest installed version of any package not named by the other list elements. The default value is just <code>'(all)</code>.
+
+Package Menu commands:
+
+<dl>
+  <dt><dfn>
+  i<br>
+  M-x package-menu-mark-install</dfn></dt>
+  <dd>Mark the package on the current line for installation.</dd>
+
+  <dt><dfn>
+  d<br>
+  M-x package-menu-mark-delete</dfn></dt>
+  <dd>Mark the package on the current line for deletion.</dd>
+
+  <dt><dfn>
+  u</dfn></dt>
+  <dd>Remove any installation or deletion marks from the current line.</dd>
+
+  <dt><dfn>
+  U<br>
+  M-x package-menu-mark-upgrades</dfn></dt>
+  <dd>Mark all packages with a newer available version for upgrading.</dd>
+
+  <dt><dfn>
+  x<br>
+  M-x package-menu-execute</dfn></dt>
+  <dd>Download and install all packages marked with <code>i</code> and their dependencies; also, delete all packages marked with <code>d</code>. This also removes the marks.</dd>
+
+  <dt><dfn>
+  r<br>
+  M-x package-menu-refresh</dfn></dt>
+  <dd>Fetch the list of available packages from the package archive and recompute the package list.</dd>
+</dl>
+
+
+## Themes
+
+Custom themes are collections of settings that can be enabled or disabled as a unit. You can use custom themes to swich easily between various collections of settings.
+
+A custom theme is stored as an Emacs Lisp source file. If the name of the custom theme is NAME, the theme file is named NAME-theme.el. By default, Emacs looks for theme files in ~/.emacs.d/ and in etc/themes in your Emacs installation directory.
+
+Type <code>M-x customize-themes</code> to switch to a buffer named <code>*Custom Themes*</code>, which lists known themes and let's you enable or disable themes.
+
+Any customizations that you make through the customization buffer take precedence over theme settings.
+
+You can enable a specific custom theme in the current Emacs session by typing <code>M-x load-theme</code>. To disable a theme, type <code>M-x disable-theme</code>. To enable a theme, type <code>M-x enable-theme</code>. To describe a theme, type <code>M-x describe-theme</code>.
+
+To create or modify custom themes, type <code>M-x customize-create-theme</code>.
 
 
 ## Mode Line
