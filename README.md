@@ -1525,13 +1525,17 @@ A dribble file is a file into which Emacs writes all the characters that you typ
   </dd>
 
   <dt><dfn>
+  C-x C-f /sudo::/PATH/TO/FILENAME</dfn></dt>
+  <dd>Open a file via sudo.</dd>
+
+  <dt><dfn>
   C-x C-v FILENAME<br>
   M-x find-alternate-file &lt;RET&gt; FILENAME</dfn></dt>
   <dd>
 <p>Kill the current buffer (after first offering to save it if it's modified) and then visit the specified file.</p>
 
 <p>When <code>C-x C-v</code> reads the file name to visit, it inserts the entire default file name in the buffer, with point just after the directory part; this is convenient if you made a slight error in typing the name.</p>
-</dd>
+  </dd>
 
   <dt><dfn>
   C-x C-r FILENAME<br>
@@ -3455,6 +3459,8 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
 
 ## Case Conversion
 
+If a word case conversion command is given in the middle of a word, it applies only to the part of the word that follows point.
+
 <dl>
   <dt><dfn>
   M-l<br>
@@ -4247,6 +4253,8 @@ The remote programmers should do the following:
 
 If you're the one hosting the pair programming session, you should probably set up a separate user account on your machine for the purpose of pair programming. Rather than sharing a password with everyone, ask each person for their public SSH key. Add each person's public SSH key to ~/.ssh/authorized_keys, so that they can connect to your machine. You might also want to create a chroot jail for SSH users, so that you can further restrict what people can do on your machine. Follow the principle of least privilege.
 
+To kill a daemon session, type <code>M-x kill-emacs</code>, or kill the Emacs daemon from the command-line, like you would kill any daemon.
+
 
 # Shells
 
@@ -4314,6 +4322,7 @@ If you want to try out an expression for any of the below, but you don't know Em
   <dd>Evaluate the current buffer as Emacs Lisp code.</dd>
 
   <dt><dfn>
+  C-M-x<br>
   M-x eval-defun</dfn></dt>
   <dd>Evaluate the top-level form containing point, or after point.</dd>
 
@@ -4358,6 +4367,10 @@ An alternative way of evaluating Emacs Lisp expressions interactively is to use 
 
 Emacs has many settings which you can change. Most settings are customisable variables, which are also called user options. A separate class of settings are the faces, which determine the fonts, colours, and other attributes of text.
 
+Customisation is done by setting variables and faces; rebinding key sequences; enabling modes; installing packages; adding hooks; adding Emacs Lisp code to an init file; etc.
+
+A default is a value that's used when you don't explicitly specify a value to use.
+
 
 ## Init File
 
@@ -4376,6 +4389,8 @@ If you run Emacs with the <code>--no-init-file</code> (<code>-q</code>) option, 
 If you want to start Emacs using another user's init file, then use the <code>--user USERNAME</code> (<code>-u USERNAME</code>) option when starting Emacs.
 
 If your init file has any problems, then start Emacs with the <code>--debug-init</code> option. Also, check the <code>*Messages*</code> buffer: <code>C-h e</code> (<code>M-x view-echo-area-messages</code>).
+
+If your init files are completely broken, then start Emacs with <code>--quick</code> (<code>-Q</code>); this is similar to doing <code>--no-init-file --no-site-file --no-splash</code> (<code>-q --no-site-file --no-splash</code>).
 
 
 ## Easy Customisation
@@ -4499,6 +4514,8 @@ To manually disable a command in your init file, you need to put a non-nil <code
 
 To manually enable a command in your init file, you need to put a nil <code>disabled</code> property on the Lisp symbol for the command: <code>(put 'COMMAND 'disabled nil)</code>.
 
+Whether a command is disabled is independent of what key is used to invoke it; disabling also applies if the command is invoked using M-x. Disabling a command has no effect on calling it as a function from Lisp programs.
+
 
 ## Hooks
 
@@ -4511,6 +4528,10 @@ A few hooks are abnormal hooks. Their names end in "-functions" (or sometimes "-
 Most major modes run one or more mode hooks as the last step of initialisation.
 
 Major mode hooks also apply to other major modes derived from the original mode.
+
+Enable Flyspell in all text modes: <code>(add-hook 'text-mode-hook 'flyspell-mode)</code>.
+
+Enable Flyspell Prog in all programming modes: <code>(add-hook 'prog-mode-hook 'flyspell-prog-mode)</code>.
 
 
 ## Packages
