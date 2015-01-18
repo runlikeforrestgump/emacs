@@ -413,7 +413,7 @@ An input method is a system for entering non-ASCII text characters by typing seq
 
 <p>The undo command applies only to changes in the buffer; you can't use it to undo cursor motion.</p>
 
-<p>Note that you can select a region and undo only the changes within that region. That is called a "selective undo".</p>
+<p>Note that you can select a region and undo only the changes within that region. That is called a "selective undo". When the region is active, then <code>C-/</code> will undo changes in the region; when the region is not active, then <code>C-u C-/</code> will undo changes in the region.</p>
   </dd>
 
   <dt><dfn>
@@ -548,7 +548,7 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
   C-h v VARIABLE<br>
   &lt;F1&gt; v VARIABLE<br>
   M-x describe-variable &lt;RET&gt; VARIABLE</dfn></dt>
-  <dd>Display the documentation for the given Emacs variable.</dd>
+  <dd>Display the documentation for the given Emacs variable. If you specify "?" as the variable name, then all variables are listed.</dd>
 
   <dt><dfn>
   C-h a PATTERN<br>
@@ -687,6 +687,24 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
   &lt;F1&gt; C-d<br>
   M-x view-emacs-debugging</dfn></dt>
   <dd>Display help for debugging Emacs.</dd>
+
+  <dt><dfn>
+  C-u C-h a .*<br>
+  C-h f ?</dfn></dt>
+  <dd>Display a list of all commands.</dd>
+
+  <dt><dfn>
+  C-u C-h a .*-mode<br>
+  C-h f -mode</dfn></dt>
+  <dd>Display a list of all modes.</dd>
+
+  <dt><dfn>
+  C-h v ?</dfn></dt>
+  <dd>Display a list of all variables.</dd>
+
+  <dt><dfn>
+  C-h v -hook?</dfn></dt>
+  <dd>Display a list of all hooks.</dd>
 </dl>
 
 Note that modes correspond to commands, so if you want to read the documentation for a mode, just look up its documentantation by its command name.
@@ -1478,7 +1496,7 @@ Saving a buffer in Emacs means writing its contents back into the file that the 
 
 A backup file records the contents that a file had before the current editing session. The first time you save a file from a buffer, a backup file will automatically be created for you consisting of the contents of the file before your changes. The backup will be overwritten next time you visit the file and then save. A backup filename will appear as <code>FILENAME~</code>, <code>%FILENAME%~</code>, or <code>FILENAME.~NUMBER~</code>. To prevent excessive consumption of disk space, Emacs will automatically keep the first few backups and the latest few backups, and delete any in between, each time a new backup is made.
 
-Auto saving is the practice of periodically saving the contents of an Emacs buffer in a separate file, so that the information will be preserved if the buffer is lost due to a system error or user error. By default, when visiting a file, Emacs will auto-save the buffer into a separate file after 300 or more characters have been typed in the buffer or after Emacs has been idle for 30 seconds. Emacs will also automatically auto save whenever it gets a fatal error. To explicitly auto save a buffer, type <code>M-x do-auto-save</code>. The auto-save file name is of the form <code>#FILENAME#</code> or <code>#FILENAME#UNIQUESTRING</code>. When you delete a substantial part of the text in a large buffer, auto save turns off temporarily in that buffer. To reenable auto-saving after this happens, save the buffer with <code>C-x C-s</code>, or use <code>C-u 1 M-x auto-save-mode</code>. A buffer's auto-save file is deleted when you save the buffer of the visited file. Changing the visited file name with <code>C-x C-w</code> or <code>set-visited-file-name</code> renames any auto-save file to go with the new visited name. If you want to recover a file from an auto save file, then do <code>M-x recover-file &lt;RET&gt; FILENAME &lt;RET&gt;</code>, where FILENAME is the official file's name, not the auto save file's name; note that this alone doesn't recover the file on disk. To recover the file on disk, you should save the buffer (after you invoke <code>M-x recover-file</code>). If Emacs or the computer crashes, you can recover all the files you were editing from their auto save files with the command <code>M-x recover-session</code>.
+Auto saving is the practice of periodically saving the contents of an Emacs buffer in a separate file, so that the information will be preserved if the buffer is lost due to a system error or user error. By default, when visiting a file, Emacs will auto-save the buffer into a separate file after 300 or more characters have been typed in the buffer or after Emacs has been idle for 30 seconds and the buffer has been modified. Emacs will also automatically auto save whenever it gets a fatal error. To explicitly auto save a buffer, type <code>M-x do-auto-save</code>. The auto-save file name is of the form <code>#FILENAME#</code> or <code>#FILENAME#UNIQUESTRING</code>. When you delete a substantial part of the text in a large buffer, auto save turns off temporarily in that buffer. To reenable auto-saving after this happens, save the buffer with <code>C-x C-s</code>, or use <code>C-u 1 M-x auto-save-mode</code>. A buffer's auto-save file is deleted when you save the buffer of the visited file. Changing the visited file name with <code>C-x C-w</code> or <code>set-visited-file-name</code> renames any auto-save file to go with the new visited name. If you want to recover a file from an auto save file, then do <code>M-x recover-file &lt;RET&gt; FILENAME &lt;RET&gt;</code>, where FILENAME is the official file's name, not the auto save file's name; note that this alone doesn't recover the file on disk. To recover the file on disk, you should save the buffer (after you invoke <code>M-x recover-file</code>). If Emacs or the computer crashes, you can recover all the files you were editing from their auto save files with the command <code>M-x recover-session</code>.
 
 Shadow files are files that are identical to each other and exist in more than one place and possibly on different machines. A shadow file group consists of one or more shadow files. The shadow file group persists across Emacs sessions, so you don't need to set it up every time you start Emacs. Once the group is set up, every time you exit Emacs or type <code>M-x shadow-copy-files</code>, it will copy the file you edited to the other files in its group. Before you start shadowing files, you need to set Emacs up for file shadowing. To do that, type <code>M-x shadow-initialize</code>. It'll seem like that command didn't do anything; however, you should see "(New file)" in the echo area. If you look at the buffer list (<code>C-x C-b</code>), then you should see two new empty files: ~/.shadows and ~/.shadow_todo. Visit and save both those buffers. To set up a shadow file group, type <code>M-x shadow-define-literal-group</code> or <code>M-x shadow-define-regexp-group</code>. I assume that all the files you specify during one shadow-define-literal-group session will be added to the same group and that each separate invocation of shadow-define-literal-group defines a new group. A shadow cluster is a group of hosts that share directories, so that copying to or from one of the hosts is sufficient to update the file on all of them. To define a shadow cluster, type <code>M-x shadow-define-cluster</code>. TODO: how to edit shadow file groups?
 
@@ -1967,6 +1985,8 @@ The default behaviour of the mark and region, in which setting the mark activate
 
 Marks aren't just used to help define regions. They can also be used as a way to remember a position in the buffer (<code>C-&lt;SPC&gt; C-&lt;SPC&gt;</code>), so that you can jump back to it (<code>C-u C-&lt;SPC&lt;</code>).
 
+If you enable Delete Selection mode, then inserting text while the mark is active causes the text in the region to be deleted first. To toggle Delete Selection mode on or off, type <code>M-x delete-selection-mode</code>.
+
 <dl>
   <dt><dfn>
   C-&lt;SPC&gt;<br>
@@ -1977,7 +1997,7 @@ Marks aren't just used to help define regions. They can also be used as a way to
   <dt><dfn>
   C-x C-x<br>
   M-x exchange-point-and-mark</dfn></dt>
-  <dd>Set the mark at point, activate it, and then move point to where the previous mark used to be. If you keep invoking <code>exchange-point-and-mark</code>, then you can keep swapping point and mark.</dd>
+  <dd>Set the mark at point, activate it, and then move point to where the previous mark used to be. If you keep invoking <code>exchange-point-and-mark</code>, then you can keep swapping point and mark. You can use this command to reactivate mark.</dd>
 
   <dt><dfn>
   M-@<br>
@@ -3584,6 +3604,8 @@ Emacs provides several commands for sorting text in the buffer. All operate on t
 
 The various sort commands differ in how they divide the text into sort records and in which part of each record is used as the sort key. Most of the sort commands use each entire sort record as its own sort key, but some use only a portion of the record as the sort key.
 
+If you want case-insensitive sorting, then set the <code>sort-fold-case</code> variable to <code>t</code> before you sort: <code>M-x set-variable &lt;RET&gt; sort-fold-case &lt;RET&gt; t &lt;RET&gt;</code>. You could also add the following to your init file: <code>(setq sort-fold-case t)</code>.
+
 <dl>
   <dt><dfn>
   M-x sort-lines</dfn></dt>
@@ -3748,6 +3770,8 @@ Indentation refers to the whitespace added to the beginning of a line to indicat
 
 By default, indentation commands insert (or remove) an optimal mix of space characters and tab characters to align to the desired column.
 
+A tab width refers to the number of columns between two adjacent tab stops (i.e., how wide a single tab character is); it only applies to tab characters. An indentation offset refers to the number of columns that a line is shifted to the right when it's indented.
+
 <dl>
   <dt><dfn>
   C-x $<br>
@@ -3772,7 +3796,7 @@ By default, indentation commands insert (or remove) an optimal mix of space char
   <dt><dfn>
   M-m<br>
   M-x back-to-indentation</dfn></dt>
-  <dd>Move to the first non-whitespace character on the current line.</dd>
+  <dd>Move to the first non-whitespace character on the current line. If you want to jump to the last non-whitespace character on a line, you should delete all trailing whitespace, and then this becomes a nonissue (i.e., if there is no trailing whitespace, then a simple <code>C-e</code> will take you to the last non-whitespace character on a line).</dd>
 
   <dt><dfn>
   M-i<br>
@@ -4260,6 +4284,8 @@ To kill a daemon session, type <code>M-x kill-emacs</code>, or kill the Emacs da
 
 Thanks to TRAMP, you can open an interactive shell on a remote host and run commands from there.
 
+Note that "comint" is an abbreviation for "**Com**mand **int**erpreter".
+
 <dl>
   <dt><dfn>
   M-!<br>
@@ -4362,6 +4388,10 @@ The <code>*scratch*</code> buffer is a special buffer that can be used to evalua
 
 An alternative way of evaluating Emacs Lisp expressions interactively is to use Inferior Emacs Lisp mode, which provides an interface rather like Shell mode for evaluating Emacs Lisp expressions. To create an <code>*ielm*</code> buffer, which uses Inferior Emacs Lisp mode, type <code>M-x ielm</code>.
 
+<code>t</code> means true; <code>nil</code> means false. When you want to set a variable to a non-nil value, the convention is to use <code>t</code> as the non-nil value when all that matters is that the variable is non-nil.
+
+An association list, or alist for short, records a mapping from keys to values. It is a list of cons cells called associations: the CAR of each cons cell is the key, and the CDR is the associated value: <code>((KEY1 . VALUE1) (KEY2 . VALUE2) (KEY3 . VALUE3))</code>.
+
 
 # Customisation
 
@@ -4370,6 +4400,18 @@ Emacs has many settings which you can change. Most settings are customisable var
 Customisation is done by setting variables and faces; rebinding key sequences; enabling modes; installing packages; adding hooks; adding Emacs Lisp code to an init file; etc.
 
 A default is a value that's used when you don't explicitly specify a value to use.
+
+Prefer UTF-8 and Unix newlines: <code>(prefer-coding-system 'utf-8-unix)</code>.
+
+Display the current function name (based on where point is in a buffer) in the mode line: <code>(which-function-mode t)</code>.
+
+Clean up whitespace before saving a file: <code>(add-hook 'before-save-hook 'whitespace-cleanup)</code>.
+
+Automatically indent after typing <code>&lt;RET&gt;</code> when the previous line is indented: <code>(electric-indent-mode t)</code>.
+
+Only use spaces for indentation: <code>(setq indent-tabs-mode nil)</code>.
+
+Define the default indentation style for various modes: <code>(setq c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "linux")))</code>.
 
 
 ## Init File
@@ -4391,6 +4433,8 @@ If you want to start Emacs using another user's init file, then use the <code>--
 If your init file has any problems, then start Emacs with the <code>--debug-init</code> option. Also, check the <code>*Messages*</code> buffer: <code>C-h e</code> (<code>M-x view-echo-area-messages</code>).
 
 If your init files are completely broken, then start Emacs with <code>--quick</code> (<code>-Q</code>); this is similar to doing <code>--no-init-file --no-site-file --no-splash</code> (<code>-q --no-site-file --no-splash</code>).
+
+If you made changes to your init file while you're already in an Emacs session, then you can switch to the init file's buffer and type <code>M-x eval-buffer</code> to evaluate the whole file, or you can highlight the changes that you made and then type <code>M-x eval-region</code>. Whether you edited the init file inside or outside of Emacs, you can type <code>M-x load-file</code> rather than evaluating a buffer or region.
 
 
 ## Easy Customisation
@@ -4515,6 +4559,8 @@ To manually disable a command in your init file, you need to put a non-nil <code
 To manually enable a command in your init file, you need to put a nil <code>disabled</code> property on the Lisp symbol for the command: <code>(put 'COMMAND 'disabled nil)</code>.
 
 Whether a command is disabled is independent of what key is used to invoke it; disabling also applies if the command is invoked using M-x. Disabling a command has no effect on calling it as a function from Lisp programs.
+
+If you want to enable all disabled commands, then put the following in your init file: <code>(setq disabled-command-function nil)</code>.
 
 
 ## Hooks
