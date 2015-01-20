@@ -4657,6 +4657,83 @@ You can enable a specific custom theme in the current Emacs session by typing <c
 To create or modify custom themes, type <code>M-x customize-create-theme</code>.
 
 
+## Calendar
+
+Set the date and time style:
+<code>
+(require 'calendar')
+
+(setq calendar-date-display-form calendar-iso-date-display-form)
+(setq calendar-date-style 'iso)
+(setq calendar-time-display-form
+    '(24-hours ":" minutes (if time-zone " (") time-zone (if time-zone ")")))
+</code>
+
+Set your location (for <code>M-x sunrise-sunset</code>):
+<code>
+(setq calendar-latitude LATITUDE)
+(setq calendar-longitude LONGITUDE)
+(setq calendar-location-name LOCATION_NAME)
+</code>
+
+Latitude and longtidue should be positive or negative decimal numbers (one decimal place is enough). The location name should be a string. For example, if you live in London, you would put <code>51.5</code> for the latitude, <code>-0.1</code> for the longitude, and "London" (or "London, England" or "London, UK" or whatever; the name is arbitrary) for the location name.
+
+
+### Holidays
+
+TODO
+
+
+## World Clock
+
+Use <code>M-x display-time-world</code> to display the current time around the world. Note that the <code>*wclock*</code> auto-refreshes.
+
+<code>
+(setq display-time-world-time-format "%R %5Z (UTC%z) - %d %3h - %A")
+(setq display-time-world-list
+    '(("Europe/London" "London, UK")
+      ("Atlantic/Cape_Verde" "Praia, Cape Verde")
+      ("Atlantic/South_George" "South Georgia")
+      ("Atlantic/Sao_Paulo" "Nuuk, Greenland")
+      ("Canada/Newfoundland" "St John's, Canada")
+      ("Canada/Atlantic" "Halifax, Canada")
+      ("America/Caracas" "Caracas, Venezuela")
+      ("Canada/Eastern" "Toronto, Canada")
+      ("Canada/Central" "Winnipeg, Canada")
+      ("Canada/Mountain" "Edmonton, Canada")
+      ("Canada/Pacific" "Vancouver, Canada")
+      ("US/Alaska" "Anchorage, USA")
+      ("Pacific/Marquesas" "Marquesas Islands")
+      ("US/Hawaii" "Honoloulu, USA")
+      ("Pacific/Tongatapu" "Tonga")
+      ("Pacific/Chatham" "Chatham")
+      ("Pacific/Auckland" "Auckland, New Zealand")
+      ("Pacific/Norfolk" "Norfolk Island")
+      ("Pacific/Noumea" "Noumea, New Caledonia")
+      ("Australia/Lord_Howe" "Lord Howe Island")
+      ("Australia/Melbourne" "Melbourne, Australia")
+      ("Australia/Adelaide" "Adelaide, Australia")
+      ("Asia/Tokyo" "Tokyo, Japan")
+      ("Australia/Eucla" "Eucla, Australia")
+      ("Asia/Shanghai" "Beijing, China")
+      ("Asia/Ho_Chi_Minh" "Hanoi, Vietnam")
+      ("Asia/Rangoon" "Yangon, Burma")
+      ("Asia/Dhaka" "Dhaka, Bangladesh")
+      ("Asia/Kathmandu" "Kathmandu, Nepal")
+      ("Asia/Calcutta" "New Delhi, India")
+      ("Asia/Karachi" "Islamabad, Pakistan")
+      ("Asia/Kabul" "Kabul, Afghanistan")
+      ("Asia/Dubai" "Dubai, UAE")
+      ("Asia/Tehran" "Tehran, Iran")
+      ("Europe/Moscow" "Moscow, Russia")
+      ("Europe/Athens" "Helsinki, Finland")
+      ("Europe/Paris" "Paris, France")
+      ("Europe/London" "London, UK")))
+</code>
+
+For each time zone in the world, I picked one city or island. Adapt the list to your liking. On my machine, I found the time zone names in <code>/usr/share/zoneinfo</code>. I used https://en.wikipedia.org/wiki/List_of_UTC_time_offsets for a list of locations in each of the time zones.
+
+
 ## Mode Line
 
 In your ~/.emacs/init.el:
