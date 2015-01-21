@@ -4683,6 +4683,9 @@ Latitude and longtidue should be positive or negative decimal numbers (one decim
 
 TODO
 
+http://www.cra-arc.gc.ca/tx/hldys/menu-eng.html
+https://en.wikipedia.org/wiki/Public_holidays_in_Canada
+
 
 ## World Clock
 
@@ -4732,6 +4735,15 @@ Use <code>M-x display-time-world</code> to display the current time around the w
 </code>
 
 For each time zone in the world, I picked one city or island. Adapt the list to your liking. On my machine, I found the time zone names in <code>/usr/share/zoneinfo</code>. I used https://en.wikipedia.org/wiki/List_of_UTC_time_offsets for a list of locations in each of the time zones.
+
+
+## Spelling
+
+You can see what spell checking program your Emacs is using by typing <code>C-h v ispell-program-name &lt;RET&gt;</code>. For me, it's Aspell (other likely values would be Ispell or Hunspell).
+
+You can see what dictionaries are available by typing <code>M-x ispell-change-dictionary &lt;RET&gt; &lt;SPC&gt;</code>.
+
+I know there are Canadian dictionaries, but I don't like them; I prefer British dictionaries (I think that British English is proper English). To set the default dictionary, add the following to your init file: <code>(setq ispell-dictionary en_GB-ise)</code>.
 
 
 ## Mode Line
