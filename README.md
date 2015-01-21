@@ -4657,6 +4657,13 @@ You can enable a specific custom theme in the current Emacs session by typing <c
 To create or modify custom themes, type <code>M-x customize-create-theme</code>.
 
 
+## Colour
+
+By default, Emacs automatically picks an appropriate colour scheme based on whether your background is dark or light. In my case, Emacs didn't detect detect that my terminal's background is dark, so I had to tell it explicitly by adding the following to my init file: <code>(setq-default frame-background-mode 'dark)</code>.
+
+In graphical Emacs, my mouse pointer was black (by default) and my background was black, so it was very hard to see the mouse pointer. To change the colour of the mouse pointer, add the following to your init file: <code>(set-mouse-color "COLOUR")</code> ("orchid" seems like a nice colour for a mouse pointer on a black background; "white" would also be a safe bet).
+
+
 ## Calendar
 
 Set the date and time style:
@@ -4743,7 +4750,7 @@ You can see what spell checking program your Emacs is using by typing <code>C-h 
 
 You can see what dictionaries are available by typing <code>M-x ispell-change-dictionary &lt;RET&gt; &lt;SPC&gt;</code>.
 
-I know there are Canadian dictionaries, but I don't like them; I prefer British dictionaries (I think that British English is proper English). To set the default dictionary, add the following to your init file: <code>(setq ispell-dictionary en_GB-ise)</code>.
+I know there are Canadian dictionaries, but I don't like them; I prefer British dictionaries (I think that British English is proper English). To set the default dictionary, add the following to your init file: <code>(setq ispell-dictionary "en_GB-ise")</code>.
 
 
 ## Mode Line
