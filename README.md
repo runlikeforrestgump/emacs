@@ -4688,10 +4688,76 @@ Latitude and longtidue should be positive or negative decimal numbers (one decim
 
 ### Holidays
 
-TODO
+If you were only interested in seeing country-specific holidays, then you should start by adding the following to your init file:
 
-http://www.cra-arc.gc.ca/tx/hldys/menu-eng.html
-https://en.wikipedia.org/wiki/Public_holidays_in_Canada
+<code>
+(setq holiday-bahai-holidays nil)
+(setq holiday-christian-holidays nil)
+(setq holiday-general-holidays nil)
+(setq holiday-hebrew-holidays nil)
+(setq holiday-islamic-holidays nil)
+(setq holiday-oriental-holidays nil)
+(setq holiday-other-holidays nil)
+</code>
+
+As an example of defining country-specific holidays, here are some Canadian holidays and other observances (if I missed any or made a mistake, please let me know):
+
+<code>
+(setq holiday-local-holidays
+    '((holiday-fixed 1 1 "New Year's Day")
+      (holiday-fixed 1 2 "Bank holiday (Quebec only)")
+      (holiday-fixed 1 17 "Raoul Wallenberg Day")
+      (holiday-fixed 2 2 "Groundhog Day")
+      (holiday-fixed 2 14 "Valentine's Day")
+      (holiday-fixed 2 15 "National Flag of Canada Day")
+      (holiday-float 2 1 2 "Family Day (British Columbia only)")
+      (holiday-float 2 1 3 "Family Day (Alberta, Ontario, and Saskatchewan only); Louis Riel Day (Manitoba only); Islander Day (Prince Edward Island only)")
+      (holiday-float 3 1 2 "Commonwealth Day")
+      (holiday-fixed 3 17 "Saint Patrick's Day")
+      (holiday-fixed 4 1 "April Fool's Day")
+      (holiday-fixed 4 6 "Tartan Day")
+      (holiday-fixed 4 9 "Vimy Ridge Day")
+      (holiday-easter-etc -2 "Good Friday")
+      (holiday-easter-etc +1 "Easter Monday")
+      (holiday-fixed 4 22 "Earth Day")
+      (holiday-fixed 4 23 "Saint George's Day (Newfoundland only)")
+      (holiday-fixed 5 4 "Anti-Bullying Day")
+      (holiday-float 5 0 2 "Mother's Day")
+      (holiday-fixed 6 2 "Decoration Day")
+      (holiday-fixed 6 11 "William Davis Miners' Memorial Day (Nova Scotia only)")
+      (holiday-float 6 0 3 "Father's Day")
+      (holiday-fixed 6 19 "Loyalist Day")
+      (holiday-fixed 6 21 "National Aboriginal Day (Northwest Territories only)")
+      (holiday-fixed 6 24 "Discovery Day (Newfoundland only); St. Jean Baptiste Day (Quebec only)")
+      (holiday-fixed 6 27 "Canadian Multiculturalism Day")
+      (holiday-fixed 7 1 "Canada Day")
+      (holiday-fixed 7 9 "Nunavut Day (Nunavut only)")
+      (hoilday-fixed 7 12 "Orangemen's Day (Newfoundland only)")
+      (holiday-fixed 8 9 "National Peacekeepers' Day")
+      (holiday-float 8 1 1 "Civic Holiday (All except Quebec and Yukon)")
+      (holiday-float 8 1 3 "Discovery Day (Yukon only)")
+      (holiday-float 8 3 1 "Regatta Day (Newfoundland only)")
+      (holiday-float 8 5 3 "Gold Cup Parade Day (Prince Edward Island only)")
+      (hoilday-fixed 8 23 "Black Ribbon Day")
+      (holiday-float 9 1 1 "Labour Day")
+      (holiday-float 9 0 2 "Grandparents' Day")
+      (holiday-float 10 1 2 "Thanksgiving")
+      (holiday-fixed 10 31 "Halloween")
+      (holiday-fixed 11 11 "Remembrance Day")
+      (holiday-fixed 12 6 "National Day of Remembrance and Action on Violence Against Women")
+      (holiday-fixed 12 24 "Christmas Eve")
+      (holiday-fixed 12 25 "Christmas Day")
+      (holiday-fixed 12 26 "Boxing Day")
+      (holiday-fixed 12 31 "New Year's Eve")))
+</code>
+
+The date when Daylight Savings Time begins and the date when Daylight Savings Time ends are both defined in holiday-solar-holidays.
+
+I think it would be nice if Emacs provided a set of commonly observed international holidays (such as International Women's Day).
+
+TODO: how to properly add Canada Day? (Canada Day normally falls on July 1, but when July 1 is a Sunday, then Canada Day is officially on July 2, although it's still observed on July 1.)
+TODO: how to add Victoria Day and National Patriots' Day? (Both holidays fall on the last Monday before May 25.)
+TODO: how to add Yukon's Heritage Day? (Yukon's Heritage Day falls on the Friday before the last Sunday in February.)
 
 
 ## World Clock
