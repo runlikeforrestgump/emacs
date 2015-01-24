@@ -84,6 +84,8 @@ The optional <code>+LINE_NUMBER:COLUMN_NUMBER</code> applies only to the next fi
 
 If you specify more than one file, then you'll only see the last file that you specified; however, the other files will also have been loaded and are available in the buffer list.
 
+If you want to see how long Emacs has been running, type <code>M-x emacs-uptime</code>.
+
 
 # Most Important Things to Know First
 
@@ -708,10 +710,12 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
   <dd>Display a list of all modes.</dd>
 
   <dt><dfn>
+  C-u M-x apropos-variable .*<br>
   C-h v ?</dfn></dt>
   <dd>Display a list of all variables.</dd>
 
   <dt><dfn>
+  C-u M-x apropos-variable .*-hook<br>
   C-h v -hook?</dfn></dt>
   <dd>Display a list of all hooks.</dd>
 </dl>
@@ -4547,6 +4551,8 @@ If your init files are completely broken, then start Emacs with <code>--quick</c
 
 If you made changes to your init file while you're already in an Emacs session, then you can switch to the init file's buffer and type <code>M-x eval-buffer</code> to evaluate the whole file, or you can highlight the changes that you made and then type <code>M-x eval-region</code>. Whether you edited the init file inside or outside of Emacs, you can type <code>M-x load-file</code> rather than evaluating a buffer or region.
 
+If you want to see how long your init file took to load, type <code>M-x emacs-init-time</code>.
+
 
 ## Easy Customisation
 
@@ -4938,6 +4944,8 @@ TODO: how to add Yukon's Heritage Day? (Yukon's Heritage Day falls on the Friday
 
 In Emac's calendar, you can type <code>x</code> to mark all the visible days that have holidays. If you move point to a day that contains a holiday, you can type <code>h</code> to list the holidays for that day.
 
+To see a list of all the holidays in the current year, type <code>M-x list-holidays &lt;RET&gt; &lt;RET&gt; &lt;RET&gt; &lt;RET&gt;</code>.
+
 
 ## World Clock
 
@@ -5004,6 +5012,8 @@ Display the current function name (based on where point is in a buffer) in the m
 
 Automatically indent after typing <code>&lt;RET&gt;</code> when the previous line is indented: <code>(electric-indent-mode t)</code>.
 
+Make it easier to switch buffers: <code>(iswitchb-mode t)</code>.
+
 Font-Lock mode is enabled globally by default, but you can disable it in individual buffers.
 
 Auto Fill mode inserts newlines as you type to prevent lines from becoming too long: <code>(auto-fill-mode t)</code>. This might be useful for editing plaintext.
@@ -5021,6 +5031,8 @@ Glasses mode is a buffer-local minor mode that makes it easier to read mixed-cas
 Electric Layout mode is a global minor mode that automatically inserts newlines when you type certain characters, such as <code>{</code>, <code>}</code>, or <code>;</code>: <code>(electric-layout-mode t)</code>.
 
 Subword mode allows Emac's commands to recognise uppercase letters in StudlyCapsIdentifiers as word boundaries: <code>(global-subword-mode t)</code>.
+
+Display a list of available completions when you are in the minibuffer and completion is active: <code>(icomplete-mode t)</code>.
 
 
 ## Mode Line
