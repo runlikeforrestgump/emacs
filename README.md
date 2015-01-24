@@ -21,6 +21,8 @@ The problem with a lot of Emacs guides out there is that they seem to be copy-an
 
 Another problem with a lot of guides in general is that the trend these days seems to be that guides try hard (often too hard) to be cute and funny (and sometimes come off as condescending and overly simplistic). I value humour, but I very rarely come across a guide that uses humour well. In most cases, the humour is noisy and distracting and doesn't even serve its purpose of being funny; I've even run into cases where the humour introduced confusion and ambiguity. Remember, if your primary goal is to teach something, then focus your efforts on teaching, not telling jokes.
 
+From the Eshell manual: "Any tool you use often deserves the time spent learning to master it."
+
 
 # History
 
@@ -293,6 +295,8 @@ To insert a non-graphic character, type <code>C-q</code> and then the character.
 
 <code>C-q</code> (<code>M-x quoted-insert</code>) followed by a sequence of octal digits inserts the character with the specified octal character code. You can use any number of octal digits; any non-digit terminates the octal sequence. To use decimal or hexadecimal instead of octal, set the variable <code>read-quoted-char-radix</code> to 10 or 16. If the radix is 16, the letters 'a' to 'f' serve as part of the character code, just like digits. Case is ignored.
 
+Quoting a file name turns off the special significance of constructs such as <code>$</code>, <code>~</code>, and <code>:</code>.
+
 <dl>
   <dt><dfn>
   C-q C-S-2</dfn></dt>
@@ -453,6 +457,11 @@ An input method is a system for entering non-ASCII text characters by typing seq
 
 <p>You cannot use the command while in the minibuffer.</p>
   </dd>
+
+  <dt><dfn>
+  C-x &lt;left&gt;<br>
+  M-x previous-buffer</dfn></dt>
+  <dd>Select the previous buffer.</dd>
 </dl>
 
 
@@ -695,7 +704,7 @@ The Emacs manual (and other Emacs-related manuals) can be read online: https://w
 
   <dt><dfn>
   C-u C-h a .*-mode<br>
-  C-h f -mode</dfn></dt>
+  C-h f -mode?</dfn></dt>
   <dd>Display a list of all modes.</dd>
 
   <dt><dfn>
@@ -1184,7 +1193,6 @@ If you don't give a frame a name, then the default name is of the form FN, where
 
 ## Windows
 
-
 Each window belongs to one and only one frame and each window displays only one buffer at any time. Multiple windows can display parts of different buffers, or different parts of one buffer. If a single buffer appears in more than one window, then any changes in its text are displayed in all the windows where it appears.
 
 The minibuffer is special. Don't expect all the window commands to work in the minibuffer; for example, you cannot split the minibuffer. You also can't make the minibuffer the only remaining window and you cannot delete the minibuffer.
@@ -1254,7 +1262,9 @@ Remember, each window is associated with one buffer. Instead of switching window
   <dd>
 <p>Delete all the windows (but not their buffers) in the selected frame except for the selected window.</p>
 
-<p>You cannot use the command while in the minibuffer.</p>
+<p>You cannot use this command while in the minibuffer.</p>
+
+<p>When there are multiple windows open, <code>&lt;ESC&lt; &lt;ESC&lt; &lt;ESC&lgt;</code> acts like <code>C-x 1</code>.</p>
   </dd>
 
   <dt><dfn>
@@ -1443,6 +1453,21 @@ Each mode is associated with a mode command, whose name consists of the mode nam
 The major mode is chosen for you automatically based on the contents of the buffer; for example, if Emacs sees that you are visiting a Java file, then Emacs will use the cc-mode major mode. If you'd like to use a different major mode, you can always switch it to whatever you want.
 
 If you have changed the major mode of a buffer, you can return to the major mode Emacs would have chosen automatically, by typing <code>M-x normal-mode</code>.
+
+
+# How Text is Displayed
+
+Most characters are printing characters; when they appear in a buffer, they are displayed literally on the screen. Printing characters include ASCII numbers, letters, and punctuation characters, as well as many non-ASCII characters.
+
+The newline character is displayed by starting a newline.
+
+The tab character is displayed as one big space that extends a certain number of columns (8 by default).
+
+The ASCII character set contains non-printing control characters. ASCII control characters whose codes are below U+0020 (octal 40, decimal 32) are displayed as a caret (^) followed by the non-control version of the character. The raw bytes width codes U+0080 (octal 200) through U+009F (octal 237) are displayed as a backslash followed by the octal value.
+
+Some non-ASCII characters have the same appearance as an ASCII space or hyphen (minus) character. Such characters can cause problems if they are entered into a buffer without your realisation, e.g., by yanking; for instance, source code compilers typically do not treat non-ASCII spaces as whitespace characters. To deal with this problem, Emacs displays such characters specially.
+
+On graphical displays, some characters may have no glyphs in any of the fonts available to Emacs. These glyphless characters are normally displayed as boxes containing the hexadecimal character code. Similarly, on text terminals, characters that cannot be displayed using the terminal encoding are normally displayed as question signs.
 
 
 # Reverting
@@ -2781,7 +2806,9 @@ Normally, if there is more than one completion alternative for the text in the m
 
 Icomplete mode (<code>M-x icomplete-mode</code>) displays an indication of available completions when you are in the minibuffer and completion is active. The completion alternatives are listed in the minibuffer in curly braces after point.
 
-Filename completion works with TRAMP for completion of method names, of user names, and of machine names as well as for completion of file names on remote machines.
+File name completion ignores file names whose extensions appear in the variable <code>completion-ignored-extensions</code>.
+
+File name completion works with TRAMP for completion of method names, of user names, and of machine names as well as for completion of file names on remote machines.
 
 Dynamic abbreviations allow the meanings of abbreviations to be determined automatically from the contents of the buffer, but dynamic abbrev expansion happens only when you request it explicitly. In this context, think of any abbreviation as any word-size unit of text that can expand into a longer string.
 
@@ -3230,7 +3257,7 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
 <p>Display a three-month calendar centred on the current month, with point on the current date.</p>
 
 <p>With a numeric argument, prompt for the month and year to be the centre of the three-month calendar.</p>
-</dd>
+  </dd>
 
   <dt><dfn>
   q<br>
@@ -3468,7 +3495,6 @@ A separate dictionary is used for word completion. The variable <code>ispell-com
 
 # Editing Plaintext
 
-
 <dl>
   <dt><dfn>
   C-o<br>
@@ -3692,7 +3718,9 @@ If you want case-insensitive sorting, then set the <code>sort-fold-case</code> v
 
 # Syntax Highlighting (Font Lock)
 
-Font Lock mode is a minor mode, always local to a particular buffer, which assigns faces to the text in the buffer. Each buffer's major mode tells Font Lock mode which text to fontify; for instance, programming language modes fontify syntactically relevant constructs like comments, strings, and function names. Most other editors for to this as syntax highlighting. Font Lock mode is enabled by default.
+Font Lock mode is a minor mode, always local to a particular buffer, which assigns faces to various bits of text in the buffer. Each buffer's major mode tells Font Lock mode which text to fontify; for instance, programming language modes fontify syntactically relevant constructs like comments, strings, and function names. Font Lock mode is enabled by default.
+
+Most other editors refer to font locking as syntax highlighting.
 
 In most cases, you'll find that syntax highlighting works out of the box.
 
@@ -4339,6 +4367,12 @@ Since Eshell does not communicate with a terminal like most command shells, I/O 
 
 # Emacs Lisp
 
+Most of Emacs is written in a dialect of Lisp, called Emacs Lisp, which is extended with special features that make it especially suitable for text editing tasks. It's also the language that's used for customising and extending Emacs.
+
+Emacs Lisp code is stored in files whose names conventionally end in ".el".
+
+Emacs Lisp code can be compiled into byte-code, which loads faster, takes up less space, and executes faster. By convention, compiled Emacs Lisp code goes in a separate file whose name ends in ".elc". Do **not** compile your init files into byte-code!
+
 If you want to try out an expression for any of the below, but you don't know Emacs Lisp, then try a simple expression like <code>(* 2 3)</code>, which should evaluate to <code>6</code>.
 
 <dl>
@@ -4375,6 +4409,19 @@ If you want to try out an expression for any of the below, but you don't know Em
   <dt><dfn>
   M-x pp-eval-last-sexp</dfn></dt>
   <dd>Evaluate the sexp before point and pretty-print its value.</dd>
+
+  <dt><dfn>
+  M-x load-file</dfn></dt>
+  <dd>Execute the contents of the specified Emacs Lisp file. It is not necessary to visit the file first; this command reads the file directly from disk, not from an existing Emacs buffer.</dd>
+
+  <dt><dfn>
+  M-x load-library</dfn></dt>
+  <dd>If an Emacs Lisp file is installed in the Emacs Lisp load path, you can execute its contents by typing <code>M-x load-library</code> instead of <code>M-x load-file</code>.</dd>
+
+  <dt><dfn>
+  </dfn></dt>
+  <dd></dd>
+
 </dl>
 
 The <code>*scratch*</code> buffer is a special buffer that can be used to evaluate Emacs Lisp expression interactively. Its major mode is Lisp Interaction mode (<code>M-x lisp-interaction-mode</code>).
@@ -4393,6 +4440,80 @@ An alternative way of evaluating Emacs Lisp expressions interactively is to use 
 An association list, or alist for short, records a mapping from keys to values. It is a list of cons cells called associations: the CAR of each cons cell is the key, and the CDR is the associated value: <code>((KEY1 . VALUE1) (KEY2 . VALUE2) (KEY3 . VALUE3))</code>.
 
 
+# Line Wrapping
+
+If you want to line truncation rather than line continuation for long lines, you can type <code>M-x toggle-truncate-lines</code>. When lines are truncated, you can scroll horizontally to reveal more of the line.
+
+
+# Recursive Editing Levels
+
+A recursive edit is a situation in which you are using Emacs commands to perform arbitrary editing while in the middle of another Emacs command. Exiting the recursive edit means returning to the unfinished command, which continues execution. The command to exit is <code>C-M-c</code> (<code>M-x exit-recursive-edit</code>). You can also abort the recursive edit. This is like exiting, but also quits the unfinished command immediately. Use the command <code>C-]</code> (<code>M-x abort-recursive-edit</code>) to do this.
+
+It is possible to be in recursive edits within recursive edits. Exiting a recursive editing level applies to the innermost level only. Aborting also gets out of only one level of recursive edit; it returns immediately to the command level of the previous recursive edit. The command <code>M-x top-level</code> aborts all levels of recursive edits, returning immediately to the top-level command reader. It also exits the minibuffer, it it is active.
+
+You **can't** use <code>C-g</code> to exit a recursive editing level (like <code>C-]</code> can), but you can use <code>&lt;ESC&gt; &lt;ESC&gt; &lt;ESC&gt;</code>.
+
+
+# Hideshow
+
+Hideshow mode is a buffer-local minor mode that allows you to selectively display portions of a program, which are referred to as blocks. Type <code>M-x hs-minor-mode</code> to toggle this minor mode. When you use Hideshow mode to hide a block, the block disappears from the screen, to be replaced by an ellipsis (three periods in a row). Just what constitutes a block depends on the major mode. In C mode and related modes, blocks are delimited by braces, while in Lisp mode they are delimited by parentheses. Multi-line comments also count as blocks.
+
+<dl>
+  <dt><dfn>
+  C-c @ C-h<br>
+  M-x hs-hide-block</dfn></dt>
+  <dd>Hide the current block.</dd>
+
+  <dt><dfn>
+  C-c @ C-s<br>
+  M-x hs-show-block</dfn></dt>
+  <dd>Show the current block.</dd>
+
+  <dt><dfn>
+  C-c @ C-c<br>
+  M-x hs-toggle-hiding</dfn></dt>
+  <dd>Toggle the current block (hide it if it's shown; show it if it's hidden).</dd>
+
+  <dt><dfn>
+  C-c @ C-M-h<br>
+  M-x hs-hide-all</dfn></dt>
+  <dd>Hide all top-level blocks.</dd>
+
+  <dt><dfn>
+  C-c @ C-M-s<br>
+  M-x hs-show-all</dfn></dt>
+  <dd>Show all blocks in the buffer.</dd>
+
+  <dt><dfn>
+  C-c @ C-l<br>
+  M-x hs-hide-level</dfn></dt>
+  <dd>Hide all blocks N levels below this block.</dd>
+
+  <dt><dfn>
+  M-x hs-hide-initial-comment-block</dfn></dt>
+  <dd>Hide the first block of comments in a file.</dd>
+</dl>
+
+To hide lines in the current buffer, type <code>C-x $</code> (<code>M-x set-selective-display</code>) with a numeric argument N. Then lines with at least N columns of indentation disappear from the screen. To make all lines visible again, type <code>C-x $</code> with no argument.
+
+
+# Editing Programs
+
+
+## Delimiters
+
+You can use <code>M-x check-parens</code> to find any unbalanced parentheses and unbalanced string quotes in the buffer.
+
+
+## Imenu
+
+To jump to function definitions within a buffer, you can use <code>M-x imenu</code>; you'll be prompted for a function name. If you type <code>&lt;TAB&gt;</code>, you'll see a list of possible completions. 
+
+If you add or delete definitions, then you need to update the buffer's index (rescan). If you set <code>imenu-auto-rescan</code> to a non-nil value, then rescanning will happen automatically. Add the following to your init file: <code>(setq imenu-auto-rescan t)</code>.
+
+You can customise the way the menus are sorted by setting the variable <code>imenu-sort-function</code>. By default, names are ordered as they occur in the buffer; if you want alphabetic sorting, use the symbol <code>imenu--sort-by-name</code> as the value. To sort the menu by name, add teh following to your init file: <code>(setq imenu-sort-function 'imenu--sort-by-name)</code>.
+
+
 # Customisation
 
 Emacs has many settings which you can change. Most settings are customisable variables, which are also called user options. A separate class of settings are the faces, which determine the fonts, colours, and other attributes of text.
@@ -4401,22 +4522,12 @@ Customisation is done by setting variables and faces; rebinding key sequences; e
 
 A default is a value that's used when you don't explicitly specify a value to use.
 
-Prefer UTF-8 and Unix newlines: <code>(prefer-coding-system 'utf-8-unix)</code>.
-
-Display the current function name (based on where point is in a buffer) in the mode line: <code>(which-function-mode t)</code>.
-
-Clean up whitespace before saving a file: <code>(add-hook 'before-save-hook 'whitespace-cleanup)</code>.
-
-Automatically indent after typing <code>&lt;RET&gt;</code> when the previous line is indented: <code>(electric-indent-mode t)</code>.
-
-Only use spaces for indentation: <code>(setq indent-tabs-mode nil)</code>.
-
-Define the default indentation style for various modes: <code>(setq c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "linux")))</code>.
-
 
 ## Init File
 
 An initialisation file is a file that gets loaded when Emacs starts. It's used to customise Emacs.
+
+The init file contains one or more Emacs Lisp expressions.
 
 Emacs looks for your personal init file using the filenames <code>~/.emacs</code>, <code>~/.emacs.el</code>, or <code>~/.emacs.d/init.el</code>. I recommend using <code>~/.emacs.d/init.el</code> because then you can split your init file into multiple files in ~/.emacs.d. Note that once Emacs finds an init file, it loads it, and then stops searching for any other personal init file.
 
@@ -4567,6 +4678,8 @@ If you want to enable all disabled commands, then put the following in your init
 
 A hook is a list of functions to be called on specific occassions, such as saving a file or enabling a mode.
 
+Using hooks, you can apply styles to specific things; for example, if your team were developing a product which required a Linux driver, you'd probably want to use the linux style for the driver, and your own team's style for the rest of the code.
+
 Most hooks are normal hooks. This means that when Emacs runs the hook, it calls each hook function in turn, with no arguments. Every variable whose name ends in "-hook" is a normal hook.
 
 A few hooks are abnormal hooks. Their names end in "-functions" (or sometimes "-hooks") instead of "-hook". What makes these hooks abnormal is that their functions accept arguments or their functions return a value that gets used.
@@ -4575,9 +4688,13 @@ Most major modes run one or more mode hooks as the last step of initialisation.
 
 Major mode hooks also apply to other major modes derived from the original mode.
 
+Every major mode apart from Fundamental mode defines a mode hook. Each mode hook is named after its major mode (append "-hook" to the end of the mode's name; for example, text-mode's hook would be called text-mode-hook). All text-based major modes run text-mode-hook and all programming language modes run prog-mode-hook prior to running their own mode hooks.
+
 Enable Flyspell in all text modes: <code>(add-hook 'text-mode-hook 'flyspell-mode)</code>.
 
 Enable Flyspell Prog in all programming modes: <code>(add-hook 'prog-mode-hook 'flyspell-prog-mode)</code>.
+
+Clean up whitespace before saving a file: <code>(add-hook 'before-save-hook 'whitespace-cleanup)</code>.
 
 
 ## Packages
@@ -4662,6 +4779,66 @@ To create or modify custom themes, type <code>M-x customize-create-theme</code>.
 By default, Emacs automatically picks an appropriate colour scheme based on whether your background is dark or light. In my case, Emacs didn't detect detect that my terminal's background is dark, so I had to tell it explicitly by adding the following to my init file: <code>(setq-default frame-background-mode 'dark)</code>.
 
 In graphical Emacs, my mouse pointer was black (by default) and my background was black, so it was very hard to see the mouse pointer. To change the colour of the mouse pointer, add the following to your init file: <code>(set-mouse-color "COLOUR")</code> ("orchid" seems like a nice colour for a mouse pointer on a black background; "white" would also be a safe bet).
+
+You can specify a colour as a name or as an RGB triplet. A colour name is a pre-defined name, such as "dark orange" or "medium sea green". To see a list of colour names, RGB triplets, and what the colours look like, type <code>M-x list-colors-display</code>. Emacs understands X11 colour names even on text terminals; if a face is given a colour specified by an X11 colour name, it is displayed using the closest-matching terminal colour. An RGB triplet is a string of the form <code>#RRGGBB</code>. Each of the R, G, and B components is a hexadecimal number. For hexadecimal values A to F, case doesn't matter.
+
+You can also see a list of colours in X11's rgb.txt file (on my computer, it's <code>/usr/share/X11/rgb.txt</code>).
+
+
+## Fonts
+
+There are several different ways to specify a default font for Emacs:
+
+<ul>
+  <li>Add the following to your init file: <code>(add-to-list 'default-frame-alist '(font . "FONT"))</code>.</li>
+  <li>Add the following to your ~/.Xresources: <code>emacs.font: FONT</code>.</li>
+  <li>Specify the font when you start Emacs by using the <code>-fn</code> (or <code>--font</code>) command-line option.</li>
+</ul>
+
+To check what font you're currently using, the <code>C-u C-x =</code> command can be helpful. It describes the character at point, and names the font that it's rendered in. If you're using terminal Emacs, then <code>C-u C-x =</code> probably won't show you what font is being used; however, the font that Emacs uses is likely the font that your terminal uses. In graphical Emacs, <code>C-u C-x =</code> should show the font.
+
+On X, there are four different ways to express a font name:
+
+<ol>
+  <li>Fontconfig Pattern</li>
+  <li>GTK font pattern (also called a Pango font name)</li>
+  <li>X Logical Font Description (XLFD)</li>
+  <li>font nicknames</li>
+</ol>
+
+Fontconfig patterns have the following form: <code>FONTNAME[-FONTSIZE][:NAME1=VALUES1][:NAME2=VALUES2]...</code>. FONTNAME is the family name of the font, such as "Monospace" or "DejaVu Sans Mono"; FONTSIZE is the point size of the font; and the NAME=VALUES pairs specify settings such as the slant, weight, style, width, or spacing of the font. Each VALUES may be a single value, or a list of values separated by commas. For a more detailed description of Fontconfig patterns, see http://fontconfig.org/fontconfig-user.html.
+
+GTK font patterns have the following form: <code>FONTNAME [PROPERTIES] [FONTSIZE]</code>. FONTNAME is the family name of the font; PROPERTIES is a list of property values separated by spaces; FONTSIZE is the point size of the font.
+
+An X Logical Font Description (XLFD) is the traditional method for specifying fonts under X. Each XLFD consists of fourteen words or numbers, separated by dashes. XLFD patterns have the following form: <code>-MAKER-FAMILY-WEIGHT-SLANT-WIDTHTYPE-STYLE-PIXELS-HEIGHT-HORIZ-VERT-SPACING-WIDTH-REGISTRY-ENCODING</code>. A wildcard character (<code>*</code>) in an XLFD matches any sequence of characters (including none), and <code>?</code> matches any single character; however, matching is implementation-dependent, and can be inaccurate when wildcards match dashes in a long name. For reliable results, supply all 14 dashes and use wildcards only within a field. Case is insignificant in an XLFD. For a more detailed description of XLFD, see http://www.x.org/releases/X11R7.6/doc/xorg-docs/specs/XLFD/xlfd.html.
+
+Certain fonts have shorter nicknames, which you can use instead of a normal font specification.
+
+On X, Emacs recognizes two types of fonts: client-side fonts, which are provided by the Xft and Fontconfig libraries, and server-side fonts, which are provided by the X server itself. Most client-side fonts support advanced font features such as antialiasing and subpixel hinting, while server-side fonts do not. Fontconfig and GTK patterns match only client-side fonts.
+
+You will probably want to use a fixed-width default font--that is, a font in which all characters have the same width. For Xft and Fontconfig fonts, you can use the <code>fc-list</code> command to list the available fixed-width fonts. For server-side X fonts, you can use the <code>xlsfonts</code> program to list the available fixed-width fonts. Any font with "m" or "c" in the SPACING field of the XLFD is a fixed-width font.
+
+To see what a particular font looks like, use the <code>xfd</code> command.
+
+Emacs can display variable-width fonts, but some Emacs commands, particularly indentation commands, do not account for variable character display widths.
+
+A fontset is a named collection of fonts. A font typically defines shapes for a single alphabet or script; therefore, displaying the entire range of scripts that Emacs supports requires a collection of many fonts, hence the use for fontsets.
+
+In graphical Emacs, you can resize the font on the fly. To increase the height of the default font in the current buffer, type <code>C-x C-+</code> or <code>C-x C-=</code>. To decrease it, type <code>C-x C--</code>. To restore the default (global) font height, type <code>C-x C-0</code>. Once you type <code>C-x</code> once, you can repeatedly press any resize key any number of times; for example, <code>C-x C-= C-= C-= C-- C-- C-=</code>.
+
+To see what faces are currently defined and what they look like, type <code>M-x list-faces-display</code>.
+
+
+## Coding System
+
+Prefer UTF-8 and Unix newlines: <code>(prefer-coding-system 'utf-8-unix)</code>.
+
+
+## Indentation
+
+Only use spaces for indentation: <code>(setq indent-tabs-mode nil)</code>.
+
+Define the default style for various modes: <code>(setq c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "linux")))</code>. If your team doesn't use any of the built-in styles, you can define your own style. If your team's style is close to one of the built-in styles, you can use that style as the base style, and then override what you need.
 
 
 ## Calendar
@@ -4759,6 +4936,8 @@ TODO: how to properly add Canada Day? (Canada Day normally falls on July 1, but 
 TODO: how to add Victoria Day and National Patriots' Day? (Both holidays fall on the last Monday before May 25.)
 TODO: how to add Yukon's Heritage Day? (Yukon's Heritage Day falls on the Friday before the last Sunday in February.)
 
+In Emac's calendar, you can type <code>x</code> to mark all the visible days that have holidays. If you move point to a day that contains a holiday, you can type <code>h</code> to list the holidays for that day.
+
 
 ## World Clock
 
@@ -4817,6 +4996,31 @@ You can see what spell checking program your Emacs is using by typing <code>C-h 
 You can see what dictionaries are available by typing <code>M-x ispell-change-dictionary &lt;RET&gt; &lt;SPC&gt;</code>.
 
 I know there are Canadian dictionaries, but I don't like them; I prefer British dictionaries (I think that British English is proper English). To set the default dictionary, add the following to your init file: <code>(setq ispell-dictionary "en_GB-ise")</code>.
+
+
+## Modes
+
+Display the current function name (based on where point is in a buffer) in the mode line: <code>(which-function-mode t)</code>.
+
+Automatically indent after typing <code>&lt;RET&gt;</code> when the previous line is indented: <code>(electric-indent-mode t)</code>.
+
+Font-Lock mode is enabled globally by default, but you can disable it in individual buffers.
+
+Auto Fill mode inserts newlines as you type to prevent lines from becoming too long: <code>(auto-fill-mode t)</code>. This might be useful for editing plaintext.
+
+Linum mode displays each line's line number in the window's left margin: <code>(global-linum-mode t)</code>. This looks ugly in terminal Emacs (there's no space between the line numbers and the lines).
+
+Visual Line mode performs word wrapping, causing long lines to be wrapped at word boundaries: <code>(global-visual-line-mode t)</code>.
+
+Delete Selection mode causes text insertion to first delete the text in the region, if the region is active: <code>(delete-selection-mode t)</code>.
+
+Show Paren mode highlights both delimiters when point is before an opening delimiter or after a closing delimiter: <code>(show-paren-mode t)</code>.
+
+Glasses mode is a buffer-local minor mode that makes it easier to read mixed-case (CamelCase) symbols like unReadableSymbol by altering how they are displayed. By default, it displays extra underscores between each lowercase letter and the following capital letter: <code>(glasses-mode t)</code>. This does alter the buffer text, only how it is displayed. If you try to enter a camel case name when glasses-mode is enabled, the name will automatically be converted to an underscore delimited name; when you disable glasses-mode, the name is converted to camel case. If you enter a name that contains underscores when glasses-mode is enabled, the name will be left alone when you disable glasses-mode.
+
+Electric Layout mode is a global minor mode that automatically inserts newlines when you type certain characters, such as <code>{</code>, <code>}</code>, or <code>;</code>: <code>(electric-layout-mode t)</code>.
+
+Subword mode allows Emac's commands to recognise uppercase letters in StudlyCapsIdentifiers as word boundaries: <code>(global-subword-mode t)</code>.
 
 
 ## Mode Line
