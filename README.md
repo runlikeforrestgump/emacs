@@ -4501,21 +4501,113 @@ Hideshow mode is a buffer-local minor mode that allows you to selectively displa
 To hide lines in the current buffer, type <code>C-x $</code> (<code>M-x set-selective-display</code>) with a numeric argument N. Then lines with at least N columns of indentation disappear from the screen. To make all lines visible again, type <code>C-x $</code> with no argument.
 
 
-# Editing Programs
-
-
-## Delimiters
+# Delimiters
 
 You can use <code>M-x check-parens</code> to find any unbalanced parentheses and unbalanced string quotes in the buffer.
 
 
-## Imenu
+# Imenu
 
 To jump to function definitions within a buffer, you can use <code>M-x imenu</code>; you'll be prompted for a function name. If you type <code>&lt;TAB&gt;</code>, you'll see a list of possible completions. 
 
 If you add or delete definitions, then you need to update the buffer's index (rescan). If you set <code>imenu-auto-rescan</code> to a non-nil value, then rescanning will happen automatically. Add the following to your init file: <code>(setq imenu-auto-rescan t)</code>.
 
 You can customise the way the menus are sorted by setting the variable <code>imenu-sort-function</code>. By default, names are ordered as they occur in the buffer; if you want alphabetic sorting, use the symbol <code>imenu--sort-by-name</code> as the value. To sort the menu by name, add teh following to your init file: <code>(setq imenu-sort-function 'imenu--sort-by-name)</code>.
+
+
+# Java
+
+TODO
+
+
+# Scala
+
+TODO
+
+
+# Ruby
+
+TODO
+
+
+# Python
+
+TODO
+
+
+# Perl
+
+TODO
+
+
+# JavaScript
+
+TODO
+
+
+# HTML
+
+TODO
+
+
+# JSON
+
+TODO
+
+
+# XML
+
+TODO
+
+
+# CSS
+
+TODO
+
+
+# YAML
+
+TODO
+
+
+# Elisp
+
+TODO
+
+
+# Scheme
+
+TODO
+
+
+# Bash
+
+TODO
+
+
+# C
+
+TODO
+
+
+# C++
+
+TODO
+
+
+# Prolog
+
+TODO
+
+
+# Forth
+
+TODO
+
+
+# Pascal
+
+TODO
 
 
 # Customisation
