@@ -4515,9 +4515,43 @@ If you add or delete definitions, then you need to update the buffer's index (re
 You can customise the way the menus are sorted by setting the variable <code>imenu-sort-function</code>. By default, names are ordered as they occur in the buffer; if you want alphabetic sorting, use the symbol <code>imenu--sort-by-name</code> as the value. To sort the menu by name, add teh following to your init file: <code>(setq imenu-sort-function 'imenu--sort-by-name)</code>.
 
 
+# Smartparens
+
+You may have heard of packages such autopair, electric-pair-mode, or paredit. Smartparens combines the functionality of all of them into a single package and provides improvements and new features.
+
+To install smartparens: <code>M-x package-install &lt;RET&gt; smartparens</code>.
+
+To enable smartparens, add the following to your init file: <code>(smartparens-global-mode t)</code>.
+
+By default, smartparens will highlight the delimited region when you're editing it. The default highlighting colour is ugly; to disable the highlighting feature, add the following to your init file: <code>(setq sp-highlight-pair-overlay nil)</code>.
+
+TODO: file a bug regarding single quotes and backtick quotes with sp-rewrap-sexp
+TODO: file a bug regarding quotes (single, double, or backtick) with sp-unwrap-sexp
+
+
+# Projects
+
+The <code>Projectile</code> package makes working with projects much easier; for example, you can type <code>C-c p f</code> to display a list of all the files in the project, and then you can start typing the name of a file to narrow the search results. <code>C-c p f</code> feels kind of similar to Eclipse's <code>C-S-r</code>. You can also type <code>C-c p s g</code> to run grep on all the files in the project. Good news: Projectile automatically detects your project's root!
+
+To install Projectile: <code>M-x package-install &lt;RET&gt; projectile</code>.
+
+To enable Projectile for programming modes, add the following to your init file: <code>(add-hook 'prog-mode-hook 'projectile-mode)</code>.
+
+
+# Searching a Codebase
+
+Install ag (the silver searcher): <code>M-x package-install &lt;RET&gt; ag</code>.
+
+To search a project (from the project root), you can type <code>M-x ag-project</code>, or if you have Projectile, you can type <code>C-c p s s</code>.
+
+In the ag buffer, you can type <code>C-c C-f</code> to enable next-error-follow-minor-mode, so that moving through the search results automatically displays the search result in another window.
+
+To highlight the search string in the search results, add the following to your init file: <code>(setq ag-highlight-search t)</code>.
+
+
 # Java
 
-TODO
+Install malabar-mode: <code>M-x package-install &lt;RET&gt; malabar-mode</code>. TODO: how to get working (running into eieio issue)?
 
 
 # Scala
@@ -4537,37 +4571,57 @@ TODO
 
 # Perl
 
-TODO
+To use cperl-mode instead of perl-mode, add the following to your init file: <code>(defalias 'perl-mode 'cperl-mode)</code>.
+
+TODO: how to have projectile automatically generate tags for the given project, so that function definitions can be jumped to?
 
 
 # JavaScript
 
-TODO
+Install js2-mode: <code>M-x package-install &lt;RET&gt; js2-mode</code>. Add the following to your init file: <code>(add-hook 'js-mode-hook 'js2-minor-mode)</code>.
+
+Install ac-js2: <code>M-x package-install &lt;RET&gt; ac-js2</code>. Add the following to your init file: <code>(add-hook 'js2-mode-hook 'ac-js2-mode)</code>. You can use ac-js2 for jumping to definitions via <code>M-.</code> and jumping back to where you came from via <code>M-,</code>.
+
+Install js2-refactor: <code>M-x package-install &lt;RET&gt; js2-refactor</code>. TODO: how to set up key bindings?
 
 
 # HTML
 
-TODO
+Install web-mode: <code>M-x package-install &lt;RET&gt; web-mode</code>.
+
+To use web-mode for HTML files, add the following to your init file: <code>(add-to-list 'auto-mode-list '("\\.html?\\'" . web-mode))</code>
+
+In terminal Emacs, auto-closing of tags is disabled by default; to enable it, add the following to your init file: <code>(setq web-mode-enable-auto-closing t)</code>.
+
+I'm not sure what auto-pairing is supposed to do; my guess is that if I type an opening tag, then the closing tag will automatically be inserted. I'm not seeing this happen, even when I set web-mode-enable-auto-pairing to <code>t</code>.
+
+I don't see any packages in MELPA, ELPA, or Marmalade for checking HTML syntax on the fly. There's an Emacs package called <code>tidy</code> that sends a buffer or region to an external tidy program, but it looks like a pain to set up and it hasn't been updated since 2011. For now, I'm just going to use the tidy program outside Emacs. Having an HTML validator in Emacs would be great.
 
 
 # JSON
 
-TODO
+To associate JSON files with js2-mode, add the following to your init file: <code>(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))</code>.
 
 
 # XML
 
-TODO
+A lot of people recommend nXML-mode, which is built into Emacs and is already the default major mode for XML files.
 
 
 # CSS
 
-TODO
+If you have a string that represent a colour (for example, "white" or "#ffffff"), rainbow-mode will set the background colour of the string to the colour that the string represents; for example, the string "white" or "#ffffff" will be displayed with a white background.
+
+To install rainbow-mode: <code>M-x package-install &lt;RET&gt; rainbow-mode</code>.
+
+To automatically enable rainbow-mode for CSS files, add the following to your init file: <code>(add-hook 'css-mode-hook 'rainbow-mode)</code>.
 
 
 # YAML
 
-TODO
+Install yaml-mode: <code>M-x package-install &lt;RET&gt; yaml-mode</code>.
+
+yaml-mode doesn't get along with electric-indent-mode, so you should disable electric-indent mode for YAML files: <code>(add-hook 'yaml-mode-hook (lambda () (electric-indent-mode -1)))</code>.
 
 
 # Elisp
@@ -4738,6 +4792,8 @@ If you want to define a local key binding (local to a particular mode) in your i
 
 If you want to globally unset a key: <code>(global-unset-key (kbd "KEY_SEQUENCE"))</code>.
 
+To avoid problems caused by overriding existing bindings, the key sequences <code>C-x C-k 0</code> through <code>C-x C-k 9</code> and <code>C-x C-k A</code> through <code>C-x C-k Z</code> are reserved for users (that's you!) to define.
+
 <dl>
   <dt><dfn>
   M-x global-set-key</dfn></dt>
@@ -4792,7 +4848,7 @@ Enable Flyspell in all text modes: <code>(add-hook 'text-mode-hook 'flyspell-mod
 
 Enable Flyspell Prog in all programming modes: <code>(add-hook 'prog-mode-hook 'flyspell-prog-mode)</code>.
 
-Clean up whitespace before saving a file: <code>(add-hook 'before-save-hook 'whitespace-cleanup)</code>.
+Clean up whitespace before saving a file: <code>(add-hook 'before-save-hook 'whitespace-cleanup)</code>. A less obtrusive way to clean up whitespace is to install the ws-butler package (<code>M-x package-install &lt;RET&gt; ws-butler</code>). To enable ws-butler: <code>(add-hook 'prog-mode-hook 'ws-butler-mode)</code>.
 
 
 ## Packages
@@ -4801,9 +4857,22 @@ A package is a collection of Lisp code that you download and automatically insta
 
 Most optional features in Emacs are grouped into packages. Emacs contains several hundred built-in packages, and more can be installed over the network.
 
-The official Emacs package repository is [GNU ELPA](http://elpa.gnu.org) (Emacs Lisp Package Archive). Another popular Emacs package repository is [MELPA](http://melpa.org) (Milkpostman's Emacs Lisp Package Archive). The [Emacs Lisp List](http://www.damtp.cam.ac.uk/user/sje30/emacs/ell.html) (ELL) aims to provide one compact list of packages with links to all the current Emacs Lisp files on the Internet. The ELL can be browsed over the Web, or from Emacs with the [ell.el](http://www.damtp.cam.ac.uk/user/sje30/emacs/ell.el). As of 2013-06-07, the list is no longer maintained.
+The official Emacs package repository is [GNU ELPA](http://elpa.gnu.org) (Emacs Lisp Package Archive). Another popular Emacs package repository is [MELPA](http://melpa.org) (Milkpostman's Emacs Lisp Package Archive). [Marmalade](https://marmalade-repo.org) is yet another package repository. The [Emacs Lisp List](http://www.damtp.cam.ac.uk/user/sje30/emacs/ell.html) (ELL) aims to provide one compact list of packages with links to all the current Emacs Lisp files on the Internet. The ELL can be browsed over the Web, or from Emacs with the [ell.el](http://www.damtp.cam.ac.uk/user/sje30/emacs/ell.el). As of 2013-06-07, the list is no longer maintained.
+
+To use MELPA and Marmalade, add the following to your init file:
+
+<code>
+(require 'package)
+(package-initialize)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
+</code>
+
+The <code>(package-initialize)</code> is necessary if you install any packages; otherwise, you won't be able to refer to packages in your init file (for example, to enable their mode).
 
 <code>M-x list-packages</code> brings up a buffer named <code>*Packages*</code> with a list of all packages. You can install or uninstall packages via this buffer. The command accesses the network to retrieve the list of available packages from the package archive server. If the network is unavailable, it falls back on the most recently retrieved list.
+
+The <code>*Packages*</code> buffer seems to sort packages by their status and then by their name.
 
 The command <code>C-h P</code> (<code>M-x describe-package</code>) prompts for the name of a package, and displays a help buffer describing the attributes of the package and the feaures that it implements.
 
@@ -4822,6 +4891,8 @@ A package may require certain other packages to be installed, because it relies 
 By default, packages are downloaded from a single package archive maintained by the Emacs developers. This is controlled by the variable <code>package-archives</code>, whose value is a list of package archives known to Emacs. Each list element must have the form <code>(ID . LOCATION)</code>, wheere ID is the name of a package archive and LOCATION is the HTTP address or directory name of the package archive. You can alter this list if you wish to use third party package archives.
 
 Once a package is downloaded and installed, it is loaded into the current Emacs session. By default, Emacs also automatically loads all installed packages in subsequent Emacs sessions. For finer control over package loading, you can use the variable <code>package-load-list</code>. Its value should be a list. A list element of the form <code>(NAME VERSION)</code> tells Emacs to load version VERSION of the package named NAME. Here, VERSION should be a version string corresponding to a specific version of the package, or <code>t</code> to load any installed version, or <code>nil</code> to disable the package. A list element can also be the symbol <code>all</code>, which means to load the latest installed version of any package not named by the other list elements. The default value is just <code>'(all)</code>.
+
+If you encounter "Error during download request: Not Found" after trying to install a package, try typing <code>M-x package-refresh-contents</code> and then reattempt the install.
 
 Package Menu commands:
 
@@ -5106,6 +5177,10 @@ Automatically indent after typing <code>&lt;RET&gt;</code> when the previous lin
 
 Make it easier to switch buffers: <code>(iswitchb-mode t)</code>.
 
+ido mode is a mode that basically extends the iswitchb behaviour to more than just buffers: <code>(ido-mode t)</code>. When ido mode is enabled and you want to enter something literally, type <code>C-j</code> instead of <code>&lt;RET&gt;</code>.
+
+icomplete-mode basically extends the iswitchb behaviour to the M-x prompt: <code>(icomplete-mode t)</code>.
+
 Font-Lock mode is enabled globally by default, but you can disable it in individual buffers.
 
 Auto Fill mode inserts newlines as you type to prevent lines from becoming too long: <code>(auto-fill-mode t)</code>. This might be useful for editing plaintext.
@@ -5125,6 +5200,8 @@ Electric Layout mode is a global minor mode that automatically inserts newlines 
 Subword mode allows Emac's commands to recognise uppercase letters in StudlyCapsIdentifiers as word boundaries: <code>(global-subword-mode t)</code>.
 
 Display a list of available completions when you are in the minibuffer and completion is active: <code>(icomplete-mode t)</code>.
+
+To display a list of completions in a pop-up when you're typing, install company-mode: <code>M-x package-install &lt;RET&gt; company</code>. To enable company-mode for programming modes, add the following to your init file: <code>(add-hook 'prog-mode-hook 'company-mode)</code>.
 
 
 ## Mode Line
