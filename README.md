@@ -8,7 +8,7 @@ You do have permission to share this document, as long as you keep this legal se
 
 If you have a copy of the document, you can find the original document at https://github.com/runlikeforrestgump/emacs/README.md.
 
-Copyright 2014 by https://github.com/runlikeforrestgump.
+Copyright 2014 - 2015 by https://github.com/runlikeforrestgump.
 
 
 # Background
@@ -4525,6 +4525,12 @@ To enable smartparens, add the following to your init file: <code>(smartparens-g
 
 By default, smartparens will highlight the delimited region when you're editing it. The default highlighting colour is ugly; to disable the highlighting feature, add the following to your init file: <code>(setq sp-highlight-pair-overlay nil)</code>.
 
+Bind sp-rewrap-sexp and sp-unwrap-sexp:
+<code>
+(global-set-key (kbd "C-x C-k C") 'sp-rewrap-sexp)
+(global-set-key (kbd "C-x C-k D") 'sp-unwrap-sexp)
+</code>
+
 TODO: file a bug regarding single quotes and backtick quotes with sp-rewrap-sexp
 TODO: file a bug regarding quotes (single, double, or backtick) with sp-unwrap-sexp
 
@@ -4536,6 +4542,103 @@ The <code>Projectile</code> package makes working with projects much easier; for
 To install Projectile: <code>M-x package-install &lt;RET&gt; projectile</code>.
 
 To enable Projectile for programming modes, add the following to your init file: <code>(add-hook 'prog-mode-hook 'projectile-mode)</code>.
+
+<dl>
+  <dt><dfn>
+  C-c p s s<br>
+  M-x projectile-ag</dfn></dt>
+  <dd>Run an ag search on the project using the specified search string.</dd>
+
+  <dt><dfn>
+  C-c p c<br>
+  M-x projectile-compile-project</dfn></dt>
+  <dd>Compile the project.</dd>
+
+  <dt><dfn>
+  C-c p D<br>
+  M-x projectile-dired</dfn></dt>
+  <dd>Open dired at the root of the project.</dd>
+
+  <dt><dfn>
+  C-c p d<br>
+  M-x projectile-find-dir</dfn></dt>
+  <dd>Jump to a project's directory using completion.</dd>
+
+  <dt><dfn>
+  C-c p f<br>
+  M-x project-file-find-file</dfn></dt>
+  <dd>Jump to a project's file using completion.</dd>
+
+  <dt><dfn>
+  C-c p a<br>
+  M-x projectile-find-other-file</dfn></dt>
+  <dd>Switch between files with the same name but different extensions.</dd>
+
+  <dt><dfn>
+  C-c p j<br>
+  M-x projectile-find-tag</dfn></dt>
+  <dd>Find tag in project.</dd>
+
+  <dt><dfn>
+  C-c p T<br>
+  M-x projectile-find-test-file</dfn></dt>
+  <dd>Jump to a project's test file using completion.</dd>
+
+  <dt><dfn>
+  C-c p s g<br>
+  M-x projectile-grep</dfn></dt>
+  <dd>Perform rgrep in the project.</dd>
+
+  <dt><dfn>
+  C-c p I<br>
+  M-x projectile-ibuffer</dfn></dt>
+  <dd>Open an IBuffer window showing all buffers in the current project.</dd>
+
+  <dt><dfn>
+  C-c p k<br>
+  M-x projectile-kill-buffers</dfn></dt>
+  <dd>Kill all project buffers.</dd>
+
+  <dt><dfn>
+  C-c p o<br>
+  M-x projectile-multi-occur</dfn></dt>
+  <dd>Do a multi-occur in the project's buffers.</dd>
+
+  <dt><dfn>
+  C-c p &lt;ESC&gt;<br>
+  M-x projectile-project-buffers-other-buffer</dfn></dt>
+  <dd>Switch to the most recently selected project buffer.</dd>
+
+  <dt><dfn>
+  C-c p e<br>
+  M-x projectile-recentf</dfn></dt>
+  <dd>Show a list of recently visited files in the project.</dd>
+
+  <dt><dfn>
+  C-c p R<br>
+  M-x projectile-regenerate-tags</dfn></dt>
+  <dd>Regenerate the project's tags.</dd>
+
+  <dt><dfn>
+  C-c p r<br>
+  M-x projectile-replace</dfn></dt>
+  <dd>Replace a string in the project using tags-query-replace.</dd>
+
+  <dt><dfn>
+  C-c p S<br>
+  M-x projectile-save-project-buffers</dfn></dt>
+  <dd>Save all project buffers.</dd>
+
+  <dt><dfn>
+  C-c p P<br>
+  M-x projectile-test-project</dfn></dt>
+  <dd>Run project test command.</dd>
+
+  <dt><dfn>
+  C-c p v<br>
+  M-x projectile-vc</dfn></dt>
+  <dd>Open vc-dir at the root of the project.</dd>
+</dl>
 
 
 # Searching a Codebase
@@ -4549,24 +4652,164 @@ In the ag buffer, you can type <code>C-c C-f</code> to enable next-error-follow-
 To highlight the search string in the search results, add the following to your init file: <code>(setq ag-highlight-search t)</code>.
 
 
+# Flycheck
+
+<dl>
+  <dt><dfn>
+  C-c ! n<br>
+  M-x flycheck-next-error</dfn></dt>
+  <dd>Jump to the next Flycheck error.</dd>
+
+  <dt><dfn>
+  C-c ! p<br>
+  M-x flycheck-previous-error</dfn></dt>
+  <dd>Jump to the previous Flycheck error.</dd>
+
+  <dt><dfn>
+  C-c ! l<br>
+  M-x flycheck-list-errors</dfn></dt>
+  <dd>View a list of Flycheck errors.</dd>
+</dl>
+
+
 # Java
 
-Install malabar-mode: <code>M-x package-install &lt;RET&gt; malabar-mode</code>. TODO: how to get working (running into eieio issue)?
+Install malabar-mode: <code>M-x package-install &lt;RET&gt; malabar-mode</code>. TODO: how to get working (I'm running into an eieio issue)?
 
 
 # Scala
 
-TODO
+"Although it's not required, ENSIME is designed to complement an existing Scala major mode; scala-mode2 is an excellent Scala mode."
+
+Install SBT outside Emacs. Once you install SBT, you should run <code>sbt</code> on the command-line, which should create <code>~/.sbt/VERSION</code> for you. Create a plugins directory there: <code>mkdir ~/.sbt/VERSION/plugins</code>. Then, create a <code>plugins.sbt</code> file with the following contents:
+<code>
+resolvers += Resolver.sonatypeRepo("snapshots")
+addSbtPlugin("org.ensime" % "ensime-sbt" % "ENSIME-SBT-VERSION")
+</code>
+
+Replace ENSIME-SBT-VERSION with the latest version of the plugin, available at https://github.com/aemoncannon/ensime-sbt-cmd. To find the version, look at the build.sbt file (you should see the version in that file).
+
+Install scala-mode2: <code>M-x package-install &lt;RET&gt; scala-mode2</code>.
+
+Install ENSIME: <code>M-x package-install &lt;RET&gt; ensime</code>. Add the following to your init file:
+<code>
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+</code>
+
+TODO: generate an ENSIME project (<code>ensime generate</code>).
 
 
 # Ruby
 
-TODO
+Install ruby-refactor: <code>M-x package-install &lt;RET&gt; ruby-refactor</code>. Add the following to your init file: <code>add-hook 'ruby-mode-hook 'ruby-refactor-mode-launch)</code>.
+
+Install rspec-mode: <code>M-x package-install &lt;RET&gt; rspec-mode</code>.
+
+Install ruby-tools: <code>M-x package-install &lt;RET&gt; ruby-tools</code>. Add the following to your init file: <code>add-hook 'ruby-mode-hook 'ruby-tools-mode)</code>. I've found that ruby-tools-mode doesn't work very well in terminal Emacs, but it does work well in graphical Emacs.
+
+Install ruby-end: <code>M-x package-install &lt;RET&gt; ruby-end</code>.
+
+Install rake: <code>M-x package-install &lt;RET&gt; rake</code>.
+
+Install ruby-block: <code>M-x package-install &lt;RET&gt; ruby-block</code>. Add the following to your init file:
+<code>
+(require 'ruby-block)
+(add-hook 'ruby-mode-hook 'ruby-block-mode)
+(setq ruby-block-highlight-toggle 'overlay)
+</code>
+
+Install rubocop: <code>M-x package-install &lt;RET&gt; rubocop</code>. Add the following to your init file: <code>(add-hook 'ruby-mode-hook 'rubocop-mode)</code>. To make RuboCop even better, install flycheck, so that problems are detected on the fly: <code>M-x package-install &lt;RET&gt; flycheck</code>. Add the following to your init file: <code>(add-hook 'ruby-mode-hook 'flycheck-mode)</code>.
+
+Install inf-ruby: <code>M-x package-install &lt;RET&gt; inf-ruby</code>. Add the following to your init file: <code>(add-hook 'inf-ruby-mode-hook 'company-mode)</code>. To run irb: <code>M-x inf-ruby</code> or <code>M-x run-ruby</code>.
+
+Install robe: <code>M-x package-install &lt;RET&gt; robe</code>. Add the following to your init file: <code>(add-hook 'ruby-mode-hook 'robe-mode)</code>. There are some Ruby gems you'll also need to install: <code>gem install pry pry-doc method_source</code>. TODO: how to jump to definition (I keep getting "Method not found")? Also, I don't like how I have to start an inf-ruby process, and then run ruby-start, before I can even use completion.
+
+<dl>
+  <dt><dfn>
+  C-c C-d<br>
+  M-x robe-doc</dfn></dt>
+  <dd>Show the documentation for the object at point.</dd>
+
+  <dt><dfn>
+  M-.<br>
+  M-x robe-jump</dfn></dt>
+  <dd>Go to the definition of the object at point.</dd>
+
+  <dt><dfn>
+  M-,<br>
+  M-x pop-tag-mark</dfn></dt>
+  <dd>Go back to where you jumped from.</dd>
+
+  <dt><dfn>
+  C-;<br>
+  M-x ruby-tools-clear-string</dfn></dt>
+  <dd>Clear the string at point.</dd>
+
+  <dt><dfn>
+  #<br>
+  M-x ruby-tools-interpolate</dfn></dt>
+  <dd>When point is in a place where interpolation is applicable, <code>#</code> will insert <code>#{}</code> with point between the braces.</dd>
+
+  <dt><dfn>
+  C-"<br>
+  M-x ruby-tools-to-double-quote-string</dfn></dt>
+  <dd>Convert single quote string at point to double quote string.</dd>
+
+  <dt><dfn>
+  C-'<br>
+  M-x ruby-tools-to-single-quote-string</dfn></dt>
+  <dd>Convert symbol or double quote string at point to single quote string.</dd>
+
+  <dt><dfn>
+  C-:<br>
+  M-x ruby-tools-to-symbol</dfn></dt>
+  <dd>Convert string at point to symbol.</dd>
+</dl>
 
 
 # Python
 
-TODO
+To run the Python interpreter: <code>M-x run-python</code>.
+
+Install python-environment: <code>M-x package-install &lt;RET&gt; python-environment</code>.
+
+Install jedi: <code>M-x package-install &lt;RET&gt; jedi</code>. Install the Jedi EPC server: <code>M-x jedi:install-server</code>. Add the following to your init file:
+<code>
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:use-shortcuts t)
+</code>
+
+Install rope (outside Emacs): <code>pip install rope</code> for Python 2 or <code>pip install rope_py3k</code> for Python 3.
+
+Install ropemode (outside Emacs): <code>pip install ropemode</code> for Python 2 or <code>pip install ropemode_py3k</code> for Python 3.
+
+Install ropemacs (outside Emacs): <code>pip install ropemacs</code> for Python 2 or <code>pip install ropemacs_py3k</code> for Python 3.
+
+Install flake8 (outside Emacs): <code>pip install flake8</code>.
+
+Install importmagic (outside Emacs): <code>pip install importmagic</code>.
+
+Install elpy: <code>M-x package-install &lt;RET&gt; elpy</code>. Add the following to your init file: <code>(elpy-enable)</code>.
+
+<dl>
+  <dt><dfn>
+  C-c ?<br>
+  M-x jedi:show-doc</dfn></dt>
+  <dd>Show the documentation of the object at point.</dd>
+
+  <dt><dfn>
+  M-.<br>
+  C-c .<br>
+  M-x jedi:goto-definition</dfn></dt>
+  <dd>Go to the definition of the object at point.</dd>
+
+  <dt><dfn>
+  M-,<br>
+  C-c ,<br>
+  M-x jedi:goto-definition-pop-marker</dfn></dt>
+  <dd>Go back to where you jumped from.</dd>
+</dl>
 
 
 # Perl
@@ -4597,6 +4840,148 @@ I'm not sure what auto-pairing is supposed to do; my guess is that if I type an 
 
 I don't see any packages in MELPA, ELPA, or Marmalade for checking HTML syntax on the fly. There's an Emacs package called <code>tidy</code> that sends a buffer or region to an external tidy program, but it looks like a pain to set up and it hasn't been updated since 2011. For now, I'm just going to use the tidy program outside Emacs. Having an HTML validator in Emacs would be great.
 
+To configure the indentation offsets:
+<code>
+(setq web-mode-code-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-sql-indent-offset 2)
+</code>
+
+<dl>
+  <dt><dfn>
+  M-;</dfn></dt>
+  <dd>Comment/uncomment lines.</dd>
+
+  <dt><dfn>
+  C-c C-f</dfn></dt>
+  <dd>Expand/collapse a tag.</dd>
+
+  <dt><dfn>
+  C-c C-i</dfn></dt>
+  <dd>Reindent the entire buffer.</dd>
+
+  <dt><dfn>
+  C-c C-e a</dfn></dt>
+  <dd>Select element content.</dd>
+
+  <dt><dfn>
+  C-c C-e b</dfn></dt>
+  <dd>Element beginning.</dd>
+
+  <dt><dfn>
+  C-c C-e c</dfn></dt>
+  <dd>Element clone.</dd>
+
+  <dt><dfn>
+  C-c C-e d</dfn></dt>
+  <dd>Child element (down).</dd>
+
+  <dt><dfn>
+  C-c C-e e</dfn></dt>
+  <dd>Element end.</dd>
+
+  <dt><dfn>
+  C-c C-e i</dfn></dt>
+  <dd>Element insert.</dd>
+
+  <dt><dfn>
+  C-c C-e k</dfn></dt>
+  <dd>Element kill (kill the element but leave the newline).</dd>
+
+  <dt><dfn>
+  C-c C-e n</dfn></dt>
+  <dd>Next element.</dd>
+
+  <dt><dfn>
+  C-c C-e p</dfn></dt>
+  <dd>Previous element.</dd>
+
+  <dt><dfn>
+  C-c C-e r</dfn></dt>
+  <dd>Rename element.</dd>
+
+  <dt><dfn>
+  C-c C-e s</dfn></dt>
+  <dd>Select element.</dd>
+
+  <dt><dfn>
+  C-c C-e u</dfn></dt>
+  <dd>Parent element (up).</dd>
+
+  <dt><dfn>
+  C-c C-e v</dfn></dt>
+  <dd>Element vanish (kill the element and the newline).</dd>
+
+  <dt><dfn>
+  C-c C-d d</dfn></dt>
+  <dd>Show any tag mismatches.</dd>
+
+  <dt><dfn>
+  C-c C-d e</dfn></dt>
+  <dd>Replace HTML entities with the characters that they represent.</dd>
+
+  <dt><dfn>
+  C-c C-d n</dfn></dt>
+  <dd>Normalise.</dd>
+
+  <dt><dfn>
+  C-c C-d x</dfn></dt>
+  <dd>Show the xpath for the element at point.</dd>
+
+  <dt><dfn>
+  C-c C-t a</dfn></dt>
+  <dd>Sort attributes.</dd>
+
+  <dt><dfn>
+  C-c C-t b</dfn></dt>
+  <dd>Tag beginning.</dd>
+
+  <dt><dfn>
+  C-c C-t e</dfn></dt>
+  <dd>Tag end.</dd>
+
+  <dt><dfn>
+  C-c C-t m</dfn></dt>
+  <dd>Fetch matching tag.</dd>
+
+  <dt><dfn>
+  C-c C-t s</dfn></dt>
+  <dd>Select tag.</dd>
+
+  <dt><dfn>
+  C-c C-t p</dfn></dt>
+  <dd>Previous tag.</dd>
+
+  <dt><dfn>
+  C-c C-t n</dfn></dt>
+  <dd>Next tag.</dd>
+
+  <dt><dfn>
+  C-c C-a b</dfn></dt>
+  <dd>Attribute beginning.</dd>
+
+  <dt><dfn>
+  C-c C-a e</dfn></dt>
+  <dd>Attribute end.</dd>
+
+  <dt><dfn>
+  C-c C-a i</dfn></dt>
+  <dd>Attribute insert.</dd>
+
+  <dt><dfn>
+  C-c C-a s</dfn></dt>
+  <dd>Attribute select.</dd>
+
+  <dt><dfn>
+  C-c C-a t</dfn></dt>
+  <dd>Attribute transpose.</dd>
+
+  <dt><dfn>
+  C-c C-a n</dfn></dt>
+  <dd>Attribute next.</dd>
+</dl>
+
 
 # JSON
 
@@ -4615,6 +5000,8 @@ If you have a string that represent a colour (for example, "white" or "#ffffff")
 To install rainbow-mode: <code>M-x package-install &lt;RET&gt; rainbow-mode</code>.
 
 To automatically enable rainbow-mode for CSS files, add the following to your init file: <code>(add-hook 'css-mode-hook 'rainbow-mode)</code>.
+
+To configure the indentation offset: <code>(setq css-indent-offset 2)</code>.
 
 
 # YAML
@@ -4942,6 +5329,8 @@ You can enable a specific custom theme in the current Emacs session by typing <c
 
 To create or modify custom themes, type <code>M-x customize-create-theme</code>.
 
+If you want to use a custom colour scheme, save the THEME.el file into a directory that is in Emacs's load path (such as <code>~/.emacs.d</code>). Then, in Emacs, run <code>M-x load-theme &lt;RET&gt; THEME</code>; you will be asked whether you'd really like like to load the file or not and if you'd like to consider the theme file to be considered safe for future sessions. If you answer yes to both questions, then some Elisp will be written to your init file. To set the custom colour scheme for all Emacs sessions, add the following to your init file, anywhere **after** where custom-safe-themes is set: <code>(load-theme 'THEME)</code>.
+
 
 ## Colour
 
@@ -5223,6 +5612,45 @@ You can customise the format of the mode line by modifying the <code>mode-line-f
 ## Minibuffer
 
 Delete duplicates from the minibuffer history list: <code>(setq history-delete-duplicates t)</code>.
+
+
+## Backups and Auto Saves
+
+Disable backups and autosaves:
+<code>
+(setq auto-save-default nil)
+(setq backup-inhibited t)
+(setq make-backup-files nil)
+</code>
+
+
+## Splash Screen (Welcome Screen)
+
+Disable the the splash/welcome screen: <code>(setq inhibit-splash-screen t)</code>.
+
+
+## Sentences
+
+There should only be one space between sentences: <code>(setq sentence-end-double-space nil)</code>.
+
+
+## Frames
+
+Start Emacs with full width: <code>(add-to-list 'initial-frame-alist '(fullscreen . fullwidth))</code>.
+
+Start Emacs with full height: <code>(add-to-list 'initial-frame-alist '(fullscreen . fullheight))</code>.
+
+Start Emacs with full width and height: <code>(add-to-list 'initial-frame-alist '(fullscreen . fullboth))</code>.
+
+Start Emacs maximised: <code>(add-to-list 'initial-frame-alist '(fullscreen . maximized))</code>.
+
+Start Emacs with custom width and height:
+<code>
+(add-to-list 'initial-frame-alist '(height . N))
+(add-to-list 'initial-frame-alist '(width . M))
+</code>
+
+I wish I could use fullheight, fullboth, or maximized, but this poses a problem for me with dwm because the frame covers my dmenu bar.
 
 
 # Calculator
