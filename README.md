@@ -4543,6 +4543,26 @@ To install Projectile: <code>M-x package-install &lt;RET&gt; projectile</code>.
 
 To enable Projectile for programming modes, add the following to your init file: <code>(add-hook 'prog-mode-hook 'projectile-mode)</code>.
 
+Use Projectile even for paths that don't contain a project file: <code>(setq projectile-require-project-root nil)</code>.
+
+Regenerate tags whenever Emacs is idle: <code>(setq projectile-enable-idle-timer t)</code>. If you don't want to be bombarded with a prompt asking if you'd like to reload the tags file, add the following to your init file: <code>(setq tags-revert-without-query t)</code>. Tag files can be pretty large. You may want to raise the large-file-warning-threshold (the default is 10 MB): <code>(setq large-file-warning-threshold SIZE_IN_BYTES)</code>.
+
+Install helm-projectile: <code>M-x package-install &lt;RET&gt; helm-projectile</code>.
+
+Enable helm-projectile: <code>(add-hook 'prog-mode-hook 'helm-projectile-on)</code>.
+
+Use helm with Projectile: <code>(setq projectile-completion-system 'helm)</code>.
+
+Find file in project: <code>C-c p f</code>.
+
+Find buffer in project: <code>C-c p b</code>.
+
+Find directory in project: <code>C-c p d</code>.
+
+Find in project: <code>C-c p h</code>.
+
+Switch project: <code>C-c p p</code>.
+
 <dl>
   <dt><dfn>
   C-c p s s<br>
@@ -4816,8 +4836,6 @@ Install elpy: <code>M-x package-install &lt;RET&gt; elpy</code>. Add the followi
 
 To use cperl-mode instead of perl-mode, add the following to your init file: <code>(defalias 'perl-mode 'cperl-mode)</code>.
 
-TODO: how to have projectile automatically generate tags for the given project, so that function definitions can be jumped to?
-
 
 # JavaScript
 
@@ -5058,6 +5076,8 @@ Emacs has many settings which you can change. Most settings are customisable var
 Customisation is done by setting variables and faces; rebinding key sequences; enabling modes; installing packages; adding hooks; adding Emacs Lisp code to an init file; etc.
 
 A default is a value that's used when you don't explicitly specify a value to use.
+
+For a lot of the modes where you can jump to the definition of the object at point, you can use <code>M-.</code> to jump there and <code>M-,</code> or <code>M-*</code> to jump back.
 
 
 ## Init File
@@ -5566,7 +5586,7 @@ Automatically indent after typing <code>&lt;RET&gt;</code> when the previous lin
 
 Make it easier to switch buffers: <code>(iswitchb-mode t)</code>.
 
-ido mode is a mode that basically extends the iswitchb behaviour to more than just buffers: <code>(ido-mode t)</code>. When ido mode is enabled and you want to enter something literally, type <code>C-j</code> instead of <code>&lt;RET&gt;</code>.
+ido mode is a mode that basically extends the iswitchb behaviour to more than just buffers: <code>(ido-mode t)</code>. When ido mode is enabled and you want to enter something literally, type <code>C-j</code> instead of <code>&lt;RET&gt;</code>. ido shows completion suggestions all in one line; I think that this is unreadable. Luckily, there's another mode that displays the results vertically (one suggestion per line): <code>M-x package-install &lt;RET&gt; ido-vertical-mode</code>. Add the following to your init file: <code>(ido-vertical-mode t)</code>.
 
 icomplete-mode basically extends the iswitchb behaviour to the M-x prompt: <code>(icomplete-mode t)</code>.
 
@@ -5591,6 +5611,8 @@ Subword mode allows Emac's commands to recognise uppercase letters in StudlyCaps
 Display a list of available completions when you are in the minibuffer and completion is active: <code>(icomplete-mode t)</code>.
 
 To display a list of completions in a pop-up when you're typing, install company-mode: <code>M-x package-install &lt;RET&gt; company</code>. To enable company-mode for programming modes, add the following to your init file: <code>(add-hook 'prog-mode-hook 'company-mode)</code>.
+
+Disable the tool bar: <code>(tool-bar-mode -1)</code>.
 
 
 ## Mode Line
@@ -5651,6 +5673,13 @@ Start Emacs with custom width and height:
 </code>
 
 I wish I could use fullheight, fullboth, or maximized, but this poses a problem for me with dwm because the frame covers my dmenu bar.
+
+
+## Completion
+
+Use ido-vertical-mode and icomplete-mode, or use helm.
+
+Install helm: <code>M-x package-install &lt;RET&gt; helm</code>. Add the following to your init file: <code>(helm-mode t)</code>.
 
 
 # Calculator
