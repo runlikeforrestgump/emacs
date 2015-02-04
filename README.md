@@ -5682,6 +5682,13 @@ Use ido-vertical-mode and icomplete-mode, or use helm.
 Install helm: <code>M-x package-install &lt;RET&gt; helm</code>. Add the following to your init file: <code>(helm-mode t)</code>.
 
 
+## Directories
+
+To set the default directory, add the following to your init file: <code>(setq default-directory "~/PATH/")</code> (the final slash is necessary). Think of it as the initial default directory; any time you do something file or directory related, such as visiting a file, the default directory changes.
+
+If you still have the splash screen enabled, then when you start Emacs, the default directory will be overridden immediately. In other words, your setting for default-directory won't take effect until you disable the splash screen.
+
+
 # Calculator
 
 Emacs comes with a powerful calculator called Calc.
